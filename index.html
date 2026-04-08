@@ -283,19 +283,22 @@ function showSlide(index){
 }
 
 /* ===== GEAR ROTATION ===== */
-let target = 0;
-let current = 0;
+let velocity = 0;
+let rotation = 0;
 
 function animate(){
-  current += (target - current) * 0.08;
+
+  rotation += velocity;
+  velocity *= 0.95; // 🔥 fricción (clave del peso)
 
   const gear = document.getElementById("gear");
-  gear.style.transform = "rotate("+current+"deg)";
+  if(gear){
+    gear.style.transform = "rotate("+rotation+"deg)";
+  }
 
   requestAnimationFrame(animate);
 }
 animate();
-
 /* ===== SCROLL ===== */
 let isScrolling = false;
 
@@ -318,12 +321,12 @@ window.addEventListener("wheel", (e)=>{
   isScrolling = true;
 
   if(e.deltaY > 0){
-    currentSlide++;
-    target += 60;
-  } else {
-    currentSlide--;
-    target -= 60;
-  }
+  currentSlide++;
+  velocity += 2.5; // 🔥 impulso
+} else {
+  currentSlide--;
+  velocity -= 2.5;
+}
 
   currentSlide = Math.max(0, Math.min(currentSlide, slides.length - 1));
   showSlide(currentSlide);
