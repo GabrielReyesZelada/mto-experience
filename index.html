@@ -12,12 +12,13 @@ body,html{
   margin:0;
   height:100%;
   overflow:hidden;
-  background:black;
   font-family:Arial;
+  background:black;
 }
 
 /* ===== FLIP ===== */
 .mto-stage{ perspective:1200px; height:100%; }
+
 .mto-flip{
   width:100%; height:100%;
   transform-style:preserve-3d;
@@ -30,11 +31,15 @@ body,html{
   width:100%; height:100%;
   backface-visibility:hidden;
 }
-.mto-back{ transform:rotateY(180deg); background:#001a40; }
+
+.mto-back{
+  transform:rotateY(180deg);
+}
 
 /* ===== VIDEO ===== */
 video{
-  width:100%; height:100%;
+  width:100%;
+  height:100%;
   object-fit:cover;
 }
 
@@ -70,8 +75,9 @@ button{
 
 .backBtn{
   position:absolute;
-  top:30px;
-  left:30px;
+  top:25px;
+  left:25px;
+  z-index:9999; /* 🔥 FIX REAL */
 }
 
 /* ===== GEAR ===== */
@@ -111,26 +117,60 @@ button{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
 }
 
+/* ===== HINT ===== */
+.hint{
+  position:absolute;
+  top:calc(50% + 280px); /* 🔥 debajo del engranaje */
+  left:120px;
+  color:rgba(255,255,255,.8);
+  font-size:14px;
+  animation:float 2s infinite;
+}
+
+@keyframes float{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(8px)}
+  100%{transform:translateY(0)}
+}
+
 /* ===== SLIDES ===== */
 .slide{
   position:absolute;
   width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   text-align:center;
-  color:white;
+
   opacity:0;
   transform:translateY(40px);
   transition:.6s;
 }
+
 .slide.active{
   opacity:1;
   transform:translateY(0);
 }
 
-h1{ font-size:2.5rem; }
+/* ===== FONDOS POR ÁREA ===== */
+.slide:nth-child(1){ background:linear-gradient(#001a40,#000);}
+.slide:nth-child(2){ background:linear-gradient(#1e5eff,#000);}
+.slide:nth-child(3){ background:linear-gradient(#5c0080,#000);}
+.slide:nth-child(4){ background:linear-gradient(#006400,#000);}
+.slide:nth-child(5){ background:linear-gradient(#b30000,#000);}
+.slide:nth-child(6){ background:linear-gradient(#ff6a00,#000);}
+
+/* ===== TITULOS ===== */
+h1{
+  font-size:2.5rem;
+  margin-bottom:10px;
+}
 
 /* ===== SUBAREAS ===== */
 .subareas{
-  margin-top:25px;
+  margin-top:20px;
 }
 
 .sub{
@@ -152,24 +192,8 @@ h1{ font-size:2.5rem; }
 .slide.active .sub:nth-child(6){transition-delay:.7s;}
 
 .sub:hover{
-  transform:translateX(5px);
+  transform:translateX(6px);
   color:#00c8ff;
-}
-
-/* ===== HINT ===== */
-.hint{
-  position:absolute;
-  bottom:30px;
-  left:50%;
-  transform:translateX(-50%);
-  opacity:.7;
-  animation:float 2s infinite;
-}
-
-@keyframes float{
-  0%{transform:translate(-50%,0)}
-  50%{transform:translate(-50%,8px)}
-  100%{transform:translate(-50%,0)}
 }
 
 </style>
@@ -206,17 +230,17 @@ h1{ font-size:2.5rem; }
   </div>
 </div>
 
-<div class="hint">🖱️ Usa la rueda del mouse</div>
+<div class="hint">Usa la rueda del mouse</div>
 
-<!-- SLIDES -->
 <div id="slides">
 
 <section class="slide active">
 <h1>NUESTRAS ÁREAS</h1>
+<p>Equipos que trabajan en sincronía para llevar el fútbol a millones de pantallas</p>
 </section>
 
 <section class="slide">
-<h1>ESTUDIOS & OUTDOOR</h1>
+<h1 style="color:#1e5eff;">ESTUDIOS & OUTDOOR</h1>
 <div class="subareas">
 <div class="sub">Iluminación</div>
 <div class="sub">Cámara</div>
@@ -228,7 +252,7 @@ h1{ font-size:2.5rem; }
 </section>
 
 <section class="slide">
-<h1>MOC</h1>
+<h1 style="color:#a020f0;">MOC</h1>
 <div class="subareas">
 <div class="sub">Ingesta</div>
 <div class="sub">Archivo</div>
@@ -239,14 +263,14 @@ h1{ font-size:2.5rem; }
 </section>
 
 <section class="slide">
-<h1>BOC</h1>
+<h1 style="color:#00ff88;">BOC</h1>
 <div class="subareas">
 <div class="sub">Broadcast Operation Center</div>
 </div>
 </section>
 
 <section class="slide">
-<h1>GESTIÓN</h1>
+<h1 style="color:#ff4040;">GESTIÓN</h1>
 <div class="subareas">
 <div class="sub">Gestión</div>
 <div class="sub">Pañol</div>
@@ -254,7 +278,7 @@ h1{ font-size:2.5rem; }
 </section>
 
 <section class="slide">
-<h1>GFX</h1>
+<h1 style="color:#ff8c00;">GFX</h1>
 <div class="subareas">
 <div class="sub">Gráfica</div>
 </div>
@@ -286,13 +310,13 @@ function showSlide(i){
   slides[i].classList.add("active");
 }
 
-/* ===== GEAR ===== */
+/* ===== GEAR SUAVE ===== */
 let velocity = 0;
 let rotation = 0;
 
 function animate(){
   rotation += velocity;
-  velocity *= 0.92;
+  velocity *= 0.94; /* 🔥 suavidad real */
 
   document.getElementById("gear").style.transform =
     "rotate("+rotation+"deg)";
@@ -306,13 +330,13 @@ let lock=false;
 
 window.addEventListener("wheel",(e)=>{
 
-  const wrap = document.getElementById("gearWrap").getBoundingClientRect();
+  const r = document.getElementById("gearWrap").getBoundingClientRect();
 
   const inside =
-    e.clientX > wrap.left &&
-    e.clientX < wrap.right &&
-    e.clientY > wrap.top &&
-    e.clientY < wrap.bottom;
+    e.clientX > r.left &&
+    e.clientX < r.right &&
+    e.clientY > r.top &&
+    e.clientY < r.bottom;
 
   if(!inside) return;
 
@@ -323,16 +347,16 @@ window.addEventListener("wheel",(e)=>{
 
   if(e.deltaY>0){
     current++;
-    velocity += 4;
+    velocity += 2.8; /* 🔥 MÁS NATURAL */
   }else{
     current--;
-    velocity -= 4;
+    velocity -= 2.8;
   }
 
   current = Math.max(0, Math.min(current, slides.length-1));
   showSlide(current);
 
-  setTimeout(()=>lock=false,600);
+  setTimeout(()=>lock=false,500);
 
 },{passive:false});
 
