@@ -196,6 +196,66 @@ h1{
     drop-shadow(0 0 8px rgba(0,200,255,.4));
 }
 
+  /* ===== SUBÁREAS ===== */
+.subareas{
+  margin-top:30px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+/* estado inicial */
+.sub{
+  opacity:0;
+  transform:translateY(20px) scale(0.98);
+  filter:blur(6px);
+
+  transition:
+    opacity .6s ease,
+    transform .6s ease,
+    filter .6s ease;
+}
+
+/* cuando aparece */
+.slide.active .sub{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  filter:blur(0);
+}
+
+/* delay progresivo (🔥 magia Jeton) */
+.slide.active .sub:nth-child(1){ transition-delay: .2s; }
+.slide.active .sub:nth-child(2){ transition-delay: .35s; }
+.slide.active .sub:nth-child(3){ transition-delay: .5s; }
+.slide.active .sub:nth-child(4){ transition-delay: .65s; }
+.slide.active .sub:nth-child(5){ transition-delay: .8s; }
+
+/* estilo visual */
+.sub{
+  font-size:1.1rem;
+  opacity:.9;
+  letter-spacing:1px;
+}
+
+  .sub:hover{
+  transform:translateX(6px);
+  opacity:1;
+}
+
+  .sub::before{
+  content:"";
+  display:inline-block;
+  width:0;
+  height:2px;
+  background:#00c8ff;
+  margin-right:10px;
+  transition:.4s;
+}
+
+.sub:hover::before{
+  width:30px;
+}
+
 </style>
 </head>
 
@@ -216,6 +276,20 @@ h1{
           <button class="mto-cta" onclick="enter()">Conócenos</button>
         </div>
       </div>
+
+      <section class="slide">
+  <div class="content">
+    <h1>ESTUDIOS & OUTDOOR</h1>
+
+    <div class="subareas">
+      <div class="sub">Estudios de TV</div>
+      <div class="sub">Producción en terreno</div>
+      <div class="sub">Equipamiento técnico</div>
+      <div class="sub">Soporte operativo</div>
+    </div>
+
+  </div>
+</section>
 
       <!-- BACK -->
       <div class="mto-back">
