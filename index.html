@@ -1,14 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>MT&O Experience</title>
+<meta charset="UTF-8">
+<title>MT&O Experience</title>
+
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  background:black;
+  color:white;
+  font-family:Arial;
+}
+
+/* STAGE */
+#mtoApp{
+  width:100vw;
+  height:100vh;
+  position:relative;
+}
+
+/* GEAR */
+#gearWrap{
+  position:absolute;
+  width:500px;
+  height:500px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+}
+
+#gear{
+  width:100%;
+  height:100%;
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png") center/contain no-repeat;
+  transform-origin:center;
+}
+
+/* SLIDES */
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  transition:.6s;
+}
+
+.slide.active{
+  opacity:1;
+}
+
+</style>
 </head>
 
-<body style="background:black; color:white; text-align:center; padding-top:50px;">
+<body>
 
-<h1>🔥 MT&O Experience Activo</h1>
-<p>Si ves esto, GitHub Pages funciona perfecto</p>
+<div id="mtoApp">
+
+<div id="gearWrap">
+  <div id="gear"></div>
+</div>
+
+<div class="slide active"><h1>NUESTRAS ÁREAS</h1></div>
+<div class="slide"><h1>ESTUDIOS & OUTDOOR</h1></div>
+<div class="slide"><h1>MOC</h1></div>
+<div class="slide"><h1>BOC</h1></div>
+<div class="slide"><h1>GESTIÓN</h1></div>
+<div class="slide"><h1>GFX</h1></div>
+
+</div>
+
+<script>
+
+/* ROTACIÓN + SCROLL */
+let rotation = 0;
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
+
+window.addEventListener("wheel", (e)=>{
+
+  rotation += e.deltaY * 0.2;
+
+  document.getElementById("gear").style.transform =
+    "rotate("+rotation+"deg)";
+
+  if(e.deltaY > 0){
+    currentSlide++;
+  }else{
+    currentSlide--;
+  }
+
+  currentSlide = Math.max(0, Math.min(currentSlide, slides.length-1));
+
+  slides.forEach(s=>s.classList.remove("active"));
+  slides[currentSlide].classList.add("active");
+
+});
+
+</script>
 
 </body>
 </html>
