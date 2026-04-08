@@ -141,6 +141,61 @@ h1{
   font-size:3rem;
 }
 
+  /* ===== CORE DEL ENGRANAJE ===== */
+.gear-core{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:180px;
+  height:180px;
+  pointer-events:none;
+}
+
+/* METAL */
+.gear-core-metal{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+
+  background: radial-gradient(circle,
+    #ffffff 0%,
+    #d0d0d0 25%,
+    #888 50%,
+    #333 75%,
+    #111 100%
+  );
+
+  box-shadow:
+    inset 0 6px 12px rgba(255,255,255,.8),
+    inset 0 -12px 25px rgba(0,0,0,.9);
+}
+
+/* LOGO CENTRO */
+.gear-logo{
+  position:absolute;
+  width:90px;
+  height:90px;
+
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
+
+  filter:grayscale(1) contrast(2) brightness(.6);
+  mix-blend-mode:multiply;
+}
+
+  .gear-logo{
+  ...
+  filter:
+    grayscale(1)
+    contrast(2)
+    brightness(.6)
+    drop-shadow(0 0 8px rgba(0,200,255,.4));
+}
+
 </style>
 </head>
 
@@ -166,8 +221,16 @@ h1{
       <div class="mto-back">
 
         <div id="gearWrap">
-          <div id="gear"></div>
-        </div>
+
+  <div id="gear"></div>
+
+  <!-- 🔥 CENTRO DEL ENGRANAJE -->
+  <div class="gear-core">
+    <div class="gear-core-metal"></div>
+    <div class="gear-logo"></div>
+  </div>
+
+</div>
 
         <div id="mtoScript2">
 
