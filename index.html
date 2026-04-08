@@ -1,4 +1,18 @@
 <!DOCTYPE html>
+
+<div id="intro">
+
+  <video autoplay muted loop playsinline id="bgVideo">
+    <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
+  </video>
+
+  <div class="overlay">
+    <h1>MT&O Chile</h1>
+    <button id="enterBtn">Conócenos</button>
+  </div>
+
+</div>
+
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -53,6 +67,36 @@ body{
   opacity:1;
 }
 
+  #intro{
+  position:fixed;
+  inset:0;
+  z-index:999;
+}
+
+#bgVideo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.5);
+}
+
+#enterBtn{
+  padding:12px 30px;
+  border:1px solid white;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -97,6 +141,19 @@ window.addEventListener("wheel", (e)=>{
 
   slides.forEach(s=>s.classList.remove("active"));
   slides[currentSlide].classList.add("active");
+
+});
+
+  document.getElementById("enterBtn").addEventListener("click", ()=>{
+
+  const intro = document.getElementById("intro");
+
+  intro.style.opacity = "0";
+  intro.style.transition = "opacity 1s";
+
+  setTimeout(()=>{
+    intro.style.display = "none";
+  }, 1000);
 
 });
 
