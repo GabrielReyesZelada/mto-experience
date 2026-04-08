@@ -44,6 +44,7 @@ body, html{
 
 .mto-back{
   transform:rotateY(180deg);
+  background:#000814;
 }
 
 /* ===== VIDEO ===== */
@@ -82,12 +83,7 @@ video{
   cursor:pointer;
 }
 
-/* ===== BACK ===== */
-.mto-back{
-  background:#000814;
-}
-
-/* ===== ENGRANAJE ===== */
+/* ===== ENGRANAJE PEQUEÑO ===== */
 #gearWrap{
   position:fixed;
   width:520px;
@@ -144,7 +140,7 @@ video{
   content:"⚙️ ";
 }
 
-/* ===== BOTÓN VOLVER ===== */
+/* ===== BOTÓN ===== */
 .back-btn{
   position:fixed;
   top:20px;
@@ -164,10 +160,10 @@ video{
   width:100%;
   height:100%;
   display:flex;
-  justify-content:center;
   align-items:center;
-  text-align:left;
   padding-left:25%;
+  overflow:hidden;
+
   opacity:0;
   transform:translateY(100%);
   transition:all .8s ease;
@@ -178,19 +174,33 @@ video{
   transform:translateY(0);
 }
 
-/* ===== FONDOS ===== */
-.slide:nth-child(1){ background:#001d3d; }
-.slide:nth-child(2){ background:#003566; }
-.slide:nth-child(3){ background:#240046; }
-.slide:nth-child(4){ background:#003300; }
-.slide:nth-child(5){ background:#660000; }
-.slide:nth-child(6){ background:#7f2f00; }
+/* ===== ENGRANAJE GIGANTE ===== */
+.slide::before{
+  content:"";
+  position:absolute;
+
+  width:1400px;
+  height:1400px;
+
+  left:-300px;
+  top:50%;
+  transform:translateY(-50%) rotate(0deg);
+
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
+
+  opacity:.07;
+  pointer-events:none;
+
+  /* agujero central */
+  -webkit-mask-image: radial-gradient(circle, transparent 160px, black 180px);
+  mask-image: radial-gradient(circle, transparent 160px, black 180px);
+}
 
 /* ===== TITULOS ===== */
 h1{
   font-size:4rem;
-  margin:0;
   color:#00c8ff;
+  margin:0;
 }
 
 /* ===== SUBAREAS ===== */
@@ -208,18 +218,6 @@ h1{
 .slide.active .sub{
   opacity:1;
   transform:translateX(0);
-}
-
-/* ===== CORTE ENGRANAJE (SIMULACIÓN) ===== */
-.slide::after{
-  content:"";
-  position:absolute;
-  bottom:-80px;
-  left:0;
-  width:100%;
-  height:160px;
-  background:radial-gradient(circle at center, transparent 40%, #000 41%);
-  opacity:.4;
 }
 
 </style>
@@ -341,14 +339,47 @@ function showSlide(i){
   slides[i].classList.add("active");
 }
 
-/* ===== ENGRANAJE ===== */
+/* ===== ENGRANAJES ===== */
 let velocity = 0;
 let rotation = 0;
+let bgRotation = 0;
 
 function animate(){
+
   rotation += velocity;
-  velocity *= 0.94; // más natural
-  document.getElementById("gear").style.transform = `rotate(${rotation}deg)`;
+  bgRotation += velocity * 0.6;
+
+  velocity *= 0.92;
+
+  document.getElementById("gear").style.transform =
+    `rotate(${rotation}deg)`;
+
+  document.querySelectorAll(".slide").forEach(slide=>{
+    slide.style.setProperty("--rot", bgRotation);
+    slide.style.setProperty("transform-bg", `rotate(${bgRotation}deg)`);
+    slide.style.setProperty("--bg-rot", bgRotation + "deg");
+    slide.style.setProperty("--bg-transform", `translateY(-50%) rotate(${bgRotation}deg)`);
+    slide.style.querySelector?.(":before");
+  });
+
+  /* aplicar directo */
+  document.querySelectorAll(".slide").forEach(s=>{
+    s.style.setProperty("--bg-rotation", bgRotation);
+    s.style.setProperty("--bg-transform", `translateY(-50%) rotate(${bgRotation}deg)`);
+  });
+
+  document.querySelectorAll(".slide").forEach(s=>{
+    s.style.setProperty("--rot", bgRotation);
+    s.style.setProperty("--transform", `translateY(-50%) rotate(${bgRotation}deg)`);
+    s.style.setProperty("--custom-rot", bgRotation);
+    s.style.setProperty("--bg-rot", bgRotation + "deg");
+  });
+
+  document.querySelectorAll(".slide").forEach(s=>{
+    s.style.setProperty("--bg-rot", bgRotation + "deg");
+    s.style.style = s.style.cssText.replace(/rotate\([^)]+\)/, `rotate(${bgRotation}deg)`);
+  });
+
   requestAnimationFrame(animate);
 }
 animate();
