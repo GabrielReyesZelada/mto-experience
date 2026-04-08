@@ -289,7 +289,7 @@ let rotation = 0;
 function animate(){
 
   rotation += velocity;
-  velocity *= 0.95; // 🔥 fricción (clave del peso)
+  velocity *= 1.5; // 🔥 fricción (clave del peso)
 
   const gear = document.getElementById("gear");
   if(gear){
