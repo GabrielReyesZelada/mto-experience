@@ -21,30 +21,21 @@ body, html{
 #mtoApp{
   width:100vw;
   height:100vh;
-  overflow:hidden;
 }
 
 /* ===== FLIP ===== */
-.mto-stage{
-  position:relative;
-  width:100%;
-  height:100%;
-  perspective:1200px;
-}
-
 .mto-flip{
-  position:absolute;
   width:100%;
   height:100%;
+  position:relative;
   transform-style:preserve-3d;
   transition:1s;
 }
-
 .mto-flip.flipped{
   transform:rotateY(180deg);
 }
 
-.mto-front,.mto-back{
+.mto-front, .mto-back{
   position:absolute;
   width:100%;
   height:100%;
@@ -56,7 +47,7 @@ body, html{
 }
 
 /* ===== VIDEO ===== */
-.mto-front video{
+video{
   width:100%;
   height:100%;
   object-fit:cover;
@@ -70,39 +61,18 @@ body, html{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  background:rgba(0,0,0,.5);
+  background:rgba(0,0,0,.55);
   color:white;
   text-align:center;
 }
 
-/* ===== TITULOS PRO ===== */
-h1{
-  font-size:4rem;
-  letter-spacing:4px;
-  font-weight:800;
-  text-transform:uppercase;
-
-  background:linear-gradient(90deg,#00c8ff,#ffffff);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-
-  margin-bottom:20px;
-}
-
-p{
-  font-size:1.2rem;
-  opacity:.8;
-}
-
-/* ===== LOGO ===== */
 .mto-logo{
-  width:300px;
+  width:280px;
   height:120px;
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
   margin:20px 0;
 }
 
-/* ===== BOTÓN ===== */
 .mto-cta{
   padding:12px 28px;
   border:1px solid white;
@@ -112,18 +82,9 @@ p{
   cursor:pointer;
 }
 
-/* ===== BOTÓN VOLVER ===== */
-.back-btn{
-  position:fixed;
-  top:20px;
-  right:20px;
-  z-index:60;
-  padding:10px 20px;
-  border:1px solid white;
-  border-radius:20px;
-  background:transparent;
-  color:white;
-  cursor:pointer;
+/* ===== BACK ===== */
+.mto-back{
+  background:#000814;
 }
 
 /* ===== ENGRANAJE ===== */
@@ -156,7 +117,7 @@ p{
   width:100%;
   height:100%;
   border-radius:50%;
-  background:radial-gradient(circle,#fff,#ccc 30%,#888 60%,#222 100%);
+  background: radial-gradient(circle,#fff,#ccc 30%,#888 60%,#222 100%);
 }
 
 .gear-logo{
@@ -169,13 +130,32 @@ p{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
 }
 
-/* UX hint */
+/* ===== HINT ===== */
 .gear-hint{
   position:absolute;
   left:50%;
-  bottom:-50px;
+  bottom:-60px;
   transform:translateX(-50%);
+  font-size:14px;
+  color:#ffffffcc;
+}
+
+.gear-hint::before{
+  content:"⚙️ ";
+}
+
+/* ===== BOTÓN VOLVER ===== */
+.back-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:60;
+  padding:10px 20px;
+  border:1px solid white;
+  border-radius:20px;
+  background:transparent;
   color:white;
+  cursor:pointer;
 }
 
 /* ===== SLIDES ===== */
@@ -186,61 +166,60 @@ p{
   display:flex;
   justify-content:center;
   align-items:center;
-  text-align:center;
+  text-align:left;
+  padding-left:25%;
+  opacity:0;
   transform:translateY(100%);
-  transition:transform 1s cubic-bezier(0.77,0,0.175,1);
+  transition:all .8s ease;
 }
 
 .slide.active{
+  opacity:1;
   transform:translateY(0);
 }
 
-.slide.prev{
-  transform:translateY(-100%);
-}
+/* ===== FONDOS ===== */
+.slide:nth-child(1){ background:#001d3d; }
+.slide:nth-child(2){ background:#003566; }
+.slide:nth-child(3){ background:#240046; }
+.slide:nth-child(4){ background:#003300; }
+.slide:nth-child(5){ background:#660000; }
+.slide:nth-child(6){ background:#7f2f00; }
 
-/* ===== TEXTURAS PRO ===== */
-.slide:nth-child(1){
-  background:radial-gradient(circle,#001a40,#000);
-}
-
-.slide:nth-child(2){
-  background:repeating-linear-gradient(90deg,#0a192f 0,#0a192f 2px,#000 2px,#000 60px);
-}
-
-.slide:nth-child(3){
-  background:radial-gradient(circle at 20% 50%,#002f2f,#000);
-}
-
-.slide:nth-child(4){
-  background:linear-gradient(135deg,#111,#000);
-}
-
-.slide:nth-child(5){
-  background:radial-gradient(circle,#2a0000,#000);
-}
-
-.slide:nth-child(6){
-  background:radial-gradient(circle,#332200,#000);
+/* ===== TITULOS ===== */
+h1{
+  font-size:4rem;
+  margin:0;
+  color:#00c8ff;
 }
 
 /* ===== SUBAREAS ===== */
 .subareas{
   margin-top:30px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
 }
 
 .sub{
   opacity:0;
-  transform:translateY(20px);
+  transform:translateX(-40px);
   transition:.6s;
+  margin:8px 0;
 }
 
 .slide.active .sub{
   opacity:1;
-  transform:translateY(0);
+  transform:translateX(0);
+}
+
+/* ===== CORTE ENGRANAJE (SIMULACIÓN) ===== */
+.slide::after{
+  content:"";
+  position:absolute;
+  bottom:-80px;
+  left:0;
+  width:100%;
+  height:160px;
+  background:radial-gradient(circle at center, transparent 40%, #000 41%);
+  opacity:.4;
 }
 
 </style>
@@ -249,17 +228,16 @@ p{
 <body>
 
 <div id="mtoApp">
-<div class="mto-stage">
 <div class="mto-flip" id="flip">
 
 <!-- FRONT -->
 <div class="mto-front">
-<video autoplay muted loop playsinline>
+<video autoplay muted loop>
 <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
 </video>
 
 <div class="mto-overlay">
-<h1>MEDIA TECHNOLOGY & OPERATIONS</h1>
+<h2>MEDIA TECHNOLOGY & OPERATIONS</h2>
 <div class="mto-logo"></div>
 <button class="mto-cta" onclick="enter()">Conócenos</button>
 </div>
@@ -271,62 +249,73 @@ p{
 <button class="back-btn" onclick="volver()">Volver</button>
 
 <div id="gearWrap">
-<div id="gear"></div>
-<div class="gear-core">
-<div class="gear-core-metal"></div>
-<div class="gear-logo"></div>
-</div>
-<div class="gear-hint">Usa la rueda del mouse</div>
+  <div id="gear"></div>
+  <div class="gear-core">
+    <div class="gear-core-metal"></div>
+    <div class="gear-logo"></div>
+  </div>
+  <div class="gear-hint">Usa la rueda del mouse</div>
 </div>
 
 <div id="slides">
 
 <section class="slide active">
+<div>
 <h1>NUESTRAS ÁREAS</h1>
-<p>Equipos que trabajan en sincronía para llevar el fútbol a millones de pantallas</p>
+<p>Equipos sincronizados para llevar el fútbol a millones de pantallas</p>
+</div>
 </section>
 
 <section class="slide">
+<div>
 <h1>ESTUDIOS & OUTDOOR</h1>
 <div class="subareas">
 <div class="sub">Iluminación</div>
 <div class="sub">Cámara</div>
 <div class="sub">Audio</div>
+<div class="sub">Móviles</div>
+</div>
 </div>
 </section>
 
 <section class="slide">
+<div>
 <h1>MOC</h1>
 <div class="subareas">
 <div class="sub">Ingesta</div>
 <div class="sub">Archivo</div>
 <div class="sub">Replay</div>
 </div>
-</section>
-
-<section class="slide">
-<h1>BOC</h1>
-<div class="subareas">
-<div class="sub">Broadcast Operations</div>
 </div>
 </section>
 
 <section class="slide">
+<div>
+<h1>BOC</h1>
+<div class="subareas">
+<div class="sub">Broadcast Ops Center</div>
+</div>
+</div>
+</section>
+
+<section class="slide">
+<div>
 <h1>GESTIÓN</h1>
 <div class="subareas">
 <div class="sub">Gestión</div>
 <div class="sub">Pañol</div>
 </div>
+</div>
 </section>
 
 <section class="slide">
+<div>
 <h1>GFX</h1>
 <div class="subareas">
 <div class="sub">Gráfica</div>
 </div>
-</section>
-
 </div>
+</section>
 
 </div>
 </div>
@@ -339,7 +328,6 @@ p{
 function enter(){
   document.getElementById("flip").classList.add("flipped");
 }
-
 function volver(){
   document.getElementById("flip").classList.remove("flipped");
 }
@@ -348,54 +336,45 @@ function volver(){
 let current = 0;
 const slides = document.querySelectorAll(".slide");
 
-function showSlide(index){
-  slides.forEach((s,i)=>{
-    s.classList.remove("active","prev");
-
-    if(i===index){
-      s.classList.add("active");
-    } else if(i<index){
-      s.classList.add("prev");
-    }
-  });
+function showSlide(i){
+  slides.forEach(s=>s.classList.remove("active"));
+  slides[i].classList.add("active");
 }
 
-/* ===== ENGRANAJE FÍSICO ===== */
+/* ===== ENGRANAJE ===== */
 let velocity = 0;
 let rotation = 0;
 
 function animate(){
   rotation += velocity;
-  velocity *= 0.94;
-
-  document.getElementById("gear").style.transform =
-    `rotate(${rotation}deg)`;
-
+  velocity *= 0.94; // más natural
+  document.getElementById("gear").style.transform = `rotate(${rotation}deg)`;
   requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== SCROLL REAL ===== */
-let lastScroll = 0;
+/* ===== SCROLL ===== */
+let lock=false;
 
 window.addEventListener("wheel", e=>{
+  if(lock) return;
 
-  const force = e.deltaY * 0.02;
-  velocity += force;
+  lock=true;
 
-  if(Math.abs(e.deltaY) > 50){
-
-    if(e.deltaY>0){
-      current++;
-    }else{
-      current--;
-    }
-
-    current=Math.max(0,Math.min(current,slides.length-1));
-    showSlide(current);
+  if(e.deltaY>0){
+    current++;
+    velocity +=1.5;
+  }else{
+    current--;
+    velocity -=1.5;
   }
 
-},{passive:true});
+  current=Math.max(0,Math.min(current,slides.length-1));
+  showSlide(current);
+
+  setTimeout(()=>lock=false,600);
+
+},{passive:false});
 
 </script>
 
