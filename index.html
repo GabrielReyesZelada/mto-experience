@@ -7,28 +7,48 @@
 
 <style>
 
-/* ===== BASE ===== */
-body,html{
+/* ===== RESET ===== */
+body, html{
   margin:0;
+  padding:0;
   height:100%;
   overflow:hidden;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:black;
 }
 
-/* ===== FLIP ===== */
-.mto-stage{ perspective:1200px; height:100%; }
+/* ===== APP ===== */
+#mtoApp{
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+}
 
+/* ===== STAGE ===== */
+.mto-stage{
+  position:relative;
+  width:100%;
+  height:100%;
+  perspective:1200px;
+}
+
+/* ===== FLIP ===== */
 .mto-flip{
-  width:100%; height:100%;
+  position:absolute;
+  width:100%;
+  height:100%;
   transform-style:preserve-3d;
   transition:1s;
 }
-.mto-flip.flipped{ transform:rotateY(180deg); }
+.mto-flip.flipped{
+  transform:rotateY(180deg);
+}
 
-.mto-front,.mto-back{
+/* ===== CARAS ===== */
+.mto-front, .mto-back{
   position:absolute;
-  width:100%; height:100%;
+  width:100%;
+  height:100%;
   backface-visibility:hidden;
 }
 
@@ -37,7 +57,7 @@ body,html{
 }
 
 /* ===== VIDEO ===== */
-video{
+.mto-front video{
   width:100%;
   height:100%;
   object-fit:cover;
@@ -53,84 +73,103 @@ video{
   align-items:center;
   background:rgba(0,0,0,.5);
   color:white;
+  text-align:center;
 }
 
-/* ===== LOGO ===== */
+.mto-overlay h1{
+  font-size:2rem;
+  margin-bottom:10px;
+}
+
 .mto-logo{
-  width:280px;
+  width:300px;
   height:120px;
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
   margin:20px 0;
 }
 
-/* ===== BOTONES ===== */
-button{
+/* ===== BOTÓN ===== */
+.mto-cta{
   padding:12px 28px;
-  border-radius:30px;
   border:1px solid white;
+  border-radius:30px;
   background:transparent;
   color:white;
   cursor:pointer;
 }
 
-.backBtn{
-  position:absolute;
-  top:25px;
-  left:25px;
-  z-index:9999; /* 🔥 FIX REAL */
+/* ===== BACK ===== */
+.mto-back{
+  background:#000;
 }
 
-/* ===== GEAR ===== */
+/* ===== ENGRANAJE FIJO ===== */
 #gearWrap{
-  position:absolute;
-  width:500px;
-  height:500px;
-  left:-100px;
+  position:fixed;
+  width:520px;
+  height:520px;
+  left:-120px;
   top:50%;
   transform:translateY(-50%);
+  z-index:50;
 }
 
+/* engranaje */
 #gear{
   width:100%;
   height:100%;
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
+/* centro */
 .gear-core{
   position:absolute;
-  top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  width:180px; height:180px;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:180px;
+  height:180px;
 }
 
 .gear-core-metal{
-  width:100%; height:100%;
+  width:100%;
+  height:100%;
   border-radius:50%;
-  background:radial-gradient(circle,#fff,#888,#111);
+  background: radial-gradient(circle,#fff,#ccc 30%,#888 60%,#222 100%);
 }
 
 .gear-logo{
   position:absolute;
-  width:90px; height:90px;
-  top:50%; left:50%;
+  width:90px;
+  height:90px;
+  top:50%;
+  left:50%;
   transform:translate(-50%,-50%);
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
 }
 
-/* ===== HINT ===== */
-.hint{
+/* hint */
+.gear-hint{
   position:absolute;
-  top:calc(50% + 280px); /* 🔥 debajo del engranaje */
-  left:120px;
-  color:rgba(255,255,255,.8);
+  left:50%;
+  bottom:-50px;
+  transform:translateX(-50%);
   font-size:14px;
-  animation:float 2s infinite;
+  color:rgba(255,255,255,.85);
 }
 
-@keyframes float{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(8px)}
-  100%{transform:translateY(0)}
+/* ===== BOTÓN VOLVER ===== */
+.back-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:60;
+  padding:10px 20px;
+  border:1px solid white;
+  border-radius:20px;
+  background:transparent;
+  color:white;
+  cursor:pointer;
 }
 
 /* ===== SLIDES ===== */
@@ -139,14 +178,12 @@ button{
   width:100%;
   height:100%;
   display:flex;
-  flex-direction:column;
   justify-content:center;
   align-items:center;
   text-align:center;
-
   opacity:0;
-  transform:translateY(40px);
-  transition:.6s;
+  transform:translateY(100%);
+  transition:all .9s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 .slide.active{
@@ -154,23 +191,24 @@ button{
   transform:translateY(0);
 }
 
-/* ===== FONDOS POR ÁREA ===== */
-.slide:nth-child(1){ background:linear-gradient(#001a40,#000);}
-.slide:nth-child(2){ background:linear-gradient(#1e5eff,#000);}
-.slide:nth-child(3){ background:linear-gradient(#5c0080,#000);}
-.slide:nth-child(4){ background:linear-gradient(#006400,#000);}
-.slide:nth-child(5){ background:linear-gradient(#b30000,#000);}
-.slide:nth-child(6){ background:linear-gradient(#ff6a00,#000);}
-
-/* ===== TITULOS ===== */
-h1{
-  font-size:2.5rem;
-  margin-bottom:10px;
+.content{
+  max-width:800px;
 }
 
-/* ===== SUBAREAS ===== */
+/* fondos */
+.slide:nth-child(1){ background:linear-gradient(#001a40,#000); }
+.slide:nth-child(2){ background:linear-gradient(#0d47a1,#000); }
+.slide:nth-child(3){ background:linear-gradient(#4a148c,#000); }
+.slide:nth-child(4){ background:linear-gradient(#1b5e20,#000); }
+.slide:nth-child(5){ background:linear-gradient(#b71c1c,#000); }
+.slide:nth-child(6){ background:linear-gradient(#e65100,#000); }
+
+/* subareas */
 .subareas{
-  margin-top:20px;
+  margin-top:30px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
 .sub{
@@ -184,43 +222,32 @@ h1{
   transform:translateY(0);
 }
 
-.slide.active .sub:nth-child(1){transition-delay:.2s;}
-.slide.active .sub:nth-child(2){transition-delay:.3s;}
-.slide.active .sub:nth-child(3){transition-delay:.4s;}
-.slide.active .sub:nth-child(4){transition-delay:.5s;}
-.slide.active .sub:nth-child(5){transition-delay:.6s;}
-.slide.active .sub:nth-child(6){transition-delay:.7s;}
-
-.sub:hover{
-  transform:translateX(6px);
-  color:#00c8ff;
-}
-
 </style>
 </head>
 
 <body>
 
+<div id="mtoApp">
 <div class="mto-stage">
 <div class="mto-flip" id="flip">
 
 <!-- FRONT -->
 <div class="mto-front">
-  <video autoplay muted loop>
-    <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
-  </video>
+<video autoplay muted loop playsinline>
+<source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
+</video>
 
-  <div class="mto-overlay">
-    <h2>MEDIA TECHNOLOGY & OPERATIONS</h2>
-    <div class="mto-logo"></div>
-    <button onclick="enter()">Conócenos</button>
-  </div>
+<div class="mto-overlay">
+<h1>MEDIA TECHNOLOGY & OPERATIONS</h1>
+<div class="mto-logo"></div>
+<button class="mto-cta" onclick="enter()">Conócenos</button>
+</div>
 </div>
 
 <!-- BACK -->
 <div class="mto-back">
 
-<button class="backBtn" onclick="back()">Volver</button>
+<button class="back-btn" onclick="volver()">Volver</button>
 
 <div id="gearWrap">
   <div id="gear"></div>
@@ -228,64 +255,72 @@ h1{
     <div class="gear-core-metal"></div>
     <div class="gear-logo"></div>
   </div>
+  <div class="gear-hint">Usa la rueda del mouse</div>
 </div>
 
-<div class="hint">Usa la rueda del mouse</div>
-
+<!-- SLIDES -->
 <div id="slides">
 
 <section class="slide active">
+<div class="content">
 <h1>NUESTRAS ÁREAS</h1>
 <p>Equipos que trabajan en sincronía para llevar el fútbol a millones de pantallas</p>
+</div>
 </section>
 
 <section class="slide">
-<h1 style="color:#1e5eff;">ESTUDIOS & OUTDOOR</h1>
+<div class="content">
+<h1>ESTUDIOS & OUTDOOR</h1>
 <div class="subareas">
 <div class="sub">Iluminación</div>
 <div class="sub">Cámara</div>
-<div class="sub">Look</div>
-<div class="sub">Utilería</div>
-<div class="sub">Móviles</div>
 <div class="sub">Audio</div>
+</div>
 </div>
 </section>
 
 <section class="slide">
-<h1 style="color:#a020f0;">MOC</h1>
+<div class="content">
+<h1>MOC</h1>
 <div class="subareas">
 <div class="sub">Ingesta</div>
 <div class="sub">Archivo</div>
-<div class="sub">Post Audio</div>
-<div class="sub">VTR Replay</div>
-<div class="sub">Post Video</div>
+<div class="sub">Replay</div>
+</div>
 </div>
 </section>
 
 <section class="slide">
-<h1 style="color:#00ff88;">BOC</h1>
+<div class="content">
+<h1>BOC</h1>
 <div class="subareas">
-<div class="sub">Broadcast Operation Center</div>
+<div class="sub">Broadcast Operations</div>
+</div>
 </div>
 </section>
 
 <section class="slide">
-<h1 style="color:#ff4040;">GESTIÓN</h1>
+<div class="content">
+<h1>GESTIÓN</h1>
 <div class="subareas">
 <div class="sub">Gestión</div>
 <div class="sub">Pañol</div>
 </div>
+</div>
 </section>
 
 <section class="slide">
-<h1 style="color:#ff8c00;">GFX</h1>
+<div class="content">
+<h1>GFX</h1>
 <div class="subareas">
 <div class="sub">Gráfica</div>
+</div>
 </div>
 </section>
 
 </div>
 
+</div>
 </div>
 </div>
 </div>
@@ -297,7 +332,7 @@ function enter(){
   document.getElementById("flip").classList.add("flipped");
 }
 
-function back(){
+function volver(){
   document.getElementById("flip").classList.remove("flipped");
 }
 
@@ -310,17 +345,14 @@ function showSlide(i){
   slides[i].classList.add("active");
 }
 
-/* ===== GEAR SUAVE ===== */
+/* ===== ENGRANAJE ===== */
 let velocity = 0;
 let rotation = 0;
 
 function animate(){
   rotation += velocity;
-  velocity *= 0.94; /* 🔥 suavidad real */
-
-  document.getElementById("gear").style.transform =
-    "rotate("+rotation+"deg)";
-
+  velocity *= 0.96; // suave
+  document.getElementById("gear").style.transform = `rotate(${rotation}deg)`;
   requestAnimationFrame(animate);
 }
 animate();
@@ -328,35 +360,23 @@ animate();
 /* ===== SCROLL ===== */
 let lock=false;
 
-window.addEventListener("wheel",(e)=>{
-
-  const r = document.getElementById("gearWrap").getBoundingClientRect();
-
-  const inside =
-    e.clientX > r.left &&
-    e.clientX < r.right &&
-    e.clientY > r.top &&
-    e.clientY < r.bottom;
-
-  if(!inside) return;
-
-  e.preventDefault();
-
+window.addEventListener("wheel", e=>{
   if(lock) return;
+
   lock=true;
 
   if(e.deltaY>0){
     current++;
-    velocity += 2.8; /* 🔥 MÁS NATURAL */
+    velocity +=1.2;
   }else{
     current--;
-    velocity -= 2.8;
+    velocity -=1.2;
   }
 
-  current = Math.max(0, Math.min(current, slides.length-1));
+  current=Math.max(0,Math.min(current,slides.length-1));
   showSlide(current);
 
-  setTimeout(()=>lock=false,500);
+  setTimeout(()=>lock=false,700);
 
 },{passive:false});
 
