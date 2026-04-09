@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MT&O Experience</title>
+<title>MT&O Experience Flagship</title>
 
 <style>
 
@@ -21,7 +21,7 @@ body,html{
   width:100%;
   height:100%;
   transform-style:preserve-3d;
-  transition:1s ease;
+  transition:1.2s cubic-bezier(.22,1,.36,1);
 }
 .mto-flip.flipped{ transform:rotateY(180deg); }
 
@@ -38,6 +38,8 @@ video{
   width:100%;
   height:100%;
   object-fit:cover;
+  transform:scale(1.1);
+  transition:transform 2s ease;
 }
 
 /* ===== OVERLAY ===== */
@@ -51,35 +53,51 @@ video{
   background:rgba(0,0,0,.6);
   color:white;
   text-align:center;
+  opacity:0;
+  animation:fadeIn 2s forwards;
+}
+
+@keyframes fadeIn{
+  to{ opacity:1; }
 }
 
 .mto-overlay h1{
-  font-size:2.5rem;
-  letter-spacing:3px;
+  font-size:2.8rem;
+  letter-spacing:4px;
+  animation:titleIn 1.5s ease;
 }
 
-/* ===== BOTÓN CINE 🔥 ===== */
+@keyframes titleIn{
+  from{ transform:translateY(40px); opacity:0; }
+  to{ transform:translateY(0); opacity:1; }
+}
+
+/* ===== BOTÓN ENERGÍA 🔥 ===== */
 .mto-cta{
-  margin-top:25px;
-  padding:16px 36px;
+  margin-top:30px;
+  padding:16px 40px;
   border-radius:40px;
   border:1px solid rgba(255,255,255,.6);
   background:rgba(255,255,255,.05);
   color:white;
   font-size:16px;
-  letter-spacing:1px;
   cursor:pointer;
-
-  backdrop-filter:blur(8px);
+  backdrop-filter:blur(10px);
 
   transition:.4s;
 }
 
 .mto-cta:hover{
-  transform:scale(1.08);
+  transform:scale(1.1);
   background:white;
   color:black;
-  box-shadow:0 0 25px rgba(255,255,255,.6);
+  box-shadow:0 0 30px rgba(255,255,255,.8);
+}
+
+/* CLICK ENERGÍA */
+.mto-cta:active{
+  transform:scale(0.95);
+  box-shadow:0 0 50px rgba(0,200,255,1);
 }
 
 /* ===== BACK ===== */
@@ -138,7 +156,7 @@ video{
   position:absolute;
   width:100%;
   height:100%;
-  transition:transform 1s cubic-bezier(.22,1,.36,1);
+  transition:transform 1.2s cubic-bezier(.22,1,.36,1);
 }
 
 .slide{
@@ -147,7 +165,6 @@ video{
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  text-align:center;
 }
 
 /* ===== FONDOS ===== */
@@ -160,50 +177,36 @@ video{
 
 /* ===== TITULOS ===== */
 h1{
-  font-size:3.5rem;
+  font-size:3.8rem;
   color:white;
+  text-shadow:0 0 20px rgba(0,0,0,.4);
 }
 
-/* ===== SUBAREAS PRO ===== */
+/* ===== SUBAREAS ===== */
 .subareas{
   margin-top:40px;
   display:flex;
   gap:40px;
   flex-wrap:wrap;
   justify-content:center;
-  perspective:1000px;
 }
 
 .bubble{
-  width:160px;
-  height:160px;
+  width:170px;
+  height:170px;
   border-radius:50%;
-  overflow:hidden;
   background-size:cover;
   background-position:center;
   cursor:pointer;
 
   transform-style:preserve-3d;
-  transition:.2s;
+  transition:.3s;
 
   box-shadow:0 20px 40px rgba(0,0,0,.5);
 }
 
-.bubble::after{
-  content:attr(data-name);
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.5);
-  color:white;
-  opacity:0;
-  transition:.3s;
-}
-
-.bubble:hover::after{
-  opacity:1;
+.bubble:hover{
+  transform:scale(1.1) rotateY(10deg);
 }
 
 /* ===== PANEL ===== */
@@ -251,7 +254,7 @@ h1{
 
 <!-- FRONT -->
 <div class="mto-front">
-<video autoplay muted loop>
+<video id="introVideo" autoplay muted loop>
 <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
 </video>
 
@@ -312,9 +315,19 @@ style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f
 
 <script>
 
-/* ===== FLIP ===== */
+/* ===== ENTER CINEMÁTICO ===== */
 function enter(){
-  document.getElementById("flip").classList.add("flipped");
+
+  // impulso engranaje 🔥
+  velocity = 8;
+
+  // zoom video tipo Apple
+  document.getElementById("introVideo").style.transform="scale(1)";
+
+  // flip
+  setTimeout(()=>{
+    document.getElementById("flip").classList.add("flipped");
+  },400);
 }
 
 /* ===== SCROLL ===== */
@@ -332,7 +345,7 @@ let rotation=0;
 
 function animate(){
   rotation+=velocity;
-  velocity*=0.95;
+  velocity*=0.94;
 
   document.getElementById("gear").style.transform =
     `rotate(${rotation}deg)`;
@@ -341,8 +354,11 @@ function animate(){
 }
 animate();
 
-/* SCROLL CONTROL */
+/* ===== UX INTELIGENTE ===== */
+let firstScroll=true;
+
 window.addEventListener("wheel", e=>{
+
   velocity += e.deltaY * 0.01;
 
   if(e.deltaY>0) current++;
@@ -350,35 +366,21 @@ window.addEventListener("wheel", e=>{
 
   current=Math.max(0,Math.min(current,slides.length-1));
   update();
+
+  if(firstScroll){
+    firstScroll=false;
+    console.log("UX activada 🔥");
+  }
+
 });
 
-/* ===== BUBBLES ===== */
+/* ===== PANEL ===== */
 document.querySelectorAll(".bubble").forEach(b=>{
-
-  b.addEventListener("mousemove", e=>{
-    const rect=b.getBoundingClientRect();
-    const x=e.clientX-rect.left;
-    const y=e.clientY-rect.top;
-
-    const rY=(x/rect.width-0.5)*20;
-    const rX=(y/rect.height-0.5)*-20;
-
-    b.style.transform=`rotateX(${rX}deg) rotateY(${rY}deg) scale(1.1)`;
-  });
-
-  b.addEventListener("mouseleave", ()=>{
-    b.style.transform="rotateX(0) rotateY(0)";
-  });
-
   b.addEventListener("click", ()=>{
     document.getElementById("panel").classList.add("active");
-
-    document.querySelector(".panel-img").style.backgroundImage =
-      b.style.backgroundImage;
-
+    document.querySelector(".panel-img").style.backgroundImage = b.style.backgroundImage;
     document.getElementById("pTitle").innerText = b.dataset.name;
   });
-
 });
 
 function closePanel(){
