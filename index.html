@@ -66,10 +66,54 @@ video{
   z-index:50;
 }
 
-#gear{
-  width:100%;
-  height:100%;
-  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png") center/contain no-repeat;
+/* ===== CORE PREMIUM (CINEMÁTICO) ===== */
+.gear-core{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:190px;
+  height:190px;
+  border-radius:50%;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  /* profundidad */
+  box-shadow:
+    inset 0 8px 20px rgba(255,255,255,.6),
+    inset 0 -15px 30px rgba(0,0,0,.9),
+    0 0 40px rgba(0,200,255,.15);
+}
+
+/* METAL REALISTA */
+.gear-core-metal{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+
+  background:
+    radial-gradient(circle at 30% 30%, #ffffff 0%, #dcdcdc 20%, #9a9a9a 45%, #3a3a3a 70%, #111 100%);
+
+  filter:contrast(1.2);
+}
+
+/* LOGO MT&O (RECUPERADO 🔥) */
+.gear-logo{
+  position:absolute;
+  width:95px;
+  height:95px;
+
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
+
+  /* estilo corporativo */
+  filter:
+    brightness(0)
+    invert(1)
+    drop-shadow(0 0 6px rgba(0,200,255,.6));
+
+  opacity:.95;
 }
 
 /* ===== SLIDES ===== */
@@ -279,7 +323,9 @@ function animate(){
   requestAnimationFrame(animate);
 }
 animate();
-
+document.querySelector(".gear-logo").style.transform =
+  `translate(-50%,-50%) rotate(${-rotation}deg)`;
+  
 window.addEventListener("wheel", e=>{
   velocity+=e.deltaY*0.008;
 
