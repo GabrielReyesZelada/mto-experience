@@ -54,11 +54,10 @@ video{
 }
 
 .mto-overlay h1{
-  font-size:2.4rem;
-  letter-spacing:3px;
+  font-size:2.6rem;
+  letter-spacing:4px;
 }
 
-/* LOGO */
 .mto-logo{
   width:320px;
   height:140px;
@@ -74,7 +73,6 @@ video{
   background:transparent;
   color:white;
   cursor:pointer;
-  transition:.3s;
 }
 .mto-cta:hover{
   background:white;
@@ -83,6 +81,20 @@ video{
 
 /* ===== BACK ===== */
 .mto-back{ background:#000; }
+
+/* ===== BOTÓN VOLVER ===== */
+.back-btn{
+  position:fixed;
+  top:25px;
+  right:25px;
+  z-index:100;
+  padding:10px 20px;
+  border:1px solid white;
+  border-radius:20px;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+}
 
 /* ===== ENGRANAJE ===== */
 #gearWrap{
@@ -101,7 +113,6 @@ video{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
-/* CENTRO */
 .gear-core{
   position:absolute;
   top:50%;
@@ -110,12 +121,14 @@ video{
   width:180px;
   height:180px;
 }
+
 .gear-core-metal{
   width:100%;
   height:100%;
   border-radius:50%;
   background: radial-gradient(circle,#fff,#bbb,#444,#111);
 }
+
 .gear-logo{
   position:absolute;
   width:90px;
@@ -126,7 +139,7 @@ video{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
 }
 
-/* ===== HINT ===== */
+/* HINT */
 .gear-hint{
   position:absolute;
   left:50%;
@@ -135,35 +148,6 @@ video{
   color:white;
   font-size:14px;
   opacity:.7;
-  animation:fadeHint 2s infinite;
-}
-@keyframes fadeHint{
-  0%,100%{opacity:.4}
-  50%{opacity:1}
-}
-
-/* ===== PROGRESO ===== */
-.progress{
-  position:fixed;
-  right:20px;
-  top:50%;
-  transform:translateY(-50%);
-  z-index:60;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:#555;
-  transition:.3s;
-}
-.dot.active{
-  background:#00c8ff;
-  transform:scale(1.5);
 }
 
 /* ===== SLIDES ===== */
@@ -183,10 +167,10 @@ video{
 }
 
 .content{
-  max-width:800px;
+  max-width:900px;
 }
 
-/* FONDOS CORPORATIVOS */
+/* FONDOS */
 .slide:nth-child(1){ background:#0b1f3a;}
 .slide:nth-child(2){ background:#102a54;}
 .slide:nth-child(3){ background:#1d1f4d;}
@@ -196,45 +180,62 @@ video{
 
 /* TITULOS */
 h1{
-  font-size:3rem;
-  color:#fff;
-  text-shadow:0 0 15px rgba(0,200,255,.4);
+  font-size:3.2rem;
+  text-shadow:0 0 20px rgba(0,200,255,.5);
 }
 
-/* SUBAREAS */
+/* ===== BURBUJAS ===== */
 .subareas{
-  margin-top:30px;
+  margin-top:40px;
   display:flex;
-  flex-direction:column;
-  gap:12px;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
 .sub{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+
   opacity:0;
-  transform:translateY(20px);
+  transform:translateY(40px) scale(.8);
   transition:.6s;
 }
 
 .slide.active .sub{
   opacity:1;
-  transform:translateY(0);
+  transform:translateY(0) scale(1);
 }
 
-  /* ===== PANEL ÁREA ===== */
+.sub:hover{
+  transform:scale(1.1);
+}
+
+.sub span{
+  opacity:0;
+  transition:.3s;
+}
+
+.sub:hover span{
+  opacity:1;
+}
+
+/* ===== PANEL ===== */
 #areaPanel{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.95);
-  color:white;
-
   display:flex;
-  justify-content:center;
-  align-items:center;
-
   opacity:0;
   pointer-events:none;
-
-  transition:.5s ease;
+  transition:.5s;
   z-index:999;
 }
 
@@ -243,89 +244,16 @@ h1{
   pointer-events:auto;
 }
 
-.panel-content{
-  max-width:900px;
-  text-align:center;
-  animation:panelIn .6s ease;
-}
-
-@keyframes panelIn{
-  from{
-    opacity:0;
-    transform:translateY(40px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-.close-btn{
-  position:absolute;
-  top:30px;
-  right:40px;
-  background:none;
-  border:1px solid white;
-  color:white;
-  padding:10px;
-  cursor:pointer;
-}
-
-#panelTitle{
-  font-size:2.5rem;
-  margin-bottom:20px;
-  text-shadow:0 0 15px rgba(0,200,255,.4);
-}
-
-#panelDesc{
-  font-size:1.2rem;
-  opacity:.8;
-  margin-bottom:30px;
-}
-
-#panelList{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-#areaPanel{
-  position:fixed;
-  inset:0;
-  display:flex;
-  opacity:0;
-  pointer-events:none;
-  transition:.6s ease;
-  z-index:999;
-}
-
-#areaPanel.active{
-  opacity:1;
-  pointer-events:auto;
-}
-
-/* lado visual */
 .panel-media{
   flex:1;
   background-size:cover;
   background-position:center;
-  filter:brightness(.7);
 }
 
-/* contenido */
 .panel-content{
   flex:1;
-  background:#000;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  background:black;
   padding:60px;
-  animation:panelIn .6s ease;
-}
-
-@keyframes panelIn{
-  from{ transform:translateX(60px); opacity:0; }
-  to{ transform:translateX(0); opacity:1; }
 }
 
 .close-btn{
@@ -336,48 +264,12 @@ h1{
   border:1px solid white;
   color:white;
   padding:10px;
-  cursor:pointer;
-}
-
-.nav{
-  position:fixed;
-  right:20px;
-  top:50%;
-  transform:translateY(-50%);
-  z-index:70;
-}
-
-.nav div{
-  width:12px;
-  height:12px;
-  background:#666;
-  margin:10px 0;
-  border-radius:50%;
   cursor:pointer;
 }
 
 </style>
 </head>
 
-<div id="areaPanel">
-
-  <div class="panel-media"></div>
-
-  <div class="panel-content">
-
-    <button class="close-btn" onclick="closePanel()">✕</button>
-
-    <h1 id="panelTitle"></h1>
-    <p id="panelDesc"></p>
-
-    <div id="panelList"></div>
-
-  </div>
-
-</div>
-
-<audio id="scrollSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
-  
 <body>
 
 <div class="mto-flip" id="flip">
@@ -398,53 +290,53 @@ h1{
 <!-- BACK -->
 <div class="mto-back">
 
+<button class="back-btn" onclick="volver()">Volver</button>
+
 <div id="gearWrap">
 <div id="gear"></div>
 <div class="gear-core">
 <div class="gear-core-metal"></div>
 <div class="gear-logo"></div>
 </div>
-<div class="gear-hint">Usa la rueda del mouse</div>
-</div>
-
-<div class="progress">
-<div class="dot active"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
-<div class="dot"></div>
+<div class="gear-hint">Usa la rueda del mouse ⚙️</div>
 </div>
 
 <div id="slides">
 
-<div class="nav">
-  <div onclick="goTo(0)"></div>
-  <div onclick="goTo(1)"></div>
-  <div onclick="goTo(2)"></div>
-  <div onclick="goTo(3)"></div>
-  <div onclick="goTo(4)"></div>
-  <div onclick="goTo(5)"></div>
-</div>  
-
-<section class="slide" onclick="openPanel(1)">
-<h1>ESTUDIOS & OUTDOOR</h1>
+<section class="slide active">
+<div class="content">
+<h1>NUESTRAS ÁREAS</h1>
+<p>Equipos que operan sincronizados para llevar el contenido a millones de pantallas</p>
+</div>
 </section>
 
-<section class="slide" onclick="openPanel(2)">
+<section class="slide">
+<div class="content">
 <h1>MOC</h1>
+<div class="subareas">
+<div class="sub"><span>Ingesta</span></div>
+<div class="sub"><span>Monitoreo</span></div>
+<div class="sub"><span>Control</span></div>
+</div>
+</div>
 </section>
 
-<section class="slide" onclick="openPanel(3)">
+<section class="slide">
+<div class="content">
 <h1>BOC</h1>
+</div>
 </section>
 
-<section class="slide" onclick="openPanel(4)">
+<section class="slide">
+<div class="content">
 <h1>GESTIÓN</h1>
+</div>
 </section>
 
-<section class="slide" onclick="openPanel(5)">
+<section class="slide">
+<div class="content">
 <h1>GFX</h1>
+</div>
 </section>
 
 </div>
@@ -454,15 +346,17 @@ h1{
 
 <script>
 
-/* ===== CONTROL ===== */
+/* FLIP */
 function enter(){
   document.getElementById("flip").classList.add("flipped");
 }
+function volver(){
+  document.getElementById("flip").classList.remove("flipped");
+}
 
-/* ===== SLIDES ===== */
+/* SLIDES */
 let current=0;
 const slides=document.querySelectorAll(".slide");
-const dots=document.querySelectorAll(".dot");
 
 function update(){
   document.getElementById("slides").style.transform =
@@ -470,83 +364,21 @@ function update(){
 
   slides.forEach(s=>s.classList.remove("active"));
   slides[current].classList.add("active");
-
-  dots.forEach(d=>d.classList.remove("active"));
-  dots[current].classList.add("active");
 }
 
-/* ===== DATA REAL ===== */
-const areasData = {
-
-  1:{
-    title:"ESTUDIOS & OUTDOOR",
-    desc:"Producción en estudio y terreno",
-    media:"url('https://images.unsplash.com/photo-1590608897129-79da98d15969')",
-    items:["Cámaras","Iluminación","Audio"]
-  },
-
-  2:{
-    title:"MOC",
-    desc:"Media Operations Center",
-    media:"url('https://images.unsplash.com/photo-1581091215367-59ab6b1c9f7c')",
-    items:["Ingesta","Monitoreo","Control"]
-  },
-
-  3:{
-    title:"BOC",
-    desc:"Broadcast Operations",
-    media:"url('https://images.unsplash.com/photo-1573164713988-8665fc963095')",
-    items:["Continuidad","Playout"]
-  }
-
-};
-  
-/* ===== ABRIR PANEL ===== */
-function openPanel(index){
-
-  const data = areasData[index];
-  if(!data) return;
-
-  document.getElementById("panelTitle").innerText = data.title;
-  document.getElementById("panelDesc").innerText = data.desc;
-
-  const list = document.getElementById("panelList");
-  list.innerHTML = "";
-
-  data.items.forEach(item=>{
-    const el = document.createElement("div");
-    el.innerText = item;
-    el.style.opacity = 0;
-
-    setTimeout(()=>{
-      el.style.opacity = 1;
-      el.style.transform = "translateY(0)";
-    },100);
-
-    list.appendChild(el);
-  });
-
-  document.getElementById("areaPanel").classList.add("active");
-}
-
-/* ===== CERRAR ===== */
-function closePanel(){
-  document.getElementById("areaPanel").classList.remove("active");
-}
-
-/* ===== ENGRANAJE ===== */
+/* ENGRANAJE FÍSICO */
 let velocity=0;
 let rotation=0;
 
 function animate(){
   rotation+=velocity;
-  velocity*=0.95;
+  velocity*=0.94;
   document.getElementById("gear").style.transform=`rotate(${rotation}deg)`;
   requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== SCROLL ===== */
+/* SCROLL REAL */
 let lock=false;
 
 window.addEventListener("wheel", e=>{
@@ -559,73 +391,11 @@ window.addEventListener("wheel", e=>{
   else current--;
 
   current=Math.max(0,Math.min(current,slides.length-1));
-
   update();
 
   setTimeout(()=>lock=false,400);
 
 },{passive:false});
-
-function openPanel(index){
-
-  const data = areasData[index];
-  if(!data) return;
-
-  const panel = document.getElementById("areaPanel");
-
-  /* 🔥 efecto zoom */
-  panel.style.transform = "scale(0.9)";
-  panel.classList.add("active");
-
-  setTimeout(()=>{
-    panel.style.transform = "scale(1)";
-  },50);
-
-  document.querySelector(".panel-media").style.backgroundImage = data.media;
-
-  document.getElementById("panelTitle").innerText = data.title;
-  document.getElementById("panelDesc").innerText = data.desc;
-
-  const list = document.getElementById("panelList");
-  list.innerHTML = "";
-
-  data.items.forEach((item,i)=>{
-    const el = document.createElement("div");
-    el.innerText = item;
-    el.style.opacity = 0;
-
-    setTimeout(()=>{
-      el.style.opacity = 1;
-    }, i*120);
-
-    list.appendChild(el);
-  });
-}
-
-function closePanel(){
-  const panel = document.getElementById("areaPanel");
-
-  panel.style.transform = "scale(0.95)";
-
-  setTimeout(()=>{
-    panel.classList.remove("active");
-  },200);
-}
-
-const sound = document.getElementById("scrollSound");
-
-window.addEventListener("wheel", e=>{
-  if(Math.abs(e.deltaY) > 20){
-    sound.currentTime = 0;
-    sound.volume = 0.15;
-    sound.play();
-  }
-});
-
-  function goTo(i){
-  current = i;
-  update();
-}
 
 </script>
 
