@@ -7,7 +7,7 @@
 
 <style>
 
-/* ===== RESET ===== */
+/* RESET */
 body, html{
   margin:0;
   padding:0;
@@ -17,22 +17,10 @@ body, html{
   background:black;
 }
 
-/* ===== APP ===== */
-#mtoApp{
-  width:100vw;
-  height:100vh;
-  overflow:hidden;
-}
+/* APP */
+#mtoApp{ width:100vw; height:100vh; }
 
-/* ===== STAGE ===== */
-.mto-stage{
-  position:relative;
-  width:100%;
-  height:100%;
-  perspective:1200px;
-}
-
-/* ===== FLIP ===== */
+/* FLIP */
 .mto-flip{
   position:absolute;
   width:100%;
@@ -40,9 +28,7 @@ body, html{
   transform-style:preserve-3d;
   transition:1s;
 }
-.mto-flip.flipped{
-  transform:rotateY(180deg);
-}
+.mto-flip.flipped{ transform:rotateY(180deg); }
 
 .mto-front, .mto-back{
   position:absolute;
@@ -56,14 +42,14 @@ body, html{
   overflow:hidden;
 }
 
-/* ===== VIDEO ===== */
+/* VIDEO */
 .mto-front video{
   width:100%;
   height:100%;
   object-fit:cover;
 }
 
-/* ===== OVERLAY ===== */
+/* OVERLAY */
 .mto-overlay{
   position:absolute;
   inset:0;
@@ -71,19 +57,24 @@ body, html{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  background:rgba(0,0,0,.6);
   color:white;
+  background:rgba(0,0,0,.5);
+  text-align:center;
 }
 
-/* ===== LOGO ===== */
+.mto-overlay h1{
+  font-size:2.2rem;
+  letter-spacing:2px;
+}
+
 .mto-logo{
   width:300px;
   height:120px;
-  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
   margin:20px 0;
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
 }
 
-/* ===== BOTÓN ===== */
+/* BOTÓN */
 .mto-cta{
   padding:12px 28px;
   border:1px solid white;
@@ -93,7 +84,24 @@ body, html{
   cursor:pointer;
 }
 
-/* ===== ENGRANAJE ===== */
+/* BACK */
+.mto-back{ background:#000; }
+
+/* BOTÓN VOLVER */
+.back-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:100;
+  padding:10px 20px;
+  border:1px solid white;
+  border-radius:20px;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+}
+
+/* ENGRANAJE */
 #gearWrap{
   position:fixed;
   width:520px;
@@ -110,16 +118,16 @@ body, html{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
-/* ===== HINT ===== */
+/* HINT */
 .gear-hint{
   position:absolute;
   left:50%;
   bottom:-60px;
   transform:translateX(-50%);
-  color:#9fdcff;
+  color:#ccefff;
 }
 
-/* ===== SCROLL ===== */
+/* SLIDES */
 #slides{
   position:absolute;
   width:100%;
@@ -131,86 +139,35 @@ body, html{
   justify-content:center;
   align-items:center;
   text-align:center;
-  position:relative;
-  overflow:hidden;
 }
 
-/* ===== PARALLAX ===== */
-.parallax{
-  position:absolute;
-  inset:0;
-  background-size:cover;
-  opacity:.25;
-  transform:translateY(0);
-}
-
-/* ===== CONTENIDO ===== */
-.content{
-  position:relative;
-  z-index:2;
-}
+/* COLORES POR ÁREA */
+.slide:nth-child(1){ background:#001a40; }
+.slide:nth-child(2){ background:#0d47a1; }
+.slide:nth-child(3){ background:#4a148c; }
+.slide:nth-child(4){ background:#1b5e20; }
+.slide:nth-child(5){ background:#b71c1c; }
+.slide:nth-child(6){ background:#e65100; }
 
 h1{
   font-size:3rem;
   color:#66d9ff;
 }
 
-/* ===== SUBÁREAS ===== */
-.subareas{
-  margin-top:40px;
-}
+.content{ max-width:800px; }
+
+/* SUBÁREAS */
+.subareas{ margin-top:30px; }
 
 .sub{
   margin:10px 0;
-  cursor:pointer;
-  transition:.4s;
+  opacity:.8;
+  transition:.3s;
 }
 
 .sub:hover{
   transform:translateX(10px);
-}
-
-/* ===== PREVIEW ===== */
-.preview{
-  position:fixed;
-  inset:0;
-  background-size:cover;
-  background-position:center;
-  opacity:0;
-  pointer-events:none;
-  transition:.5s;
-  z-index:40;
-}
-
-.preview.active{
-  opacity:.4;
-}
-
-/* ===== MODAL ===== */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.9);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  opacity:0;
-  pointer-events:none;
-  transition:.4s;
-  z-index:100;
-}
-
-.modal.active{
   opacity:1;
-  pointer-events:auto;
-}
-
-.close{
-  position:absolute;
-  top:20px;
-  right:20px;
-  color:white;
-  cursor:pointer;
 }
 
 </style>
@@ -219,7 +176,6 @@ h1{
 <body>
 
 <div id="mtoApp">
-<div class="mto-stage">
 <div class="mto-flip" id="flip">
 
 <!-- FRONT -->
@@ -229,6 +185,7 @@ h1{
 </video>
 
 <div class="mto-overlay">
+<h1>BIENVENIDOS A OPERACIONES - CHILE</h1>
 <div class="mto-logo"></div>
 <button class="mto-cta" onclick="enter()">Conócenos</button>
 </div>
@@ -236,6 +193,8 @@ h1{
 
 <!-- BACK -->
 <div class="mto-back">
+
+<button class="back-btn" onclick="volver()">Volver</button>
 
 <div id="gearWrap">
   <div id="gear"></div>
@@ -245,107 +204,130 @@ h1{
 <div id="slides">
 
 <section class="slide">
-<div class="parallax" style="background-image:url('https://picsum.photos/1200/800?1')"></div>
 <div class="content">
 <h1>NUESTRAS ÁREAS</h1>
+<p>Equipos sincronizados para llevar el fútbol a millones de pantallas</p>
 </div>
 </section>
 
 <section class="slide">
-<div class="parallax" style="background-image:url('https://picsum.photos/1200/800?2')"></div>
+<div class="content">
+<h1>ESTUDIOS & OUTDOOR</h1>
+<div class="subareas">
+<div class="sub">Producción en terreno</div>
+<div class="sub">Cámaras</div>
+<div class="sub">Audio</div>
+</div>
+</div>
+</section>
+
+<section class="slide">
 <div class="content">
 <h1>MOC</h1>
 <div class="subareas">
-<div class="sub" data-img="https://picsum.photos/1200/800?3">Ingesta</div>
-<div class="sub" data-img="https://picsum.photos/1200/800?4">Archivo</div>
+<div class="sub">Ingesta</div>
+<div class="sub">Monitoreo</div>
+<div class="sub">Archivo</div>
+</div>
+</div>
+</section>
+
+<section class="slide">
+<div class="content">
+<h1>BOC</h1>
+<div class="subareas">
+<div class="sub">Transmisión</div>
+<div class="sub">Continuidad</div>
+</div>
+</div>
+</section>
+
+<section class="slide">
+<div class="content">
+<h1>GESTIÓN</h1>
+<div class="subareas">
+<div class="sub">Planificación</div>
+<div class="sub">Coordinación</div>
+</div>
+</div>
+</section>
+
+<section class="slide">
+<div class="content">
+<h1>GFX</h1>
+<div class="subareas">
+<div class="sub">Gráfica</div>
+<div class="sub">Branding</div>
 </div>
 </div>
 </section>
 
 </div>
-
 </div>
 </div>
-</div>
-</div>
-
-<div class="preview" id="preview"></div>
-
-<div class="modal" id="modal">
-<div class="close" onclick="closeModal()">✕</div>
-<h1 style="color:white">Detalle Área</h1>
 </div>
 
 <script>
 
-/* ===== FLIP ===== */
+/* FLIP */
 function enter(){
   document.getElementById("flip").classList.add("flipped");
 }
 
-/* ===== SCROLL ===== */
-let scrollY = 0;
+function volver(){
+  document.getElementById("flip").classList.remove("flipped");
+  current = 0;
+  scrollY = 0;
+  updateScroll();
+}
 
-window.addEventListener("wheel", e=>{
-  scrollY += e.deltaY;
+/* SCROLL CONTROLADO */
+let current = 0;
+let scrollY = 0;
+const slides = document.querySelectorAll(".slide");
+
+function updateScroll(){
   document.getElementById("slides").style.transform =
     `translateY(-${scrollY}px)`;
+}
 
-  velocity += e.deltaY * 0.002;
-
-});
-
-/* ===== ENGRANAJE ===== */
+/* ENGRANAJE INERCIA REAL */
 let velocity = 0;
 let rotation = 0;
 
 function animate(){
   rotation += velocity;
-  velocity *= 0.94;
+  velocity *= 0.92;
   document.getElementById("gear").style.transform =
     `rotate(${rotation}deg)`;
   requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== PARALLAX ===== */
-window.addEventListener("scroll", ()=>{
-  document.querySelectorAll(".parallax").forEach(el=>{
-    el.style.transform = `translateY(${window.scrollY * 0.2}px)`;
-  });
-});
+/* SCROLL UX */
+let lock=false;
 
-/* ===== PREVIEW ===== */
-const preview = document.getElementById("preview");
+window.addEventListener("wheel", e=>{
 
-document.querySelectorAll(".sub").forEach(el=>{
-  el.addEventListener("mouseenter", ()=>{
-    preview.style.backgroundImage = `url(${el.dataset.img})`;
-    preview.classList.add("active");
-  });
-  el.addEventListener("mouseleave", ()=>{
-    preview.classList.remove("active");
-  });
-});
+  if(lock) return;
+  lock=true;
 
-/* ===== MODAL ===== */
-document.querySelectorAll(".slide").forEach(slide=>{
-  slide.addEventListener("click", ()=>{
-    document.getElementById("modal").classList.add("active");
-  });
-});
+  if(e.deltaY>0){
+    current++;
+    velocity +=0.8;
+  }else{
+    current--;
+    velocity -=0.8;
+  }
 
-function closeModal(){
-  document.getElementById("modal").classList.remove("active");
-}
+  current=Math.max(0,Math.min(current,slides.length-1));
+  scrollY = current * window.innerHeight;
 
-/* ===== SONIDO ===== */
-const audio = new Audio("https://www.soundjay.com/mechanical/sounds/gear-1.mp3");
+  updateScroll();
 
-window.addEventListener("wheel", ()=>{
-  audio.volume = 0.05;
-  audio.play().catch(()=>{});
-});
+  setTimeout(()=>lock=false,600);
+
+},{passive:false});
 
 </script>
 
