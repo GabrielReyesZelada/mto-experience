@@ -220,9 +220,94 @@ h1{
   transform:translateY(0);
 }
 
+  /* ===== PANEL ÁREA ===== */
+#areaPanel{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.95);
+  color:white;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:.5s ease;
+  z-index:999;
+}
+
+#areaPanel.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.panel-content{
+  max-width:900px;
+  text-align:center;
+  animation:panelIn .6s ease;
+}
+
+@keyframes panelIn{
+  from{
+    opacity:0;
+    transform:translateY(40px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.close-btn{
+  position:absolute;
+  top:30px;
+  right:40px;
+  background:none;
+  border:1px solid white;
+  color:white;
+  padding:10px;
+  cursor:pointer;
+}
+
+#panelTitle{
+  font-size:2.5rem;
+  margin-bottom:20px;
+  text-shadow:0 0 15px rgba(0,200,255,.4);
+}
+
+#panelDesc{
+  font-size:1.2rem;
+  opacity:.8;
+  margin-bottom:30px;
+}
+
+#panelList{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
 </style>
 </head>
 
+<div id="areaPanel">
+
+  <div class="panel-content">
+
+    <button class="close-btn" onclick="closePanel()">✕</button>
+
+    <h1 id="panelTitle"></h1>
+
+    <p id="panelDesc"></p>
+
+    <div id="panelList"></div>
+
+  </div>
+
+</div>
+  
 <body>
 
 <div class="mto-flip" id="flip">
@@ -263,17 +348,25 @@ h1{
 
 <div id="slides">
 
-<section class="slide active"><div class="content"><h1>NUESTRAS ÁREAS</h1></div></section>
+<section class="slide" onclick="openPanel(1)">
+<h1>ESTUDIOS & OUTDOOR</h1>
+</section>
 
-<section class="slide"><div class="content"><h1>ESTUDIOS & OUTDOOR</h1></div></section>
+<section class="slide" onclick="openPanel(2)">
+<h1>MOC</h1>
+</section>
 
-<section class="slide"><div class="content"><h1>MOC</h1></div></section>
+<section class="slide" onclick="openPanel(3)">
+<h1>BOC</h1>
+</section>
 
-<section class="slide"><div class="content"><h1>BOC</h1></div></section>
+<section class="slide" onclick="openPanel(4)">
+<h1>GESTIÓN</h1>
+</section>
 
-<section class="slide"><div class="content"><h1>GESTIÓN</h1></div></section>
-
-<section class="slide"><div class="content"><h1>GFX</h1></div></section>
+<section class="slide" onclick="openPanel(5)">
+<h1>GFX</h1>
+</section>
 
 </div>
 
@@ -301,6 +394,74 @@ function update(){
 
   dots.forEach(d=>d.classList.remove("active"));
   dots[current].classList.add("active");
+}
+
+/* ===== DATA REAL ===== */
+const areasData = {
+
+  1:{
+    title:"ESTUDIOS & OUTDOOR",
+    desc:"Producción técnica en estudio y terreno",
+    items:["Cámaras","Iluminación","Audio","Unidad móvil"]
+  },
+
+  2:{
+    title:"MOC",
+    desc:"Centro de operaciones de medios",
+    items:["Ingesta","Monitoreo","Control señales"]
+  },
+
+  3:{
+    title:"BOC",
+    desc:"Centro de transmisión broadcast",
+    items:["Continuidad","Playout","Distribución"]
+  },
+
+  4:{
+    title:"GESTIÓN",
+    desc:"Soporte estratégico y operativo",
+    items:["Planificación","Coordinación","Logística"]
+  },
+
+  5:{
+    title:"GFX",
+    desc:"Diseño visual y gráfica",
+    items:["Branding","Motion","Gráficos TV"]
+  }
+
+};
+
+/* ===== ABRIR PANEL ===== */
+function openPanel(index){
+
+  const data = areasData[index];
+  if(!data) return;
+
+  document.getElementById("panelTitle").innerText = data.title;
+  document.getElementById("panelDesc").innerText = data.desc;
+
+  const list = document.getElementById("panelList");
+  list.innerHTML = "";
+
+  data.items.forEach(item=>{
+    const el = document.createElement("div");
+    el.innerText = item;
+    el.style.opacity = 0;
+
+    setTimeout(()=>{
+      el.style.opacity = 1;
+      el.style.transform = "translateY(0)";
+    },100);
+
+    list.appendChild(el);
+  });
+
+  document.getElementById("areaPanel").classList.add("active");
+}
+
+/* ===== CERRAR ===== */
+function closePanel(){
+  document.getElementById("areaPanel").classList.remove("active");
 }
 
 /* ===== ENGRANAJE ===== */
