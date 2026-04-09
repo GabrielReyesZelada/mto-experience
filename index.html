@@ -289,17 +289,85 @@ h1{
   gap:10px;
 }
 
+#areaPanel{
+  position:fixed;
+  inset:0;
+  display:flex;
+  opacity:0;
+  pointer-events:none;
+  transition:.6s ease;
+  z-index:999;
+}
+
+#areaPanel.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* lado visual */
+.panel-media{
+  flex:1;
+  background-size:cover;
+  background-position:center;
+  filter:brightness(.7);
+}
+
+/* contenido */
+.panel-content{
+  flex:1;
+  background:#000;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:60px;
+  animation:panelIn .6s ease;
+}
+
+@keyframes panelIn{
+  from{ transform:translateX(60px); opacity:0; }
+  to{ transform:translateX(0); opacity:1; }
+}
+
+.close-btn{
+  position:absolute;
+  top:30px;
+  right:40px;
+  background:none;
+  border:1px solid white;
+  color:white;
+  padding:10px;
+  cursor:pointer;
+}
+
+.nav{
+  position:fixed;
+  right:20px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:70;
+}
+
+.nav div{
+  width:12px;
+  height:12px;
+  background:#666;
+  margin:10px 0;
+  border-radius:50%;
+  cursor:pointer;
+}
+
 </style>
 </head>
 
 <div id="areaPanel">
+
+  <div class="panel-media"></div>
 
   <div class="panel-content">
 
     <button class="close-btn" onclick="closePanel()">✕</button>
 
     <h1 id="panelTitle"></h1>
-
     <p id="panelDesc"></p>
 
     <div id="panelList"></div>
@@ -307,6 +375,8 @@ h1{
   </div>
 
 </div>
+
+<audio id="scrollSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
   
 <body>
 
@@ -347,6 +417,15 @@ h1{
 </div>
 
 <div id="slides">
+
+<div class="nav">
+  <div onclick="goTo(0)"></div>
+  <div onclick="goTo(1)"></div>
+  <div onclick="goTo(2)"></div>
+  <div onclick="goTo(3)"></div>
+  <div onclick="goTo(4)"></div>
+  <div onclick="goTo(5)"></div>
+</div>  
 
 <section class="slide" onclick="openPanel(1)">
 <h1>ESTUDIOS & OUTDOOR</h1>
@@ -401,36 +480,27 @@ const areasData = {
 
   1:{
     title:"ESTUDIOS & OUTDOOR",
-    desc:"Producción técnica en estudio y terreno",
-    items:["Cámaras","Iluminación","Audio","Unidad móvil"]
+    desc:"Producción en estudio y terreno",
+    media:"url('https://images.unsplash.com/photo-1590608897129-79da98d15969')",
+    items:["Cámaras","Iluminación","Audio"]
   },
 
   2:{
     title:"MOC",
-    desc:"Centro de operaciones de medios",
-    items:["Ingesta","Monitoreo","Control señales"]
+    desc:"Media Operations Center",
+    media:"url('https://images.unsplash.com/photo-1581091215367-59ab6b1c9f7c')",
+    items:["Ingesta","Monitoreo","Control"]
   },
 
   3:{
     title:"BOC",
-    desc:"Centro de transmisión broadcast",
-    items:["Continuidad","Playout","Distribución"]
-  },
-
-  4:{
-    title:"GESTIÓN",
-    desc:"Soporte estratégico y operativo",
-    items:["Planificación","Coordinación","Logística"]
-  },
-
-  5:{
-    title:"GFX",
-    desc:"Diseño visual y gráfica",
-    items:["Branding","Motion","Gráficos TV"]
+    desc:"Broadcast Operations",
+    media:"url('https://images.unsplash.com/photo-1573164713988-8665fc963095')",
+    items:["Continuidad","Playout"]
   }
 
 };
-
+  
 /* ===== ABRIR PANEL ===== */
 function openPanel(index){
 
@@ -495,6 +565,67 @@ window.addEventListener("wheel", e=>{
   setTimeout(()=>lock=false,400);
 
 },{passive:false});
+
+function openPanel(index){
+
+  const data = areasData[index];
+  if(!data) return;
+
+  const panel = document.getElementById("areaPanel");
+
+  /* 🔥 efecto zoom */
+  panel.style.transform = "scale(0.9)";
+  panel.classList.add("active");
+
+  setTimeout(()=>{
+    panel.style.transform = "scale(1)";
+  },50);
+
+  document.querySelector(".panel-media").style.backgroundImage = data.media;
+
+  document.getElementById("panelTitle").innerText = data.title;
+  document.getElementById("panelDesc").innerText = data.desc;
+
+  const list = document.getElementById("panelList");
+  list.innerHTML = "";
+
+  data.items.forEach((item,i)=>{
+    const el = document.createElement("div");
+    el.innerText = item;
+    el.style.opacity = 0;
+
+    setTimeout(()=>{
+      el.style.opacity = 1;
+    }, i*120);
+
+    list.appendChild(el);
+  });
+}
+
+function closePanel(){
+  const panel = document.getElementById("areaPanel");
+
+  panel.style.transform = "scale(0.95)";
+
+  setTimeout(()=>{
+    panel.classList.remove("active");
+  },200);
+}
+
+const sound = document.getElementById("scrollSound");
+
+window.addEventListener("wheel", e=>{
+  if(Math.abs(e.deltaY) > 20){
+    sound.currentTime = 0;
+    sound.volume = 0.15;
+    sound.play();
+  }
+});
+
+  function goTo(i){
+  current = i;
+  update();
+}
 
 </script>
 
