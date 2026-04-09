@@ -153,12 +153,6 @@ video{
 }
 
 /* ===== SLIDES ===== */
-#slides{
-  position:absolute;
-  width:100%;
-  height:100%;
-  transition:transform 0.85s cubic-bezier(.22,1,.36,1);
-}
 
 .slide{
   height:100vh;
@@ -166,6 +160,7 @@ video{
   justify-content:center;
   align-items:center;
   flex-direction:column;
+  will-change: transform;
 }
 
 /* ===== FONDOS ===== */
@@ -484,34 +479,33 @@ const slides = document.querySelectorAll(".slide");
 let isScrolling = false;
 
 function update(){
-  document.getElementById("slides").style.transform =
-    `translateY(-${current * 100}vh)`;
-}
+let scrollAccumulator = 0;
+const SCROLL_THRESHOLD = 80;
 
 window.addEventListener("wheel", e=>{
 
-  if(isScrolling) return;
-
-  isScrolling = true;
+  // acumulamos intención de scroll
+  scrollAccumulator += e.deltaY;
 
   // energía engranaje 🔥
   velocity += e.deltaY * 0.015;
 
+  if(Math.abs(scrollAccumulator) < SCROLL_THRESHOLD) return;
+
   // dirección
-  if(e.deltaY > 0){
+  if(scrollAccumulator > 0){
     current++;
   } else {
     current--;
   }
 
+  // reset acumulador
+  scrollAccumulator = 0;
+
   // límites
   current = Math.max(0, Math.min(current, slides.length - 1));
 
   update();
-
-  setTimeout(()=>{
-    isScrolling = false;
-  }, 850);
 
 },{ passive:true });
   
@@ -522,7 +516,6 @@ let rotation=0;
 function animate(){
   rotation+=velocity;
   velocity*=0.95;
-  gear.style.transform=`rotate(${rotation}deg)`;
   requestAnimationFrame(animate);
 }
 animate();
