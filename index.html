@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MT&O Experience Flagship</title>
+<title>MT&O Experience</title>
 
 <style>
 
@@ -21,7 +21,7 @@ body,html{
   width:100%;
   height:100%;
   transform-style:preserve-3d;
-  transition:1.2s cubic-bezier(.22,1,.36,1);
+  transition:1.1s cubic-bezier(.22,1,.36,1);
 }
 .mto-flip.flipped{ transform:rotateY(180deg); }
 
@@ -38,8 +38,8 @@ video{
   width:100%;
   height:100%;
   object-fit:cover;
-  transform:scale(1.1);
-  transition:transform 2s ease;
+  transform:scale(1.08);
+  transition:2s;
 }
 
 /* ===== OVERLAY ===== */
@@ -53,26 +53,14 @@ video{
   background:rgba(0,0,0,.6);
   color:white;
   text-align:center;
-  opacity:0;
-  animation:fadeIn 2s forwards;
-}
-
-@keyframes fadeIn{
-  to{ opacity:1; }
 }
 
 .mto-overlay h1{
-  font-size:2.8rem;
+  font-size:2.6rem;
   letter-spacing:4px;
-  animation:titleIn 1.5s ease;
 }
 
-@keyframes titleIn{
-  from{ transform:translateY(40px); opacity:0; }
-  to{ transform:translateY(0); opacity:1; }
-}
-
-/* ===== BOTÓN ENERGÍA 🔥 ===== */
+/* ===== BOTÓN CINE (RECUPERADO) ===== */
 .mto-cta{
   margin-top:30px;
   padding:16px 40px;
@@ -80,10 +68,8 @@ video{
   border:1px solid rgba(255,255,255,.6);
   background:rgba(255,255,255,.05);
   color:white;
-  font-size:16px;
   cursor:pointer;
-  backdrop-filter:blur(10px);
-
+  backdrop-filter:blur(8px);
   transition:.4s;
 }
 
@@ -91,17 +77,30 @@ video{
   transform:scale(1.1);
   background:white;
   color:black;
-  box-shadow:0 0 30px rgba(255,255,255,.8);
+  box-shadow:0 0 30px rgba(255,255,255,.7);
 }
 
-/* CLICK ENERGÍA */
 .mto-cta:active{
-  transform:scale(0.95);
-  box-shadow:0 0 50px rgba(0,200,255,1);
+  transform:scale(.95);
+  box-shadow:0 0 40px rgba(0,200,255,1);
 }
 
 /* ===== BACK ===== */
 .mto-back{ background:#000; }
+
+/* ===== BOTÓN VOLVER ===== */
+.back-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:100;
+  padding:10px 20px;
+  border-radius:20px;
+  border:1px solid white;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+}
 
 /* ===== ENGRANAJE ===== */
 #gearWrap{
@@ -120,7 +119,7 @@ video{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
-/* ===== CORE ===== */
+/* ===== CENTRO ===== */
 .gear-core{
   position:absolute;
   top:50%;
@@ -128,15 +127,6 @@ video{
   transform:translate(-50%,-50%);
   width:180px;
   height:180px;
-  border-radius:50%;
-  box-shadow:
-    inset 0 10px 25px rgba(255,255,255,.6),
-    inset 0 -15px 30px rgba(0,0,0,.9);
-}
-
-.gear-core-metal{
-  width:100%;
-  height:100%;
   border-radius:50%;
   background: radial-gradient(circle,#fff,#bbb,#444,#111);
 }
@@ -151,12 +141,23 @@ video{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
 }
 
+/* ===== HINT ===== */
+.gear-hint{
+  position:absolute;
+  bottom:-60px;
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  opacity:.7;
+  font-size:14px;
+}
+
 /* ===== SLIDES ===== */
 #slides{
   position:absolute;
   width:100%;
   height:100%;
-  transition:transform 1.2s cubic-bezier(.22,1,.36,1);
+  transition:transform 1s cubic-bezier(.22,1,.36,1);
 }
 
 .slide{
@@ -177,36 +178,31 @@ video{
 
 /* ===== TITULOS ===== */
 h1{
-  font-size:3.8rem;
+  font-size:3.5rem;
   color:white;
-  text-shadow:0 0 20px rgba(0,0,0,.4);
 }
 
 /* ===== SUBAREAS ===== */
 .subareas{
   margin-top:40px;
   display:flex;
-  gap:40px;
+  gap:30px;
   flex-wrap:wrap;
   justify-content:center;
 }
 
 .bubble{
-  width:170px;
-  height:170px;
+  width:150px;
+  height:150px;
   border-radius:50%;
   background-size:cover;
   background-position:center;
   cursor:pointer;
-
-  transform-style:preserve-3d;
   transition:.3s;
-
-  box-shadow:0 20px 40px rgba(0,0,0,.5);
 }
 
 .bubble:hover{
-  transform:scale(1.1) rotateY(10deg);
+  transform:scale(1.1);
 }
 
 /* ===== PANEL ===== */
@@ -217,7 +213,7 @@ h1{
   display:flex;
   opacity:0;
   pointer-events:none;
-  transition:.5s;
+  transition:.4s;
   z-index:999;
 }
 
@@ -229,7 +225,6 @@ h1{
 .panel-img{
   flex:1;
   background-size:cover;
-  background-position:center;
 }
 
 .panel-content{
@@ -254,7 +249,7 @@ h1{
 
 <!-- FRONT -->
 <div class="mto-front">
-<video id="introVideo" autoplay muted loop>
+<video id="video" autoplay muted loop>
 <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
 </video>
 
@@ -267,12 +262,13 @@ h1{
 <!-- BACK -->
 <div class="mto-back">
 
+<button class="back-btn" onclick="volver()">Volver</button>
+
 <div id="gearWrap">
   <div id="gear"></div>
-  <div class="gear-core">
-    <div class="gear-core-metal"></div>
-    <div class="gear-logo"></div>
-  </div>
+  <div class="gear-core"></div>
+  <div class="gear-logo"></div>
+  <div class="gear-hint">Usa la rueda del mouse</div>
 </div>
 
 <div id="slides">
@@ -283,28 +279,22 @@ h1{
 
 <section class="slide">
 <h1>ESTUDIOS & OUTDOOR</h1>
-
 <div class="subareas">
-
-<div class="bubble" data-name="Cámara"
-style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7')"></div>
-
-<div class="bubble" data-name="Iluminación"
-style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d')"></div>
-
-<div class="bubble" data-name="Audio"
-style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d')"></div>
-
+<div class="bubble" data-name="Cámara" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7')"></div>
+<div class="bubble" data-name="Audio" style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d')"></div>
 </div>
-
 </section>
 
+<section class="slide"><h1>MOC</h1></section>
+<section class="slide"><h1>BOC</h1></section>
+<section class="slide"><h1>GESTIÓN</h1></section>
+<section class="slide"><h1>GFX</h1></section>
+
 </div>
 
 </div>
 </div>
 
-<!-- PANEL -->
 <div id="panel">
 <div class="panel-img"></div>
 <div class="panel-content">
@@ -315,19 +305,17 @@ style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f
 
 <script>
 
-/* ===== ENTER CINEMÁTICO ===== */
+/* ===== FLIP ===== */
 function enter(){
-
-  // impulso engranaje 🔥
-  velocity = 8;
-
-  // zoom video tipo Apple
-  document.getElementById("introVideo").style.transform="scale(1)";
-
-  // flip
+  velocity=6;
+  document.getElementById("video").style.transform="scale(1)";
   setTimeout(()=>{
     document.getElementById("flip").classList.add("flipped");
-  },400);
+  },300);
+}
+
+function volver(){
+  document.getElementById("flip").classList.remove("flipped");
 }
 
 /* ===== SCROLL ===== */
@@ -335,8 +323,7 @@ let current=0;
 const slides=document.querySelectorAll(".slide");
 
 function update(){
-  document.getElementById("slides").style.transform =
-    `translateY(-${current*100}vh)`;
+  document.getElementById("slides").style.transform=`translateY(-${current*100}vh)`;
 }
 
 /* ===== ENGRANAJE ===== */
@@ -345,42 +332,30 @@ let rotation=0;
 
 function animate(){
   rotation+=velocity;
-  velocity*=0.94;
-
-  document.getElementById("gear").style.transform =
-    `rotate(${rotation}deg)`;
-
+  velocity*=0.95;
+  gear.style.transform=`rotate(${rotation}deg)`;
   requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== UX INTELIGENTE ===== */
-let firstScroll=true;
-
+/* ===== CONTROL ===== */
 window.addEventListener("wheel", e=>{
-
-  velocity += e.deltaY * 0.01;
+  velocity+=e.deltaY*0.01;
 
   if(e.deltaY>0) current++;
   else current--;
 
   current=Math.max(0,Math.min(current,slides.length-1));
   update();
-
-  if(firstScroll){
-    firstScroll=false;
-    console.log("UX activada 🔥");
-  }
-
 });
 
 /* ===== PANEL ===== */
 document.querySelectorAll(".bubble").forEach(b=>{
-  b.addEventListener("click", ()=>{
+  b.onclick=()=>{
     document.getElementById("panel").classList.add("active");
-    document.querySelector(".panel-img").style.backgroundImage = b.style.backgroundImage;
-    document.getElementById("pTitle").innerText = b.dataset.name;
-  });
+    document.querySelector(".panel-img").style.backgroundImage=b.style.backgroundImage;
+    document.getElementById("pTitle").innerText=b.dataset.name;
+  }
 });
 
 function closePanel(){
