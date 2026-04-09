@@ -14,7 +14,6 @@ body,html{
   overflow:hidden;
   font-family:Arial, sans-serif;
   background:black;
-  color:white;
 }
 
 /* ===== FLIP ===== */
@@ -22,7 +21,7 @@ body,html{
   width:100%;
   height:100%;
   transform-style:preserve-3d;
-  transition:1s;
+  transition:1s ease;
 }
 .mto-flip.flipped{ transform:rotateY(180deg); }
 
@@ -49,48 +48,42 @@ video{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  background:rgba(0,0,0,.55);
+  background:rgba(0,0,0,.6);
+  color:white;
+  text-align:center;
 }
 
-/* ===== BOTÓN PRO ===== */
+.mto-overlay h1{
+  font-size:2.5rem;
+  letter-spacing:3px;
+}
+
+/* ===== BOTÓN CINE 🔥 ===== */
 .mto-cta{
   margin-top:25px;
-  padding:14px 34px;
+  padding:16px 36px;
   border-radius:40px;
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.4);
+  border:1px solid rgba(255,255,255,.6);
+  background:rgba(255,255,255,.05);
   color:white;
+  font-size:16px;
+  letter-spacing:1px;
   cursor:pointer;
+
   backdrop-filter:blur(8px);
-  transition:.35s;
+
+  transition:.4s;
 }
+
 .mto-cta:hover{
-  background:rgba(0,200,255,0.15);
-  border:1px solid rgba(0,200,255,0.6);
-  box-shadow:0 0 20px rgba(0,200,255,.4);
+  transform:scale(1.08);
+  background:white;
+  color:black;
+  box-shadow:0 0 25px rgba(255,255,255,.6);
 }
 
-/* ===== AMBIENTE ===== */
-#ambientParticles{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
-
-.ambient-dot{
-  position:absolute;
-  width:2px;
-  height:2px;
-  background:rgba(0,200,255,.4);
-  border-radius:50%;
-  animation:float 12s linear infinite;
-}
-
-@keyframes float{
-  from{ transform:translateY(100vh); opacity:0;}
-  10%,90%{ opacity:.6;}
-  to{ transform:translateY(-10vh); opacity:0;}
-}
+/* ===== BACK ===== */
+.mto-back{ background:#000; }
 
 /* ===== ENGRANAJE ===== */
 #gearWrap{
@@ -100,6 +93,7 @@ video{
   left:-120px;
   top:50%;
   transform:translateY(-50%);
+  z-index:50;
 }
 
 #gear{
@@ -108,7 +102,7 @@ video{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
-/* CENTRO */
+/* ===== CORE ===== */
 .gear-core{
   position:absolute;
   top:50%;
@@ -117,23 +111,26 @@ video{
   width:180px;
   height:180px;
   border-radius:50%;
-  background:radial-gradient(circle,#fff,#bbb,#444,#111);
+  box-shadow:
+    inset 0 10px 25px rgba(255,255,255,.6),
+    inset 0 -15px 30px rgba(0,0,0,.9);
+}
+
+.gear-core-metal{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background: radial-gradient(circle,#fff,#bbb,#444,#111);
 }
 
 .gear-logo{
   position:absolute;
-  width:90px;
-  height:90px;
+  width:95px;
+  height:95px;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
-  animation:pulse 3s infinite;
-}
-
-@keyframes pulse{
-  0%,100%{ filter:brightness(1);}
-  50%{ filter:brightness(1.4);}
 }
 
 /* ===== SLIDES ===== */
@@ -150,36 +147,63 @@ video{
   justify-content:center;
   align-items:center;
   flex-direction:column;
+  text-align:center;
 }
 
-/* fondos */
-.slide:nth-child(1){background:#0b1f3a;}
-.slide:nth-child(2){background:#102a54;}
-.slide:nth-child(3){background:#1d1f4d;}
-.slide:nth-child(4){background:#153b2e;}
-.slide:nth-child(5){background:#4a1b1b;}
-.slide:nth-child(6){background:#5a2d0c;}
+/* ===== FONDOS ===== */
+.slide:nth-child(1){ background:#00c8ff;}
+.slide:nth-child(2){ background:#102a54;}
+.slide:nth-child(3){ background:#1d1f4d;}
+.slide:nth-child(4){ background:#153b2e;}
+.slide:nth-child(5){ background:#4a1b1b;}
+.slide:nth-child(6){ background:#5a2d0c;}
 
-h1{font-size:3rem;}
+/* ===== TITULOS ===== */
+h1{
+  font-size:3.5rem;
+  color:white;
+}
 
-/* ===== SUBAREAS ===== */
+/* ===== SUBAREAS PRO ===== */
 .subareas{
+  margin-top:40px;
   display:flex;
-  gap:30px;
-  margin-top:30px;
+  gap:40px;
+  flex-wrap:wrap;
+  justify-content:center;
+  perspective:1000px;
 }
 
 .bubble{
-  width:140px;
-  height:140px;
+  width:160px;
+  height:160px;
   border-radius:50%;
+  overflow:hidden;
   background-size:cover;
   background-position:center;
   cursor:pointer;
+
+  transform-style:preserve-3d;
+  transition:.2s;
+
+  box-shadow:0 20px 40px rgba(0,0,0,.5);
+}
+
+.bubble::after{
+  content:attr(data-name);
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.5);
+  color:white;
+  opacity:0;
   transition:.3s;
 }
-.bubble:hover{
-  transform:scale(1.1);
+
+.bubble:hover::after{
+  opacity:1;
 }
 
 /* ===== PANEL ===== */
@@ -190,24 +214,38 @@ h1{font-size:3rem;}
   display:flex;
   opacity:0;
   pointer-events:none;
-  transition:.4s;
+  transition:.5s;
+  z-index:999;
 }
+
 #panel.active{
   opacity:1;
   pointer-events:auto;
 }
 
-.panel-img{flex:1;background-size:cover;}
-.panel-content{flex:1;padding:40px;}
+.panel-img{
+  flex:1;
+  background-size:cover;
+  background-position:center;
+}
+
+.panel-content{
+  flex:1;
+  padding:60px;
+  color:white;
+}
+
+.close{
+  position:absolute;
+  top:20px;
+  right:20px;
+  cursor:pointer;
+}
 
 </style>
 </head>
 
 <body>
-
-<div id="ambientParticles"></div>
-
-<audio id="ambientSound" loop src="https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3"></audio>
 
 <div class="mto-flip" id="flip">
 
@@ -227,10 +265,11 @@ h1{font-size:3rem;}
 <div class="mto-back">
 
 <div id="gearWrap">
-<div id="gear"></div>
-<div class="gear-core">
-<div class="gear-logo"></div>
-</div>
+  <div id="gear"></div>
+  <div class="gear-core">
+    <div class="gear-core-metal"></div>
+    <div class="gear-logo"></div>
+  </div>
 </div>
 
 <div id="slides">
@@ -241,10 +280,20 @@ h1{font-size:3rem;}
 
 <section class="slide">
 <h1>ESTUDIOS & OUTDOOR</h1>
+
 <div class="subareas">
-<div class="bubble" data-name="Cámara" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7')"></div>
-<div class="bubble" data-name="Audio" style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d')"></div>
+
+<div class="bubble" data-name="Cámara"
+style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7')"></div>
+
+<div class="bubble" data-name="Iluminación"
+style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d')"></div>
+
+<div class="bubble" data-name="Audio"
+style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d')"></div>
+
 </div>
+
 </section>
 
 </div>
@@ -252,61 +301,89 @@ h1{font-size:3rem;}
 </div>
 </div>
 
+<!-- PANEL -->
 <div id="panel">
 <div class="panel-img"></div>
 <div class="panel-content">
+<div class="close" onclick="closePanel()">✕</div>
 <h1 id="pTitle"></h1>
 </div>
 </div>
 
 <script>
 
-/* ===== AMBIENTE ===== */
-const ambient = document.getElementById("ambientParticles");
-for(let i=0;i<40;i++){
-  const dot=document.createElement("div");
-  dot.className="ambient-dot";
-  dot.style.left=Math.random()*100+"vw";
-  ambient.appendChild(dot);
-}
-
 /* ===== FLIP ===== */
 function enter(){
-  document.getElementById("ambientSound").play();
   document.getElementById("flip").classList.add("flipped");
 }
 
-/* ===== SCROLL + INERCIA ===== */
-let current=0, velocity=0, rotation=0;
+/* ===== SCROLL ===== */
+let current=0;
 const slides=document.querySelectorAll(".slide");
+
+function update(){
+  document.getElementById("slides").style.transform =
+    `translateY(-${current*100}vh)`;
+}
+
+/* ===== ENGRANAJE ===== */
+let velocity=0;
+let rotation=0;
 
 function animate(){
   rotation+=velocity;
   velocity*=0.95;
-  document.getElementById("gear").style.transform=`rotate(${rotation}deg)`;
+
+  document.getElementById("gear").style.transform =
+    `rotate(${rotation}deg)`;
+
   requestAnimationFrame(animate);
 }
 animate();
 
+/* SCROLL CONTROL */
 window.addEventListener("wheel", e=>{
-  velocity+=e.deltaY*0.01;
+  velocity += e.deltaY * 0.01;
 
   if(e.deltaY>0) current++;
   else current--;
 
   current=Math.max(0,Math.min(current,slides.length-1));
-
-  document.getElementById("slides").style.transform=`translateY(-${current*100}vh)`;
+  update();
 });
 
-/* ===== PANEL ===== */
+/* ===== BUBBLES ===== */
 document.querySelectorAll(".bubble").forEach(b=>{
-  b.onclick=()=>{
+
+  b.addEventListener("mousemove", e=>{
+    const rect=b.getBoundingClientRect();
+    const x=e.clientX-rect.left;
+    const y=e.clientY-rect.top;
+
+    const rY=(x/rect.width-0.5)*20;
+    const rX=(y/rect.height-0.5)*-20;
+
+    b.style.transform=`rotateX(${rX}deg) rotateY(${rY}deg) scale(1.1)`;
+  });
+
+  b.addEventListener("mouseleave", ()=>{
+    b.style.transform="rotateX(0) rotateY(0)";
+  });
+
+  b.addEventListener("click", ()=>{
     document.getElementById("panel").classList.add("active");
-    document.querySelector(".panel-img").style.backgroundImage=b.style.backgroundImage;
-    document.getElementById("pTitle").innerText=b.dataset.name;
-  }
+
+    document.querySelector(".panel-img").style.backgroundImage =
+      b.style.backgroundImage;
+
+    document.getElementById("pTitle").innerText = b.dataset.name;
+  });
+
 });
+
+function closePanel(){
+  document.getElementById("panel").classList.remove("active");
+}
 
 </script>
 
