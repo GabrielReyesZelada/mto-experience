@@ -48,16 +48,17 @@ video{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  background:rgba(0,0,0,.55);
+  background:rgba(0,0,0,.6);
   color:white;
   text-align:center;
 }
 
 .mto-overlay h1{
-  font-size:2.6rem;
+  font-size:2.8rem;
   letter-spacing:4px;
 }
 
+/* LOGO */
 .mto-logo{
   width:320px;
   height:140px;
@@ -113,6 +114,7 @@ video{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
+/* CENTRO */
 .gear-core{
   position:absolute;
   top:50%;
@@ -139,35 +141,45 @@ video{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
 }
 
-/* HINT */
-.gear-hint{
-  position:absolute;
-  left:50%;
-  bottom:-60px;
-  transform:translateX(-50%);
-  color:white;
-  font-size:14px;
-  opacity:.7;
-}
-
 /* ===== SLIDES ===== */
 #slides{
   position:absolute;
   width:100%;
   height:100%;
-  transition:transform 1s cubic-bezier(.22,1,.36,1);
+  transition:transform 1.2s cubic-bezier(.22,1,.36,1);
 }
 
+/* SLIDE */
 .slide{
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
   text-align:center;
+  position:relative;
+  overflow:hidden;
 }
 
+/* PARALLAX FONDO */
+.slide::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 30% 50%, rgba(0,200,255,.15), transparent 60%);
+  transform:scale(1.2);
+}
+
+/* CONTENIDO */
 .content{
+  position:relative;
+  z-index:2;
   max-width:900px;
+}
+
+/* TITULOS */
+h1{
+  font-size:3.5rem;
+  text-shadow:0 0 25px rgba(0,200,255,.6);
 }
 
 /* FONDOS */
@@ -178,13 +190,7 @@ video{
 .slide:nth-child(5){ background:#4a1b1b;}
 .slide:nth-child(6){ background:#5a2d0c;}
 
-/* TITULOS */
-h1{
-  font-size:3.2rem;
-  text-shadow:0 0 20px rgba(0,200,255,.5);
-}
-
-/* ===== BURBUJAS ===== */
+/* ===== TARJETAS (SUBÁREAS) ===== */
 .subareas{
   margin-top:40px;
   display:flex;
@@ -193,78 +199,45 @@ h1{
   justify-content:center;
 }
 
-.sub{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  background:rgba(255,255,255,.08);
+.card{
+  width:160px;
+  height:180px;
+  border-radius:16px;
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(6px);
   display:flex;
-  justify-content:center;
-  align-items:center;
+  align-items:flex-end;
+  padding:12px;
   cursor:pointer;
-  position:relative;
-  overflow:hidden;
 
+  transform:translateY(60px);
   opacity:0;
-  transform:translateY(40px) scale(.8);
   transition:.6s;
 }
 
-.slide.active .sub{
-  opacity:1;
-  transform:translateY(0) scale(1);
-}
-
-.sub:hover{
-  transform:scale(1.1);
-}
-
-.sub span{
-  opacity:0;
-  transition:.3s;
-}
-
-.sub:hover span{
+.slide.active .card{
+  transform:translateY(0);
   opacity:1;
 }
 
-/* ===== PANEL ===== */
-#areaPanel{
-  position:fixed;
-  inset:0;
-  display:flex;
-  opacity:0;
-  pointer-events:none;
-  transition:.5s;
-  z-index:999;
+.card:hover{
+  transform:scale(1.05);
+  background:rgba(255,255,255,.15);
 }
 
-#areaPanel.active{
-  opacity:1;
-  pointer-events:auto;
+.card span{
+  font-size:14px;
 }
 
-.panel-media{
-  flex:1;
-  background-size:cover;
-  background-position:center;
-}
-
-.panel-content{
-  flex:1;
-  background:black;
-  padding:60px;
-}
-
-.close-btn{
+/* ===== HINT ===== */
+.gear-hint{
   position:absolute;
-  top:30px;
-  right:40px;
-  background:none;
-  border:1px solid white;
+  left:50%;
+  bottom:-60px;
+  transform:translateX(-50%);
   color:white;
-  padding:10px;
-  cursor:pointer;
+  font-size:14px;
+  opacity:.7;
 }
 
 </style>
@@ -306,38 +279,26 @@ h1{
 <section class="slide active">
 <div class="content">
 <h1>NUESTRAS ÁREAS</h1>
-<p>Equipos que operan sincronizados para llevar el contenido a millones de pantallas</p>
+<p>Operamos como un sistema sincronizado que conecta contenido con millones de pantallas</p>
 </div>
 </section>
 
 <section class="slide">
 <div class="content">
 <h1>MOC</h1>
+
 <div class="subareas">
-<div class="sub"><span>Ingesta</span></div>
-<div class="sub"><span>Monitoreo</span></div>
-<div class="sub"><span>Control</span></div>
+<div class="card"><span>Ingesta</span></div>
+<div class="card"><span>Monitoreo</span></div>
+<div class="card"><span>Control</span></div>
 </div>
+
 </div>
 </section>
 
-<section class="slide">
-<div class="content">
-<h1>BOC</h1>
-</div>
-</section>
-
-<section class="slide">
-<div class="content">
-<h1>GESTIÓN</h1>
-</div>
-</section>
-
-<section class="slide">
-<div class="content">
-<h1>GFX</h1>
-</div>
-</section>
+<section class="slide"><h1>BOC</h1></section>
+<section class="slide"><h1>GESTIÓN</h1></section>
+<section class="slide"><h1>GFX</h1></section>
 
 </div>
 
@@ -366,34 +327,35 @@ function update(){
   slides[current].classList.add("active");
 }
 
-/* ENGRANAJE FÍSICO */
+/* ENGRANAJE FÍSICO PRO */
 let velocity=0;
 let rotation=0;
 
 function animate(){
   rotation+=velocity;
-  velocity*=0.94;
+  velocity*=0.92; // 🔥 inercia más real
   document.getElementById("gear").style.transform=`rotate(${rotation}deg)`;
   requestAnimationFrame(animate);
 }
 animate();
 
-/* SCROLL REAL */
+/* SCROLL PREMIUM */
 let lock=false;
 
 window.addEventListener("wheel", e=>{
   if(lock) return;
   lock=true;
 
-  velocity += e.deltaY * 0.01;
+  velocity += e.deltaY * 0.015;
 
   if(e.deltaY>0) current++;
   else current--;
 
   current=Math.max(0,Math.min(current,slides.length-1));
+
   update();
 
-  setTimeout(()=>lock=false,400);
+  setTimeout(()=>lock=false,500);
 
 },{passive:false});
 
