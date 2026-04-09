@@ -7,200 +7,168 @@
 
 <style>
 
-/* ===== RESET ===== */
-body, html{
-  margin:0;
-  padding:0;
-  height:100%;
-  overflow:hidden;
-  font-family:Arial, sans-serif;
-  background:black;
-}
-
-/* ===== APP ===== */
-#mtoApp{
-  width:100vw;
-  height:100vh;
-  overflow:hidden;
+/* ===== BASE ===== */
+body,html{
+margin:0;
+padding:0;
+height:100%;
+overflow:hidden;
+font-family:Arial;
+background:black;
 }
 
 /* ===== STAGE ===== */
+#mtoApp{
+width:100vw;
+height:100vh;
+}
+
 .mto-stage{
-  position:relative;
-  width:100%;
-  height:100%;
-  perspective:1200px;
+position:relative;
+width:100%;
+height:100%;
+perspective:1400px;
 }
 
 /* ===== FLIP ===== */
 .mto-flip{
-  position:absolute;
-  width:100%;
-  height:100%;
-  transform-style:preserve-3d;
-  transition:1s;
+width:100%;
+height:100%;
+position:absolute;
+transform-style:preserve-3d;
+transition:1s;
 }
-.mto-flip.flipped{
-  transform:rotateY(180deg);
-}
+.flipped{ transform:rotateY(180deg); }
 
-/* ===== CARAS ===== */
-.mto-front, .mto-back{
-  position:absolute;
-  width:100%;
-  height:100%;
-  backface-visibility:hidden;
+.mto-front,.mto-back{
+position:absolute;
+width:100%;
+height:100%;
+backface-visibility:hidden;
 }
-
-.mto-back{
-  transform:rotateY(180deg);
-}
+.mto-back{ transform:rotateY(180deg); }
 
 /* ===== VIDEO ===== */
-.mto-front video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+video{
+width:100%;
+height:100%;
+object-fit:cover;
 }
 
 /* ===== OVERLAY ===== */
 .mto-overlay{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,.5);
-  color:white;
-  text-align:center;
+position:absolute;
+inset:0;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,.5);
+color:white;
+text-align:center;
 }
 
 .mto-overlay h1{
-  font-size:2.2rem;
-  letter-spacing:2px;
-}
-
-.mto-logo{
-  width:300px;
-  height:120px;
-  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
-  margin:20px 0;
+font-size:2.5rem;
+letter-spacing:3px;
 }
 
 /* ===== BOTÓN ===== */
 .mto-cta{
-  padding:12px 28px;
-  border:1px solid white;
-  border-radius:30px;
-  background:transparent;
-  color:white;
-  cursor:pointer;
+margin-top:20px;
+padding:12px 30px;
+border:1px solid white;
+border-radius:30px;
+cursor:pointer;
+background:transparent;
+color:white;
 }
 
 /* ===== BACK ===== */
 .mto-back{
-  background:#000;
+background:#000;
 }
 
 /* ===== ENGRANAJE ===== */
 #gearWrap{
-  position:fixed;
-  width:520px;
-  height:520px;
-  left:-120px;
-  top:50%;
-  transform:translateY(-50%);
-  z-index:50;
+position:fixed;
+left:-120px;
+top:50%;
+transform:translateY(-50%);
+width:520px;
+height:520px;
+z-index:10;
 }
 
 #gear{
-  width:100%;
-  height:100%;
-  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
-  transition:filter .3s;
+width:100%;
+height:100%;
+background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
 /* centro */
 .gear-core{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  width:180px;
-  height:180px;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:180px;
+height:180px;
 }
 
 .gear-core-metal{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  background: radial-gradient(circle,#fff,#ccc 30%,#888 60%,#222 100%);
+width:100%;
+height:100%;
+border-radius:50%;
+background:radial-gradient(circle,#fff,#888,#111);
 }
 
 .gear-logo{
-  position:absolute;
-  width:90px;
-  height:90px;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
+position:absolute;
+width:90px;
+height:90px;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
 }
 
-/* hint */
+/* ===== HINT ===== */
 .gear-hint{
-  position:absolute;
-  left:50%;
-  bottom:-60px;
-  transform:translateX(-50%);
-  font-size:14px;
-  color:#fff;
+position:absolute;
+bottom:-60px;
+left:50%;
+transform:translateX(-50%);
+color:white;
+font-size:14px;
 }
-
-.gear-hint::before{
-  content:"⚙️ ";
-}
-
-/* ===== BOTÓN VOLVER ===== */
-.back-btn{
-  position:fixed;
-  top:20px;
-  right:20px;
-  z-index:60;
-  padding:10px 20px;
-  border:1px solid white;
-  border-radius:20px;
-  background:transparent;
-  color:white;
-  cursor:pointer;
-}
+.gear-hint::before{ content:"⚙️ "; }
 
 /* ===== SLIDES ===== */
-.slide{
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-
-  opacity:0;
-  transform:translateY(100%);
-  transition:all .8s ease;
+#slides{
+position:absolute;
+width:100%;
+height:100%;
+overflow:hidden;
 }
 
-.slide.active{
-  opacity:1;
-  transform:translateY(0);
+.slide{
+position:absolute;
+width:100%;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+transition:transform 1s ease, opacity 1s ease;
 }
 
 .content{
-  max-width:800px;
+max-width:800px;
+color:white;
 }
 
-/* fondos sólidos */
+/* fondos */
 .slide:nth-child(1){ background:#001a40; }
 .slide:nth-child(2){ background:#0d47a1; }
 .slide:nth-child(3){ background:#4a148c; }
@@ -208,23 +176,55 @@ body, html{
 .slide:nth-child(5){ background:#b71c1c; }
 .slide:nth-child(6){ background:#e65100; }
 
-/* subareas animadas */
+/* ===== SUBAREAS ===== */
 .subareas{
-  margin-top:30px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+margin-top:30px;
+display:flex;
+flex-direction:column;
+gap:12px;
 }
 
 .sub{
-  opacity:0;
-  transform:translateX(-20px);
-  transition:.5s;
+cursor:pointer;
+opacity:.7;
+transition:.4s;
 }
 
-.slide.active .sub{
-  opacity:1;
-  transform:translateX(0);
+.sub:hover{
+opacity:1;
+transform:translateX(10px);
+color:#00c8ff;
+}
+
+/* ===== PANEL LATERAL ===== */
+.panel{
+position:fixed;
+right:-400px;
+top:0;
+width:400px;
+height:100%;
+background:#111;
+color:white;
+padding:30px;
+transition:.5s;
+z-index:100;
+}
+
+.panel.open{
+right:0;
+}
+
+/* ===== BOTÓN VOLVER ===== */
+.back-btn{
+position:fixed;
+top:20px;
+right:20px;
+z-index:200;
+padding:10px 20px;
+border:1px solid white;
+background:transparent;
+color:white;
+cursor:pointer;
 }
 
 </style>
@@ -244,7 +244,6 @@ body, html{
 
 <div class="mto-overlay">
 <h1>BIENVENIDOS A OPERACIONES - CHILE</h1>
-<div class="mto-logo"></div>
 <button class="mto-cta" onclick="enter()">Conócenos</button>
 </div>
 </div>
@@ -255,30 +254,24 @@ body, html{
 <button class="back-btn" onclick="volver()">Volver</button>
 
 <div id="gearWrap">
-  <div id="gear"></div>
-  <div class="gear-core">
-    <div class="gear-core-metal"></div>
-    <div class="gear-logo" id="gearLogo"></div>
-  </div>
-  <div class="gear-hint">Usa la rueda del mouse</div>
+<div id="gear"></div>
+<div class="gear-core">
+<div class="gear-core-metal"></div>
+<div class="gear-logo"></div>
+</div>
+<div class="gear-hint">Usa la rueda del mouse</div>
 </div>
 
 <div id="slides">
 
-<section class="slide active">
-<div class="content">
-<h1 style="color:#00c8ff">NUESTRAS ÁREAS</h1>
-<p>Equipos sincronizados que llevan el fútbol a millones de pantallas</p>
-</div>
-</section>
+<section class="slide"><div class="content"><h1>NUESTRAS ÁREAS</h1></div></section>
 
 <section class="slide">
 <div class="content">
 <h1>ESTUDIOS & OUTDOOR</h1>
 <div class="subareas">
-<div class="sub">Iluminación</div>
-<div class="sub">Cámara</div>
-<div class="sub">Audio</div>
+<div class="sub" onclick="openPanel('Producción en estudio')">Producción en estudio</div>
+<div class="sub" onclick="openPanel('Operaciones en terreno')">Operaciones en terreno</div>
 </div>
 </div>
 </section>
@@ -287,39 +280,8 @@ body, html{
 <div class="content">
 <h1>MOC</h1>
 <div class="subareas">
-<div class="sub">Ingesta</div>
-<div class="sub">Archivo</div>
-<div class="sub">Replay</div>
-</div>
-</div>
-</section>
-
-<section class="slide">
-<div class="content">
-<h1>BOC</h1>
-<div class="subareas">
-<div class="sub">Continuidad</div>
-<div class="sub">Transmisión</div>
-</div>
-</div>
-</section>
-
-<section class="slide">
-<div class="content">
-<h1>GESTIÓN</h1>
-<div class="subareas">
-<div class="sub">Producción</div>
-<div class="sub">Logística</div>
-</div>
-</div>
-</section>
-
-<section class="slide">
-<div class="content">
-<h1>GFX</h1>
-<div class="subareas">
-<div class="sub">Branding</div>
-<div class="sub">Animación</div>
+<div class="sub" onclick="openPanel('Ingesta')">Ingesta</div>
+<div class="sub" onclick="openPanel('Monitoreo')">Monitoreo</div>
 </div>
 </div>
 </section>
@@ -330,76 +292,67 @@ body, html{
 </div>
 </div>
 </div>
+
+<!-- PANEL -->
+<div id="panel" class="panel"></div>
 
 <script>
 
-/* ===== FLIP ===== */
-function enter(){
-  document.getElementById("flip").classList.add("flipped");
+/* FLIP */
+function enter(){ flip.classList.add("flipped"); }
+function volver(){ flip.classList.remove("flipped"); }
+
+/* SLIDES */
+let current=0;
+const slides=document.querySelectorAll(".slide");
+
+function updateSlides(){
+slides.forEach((s,i)=>{
+s.style.transform=`translateY(${(i-current)*100}%)`;
+});
 }
+updateSlides();
 
-function volver(){
-  document.getElementById("flip").classList.remove("flipped");
-}
-
-/* ===== SLIDES ===== */
-let current = 0;
-const slides = document.querySelectorAll(".slide");
-
-function showSlide(i){
-  slides.forEach(s=>s.classList.remove("active"));
-  slides[i].classList.add("active");
-}
-
-/* ===== ENGRANAJE FÍSICA REAL ===== */
-let velocity = 0;
-let rotation = 0;
+/* GEAR FÍSICA */
+let velocity=0;
+let rotation=0;
 
 function animate(){
+rotation+=velocity;
+velocity*=0.93;
 
-  rotation += velocity;
+gear.style.transform=`rotate(${rotation}deg)`;
 
-  velocity *= 0.92; // inercia real
+const glow=Math.abs(velocity)*6;
+gear.style.filter=`drop-shadow(0 0 ${glow}px #00c8ff)`;
 
-  const gear = document.getElementById("gear");
-  const logo = document.getElementById("gearLogo");
-
-  gear.style.transform = `rotate(${rotation}deg)`;
-
-  /* brillo dinámico */
-  const glow = Math.min(Math.abs(velocity)*8, 25);
-  gear.style.filter = `drop-shadow(0 0 ${glow}px rgba(0,200,255,.7))`;
-
-  /* micro animación logo */
-  logo.style.transform = `translate(-50%,-50%) rotate(${velocity*5}deg)`;
-
-  requestAnimationFrame(animate);
+requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== SCROLL ===== */
+/* SCROLL */
 let lock=false;
 
-window.addEventListener("wheel", e=>{
+window.addEventListener("wheel",e=>{
+if(lock) return;
+lock=true;
 
-  if(lock) return;
+if(e.deltaY>0){ current++; velocity+=2; }
+else{ current--; velocity-=2; }
 
-  lock=true;
+current=Math.max(0,Math.min(current,slides.length-1));
+updateSlides();
 
-  if(e.deltaY>0){
-    current++;
-    velocity +=1.8;
-  }else{
-    current--;
-    velocity -=1.8;
-  }
-
-  current=Math.max(0,Math.min(current,slides.length-1));
-  showSlide(current);
-
-  setTimeout(()=>lock=false,600);
+setTimeout(()=>lock=false,500);
 
 },{passive:false});
+
+/* PANEL */
+function openPanel(text){
+const panel=document.getElementById("panel");
+panel.innerHTML="<h2>"+text+"</h2><p>Contenido del área...</p>";
+panel.classList.add("open");
+}
 
 </script>
 
