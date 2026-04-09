@@ -15,19 +15,7 @@ height:100%;
 overflow:hidden;
 font-family:Arial;
 background:black;
-}
-
-/* ===== STAGE ===== */
-#mtoApp{
-width:100vw;
-height:100vh;
-}
-
-.mto-stage{
-position:relative;
-width:100%;
-height:100%;
-perspective:1400px;
+color:white;
 }
 
 /* ===== FLIP ===== */
@@ -49,31 +37,31 @@ backface-visibility:hidden;
 .mto-back{ transform:rotateY(180deg); }
 
 /* ===== VIDEO ===== */
-video{
+video.bg{
+position:absolute;
 width:100%;
 height:100%;
 object-fit:cover;
+filter:brightness(.4);
 }
 
 /* ===== OVERLAY ===== */
-.mto-overlay{
+.overlay{
 position:absolute;
 inset:0;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-background:rgba(0,0,0,.5);
-color:white;
 text-align:center;
 }
 
-.mto-overlay h1{
+.overlay h1{
 font-size:2.5rem;
 letter-spacing:3px;
 }
 
-/* ===== BOTÓN ===== */
+/* ===== CTA ===== */
 .mto-cta{
 margin-top:20px;
 padding:12px 30px;
@@ -84,12 +72,7 @@ background:transparent;
 color:white;
 }
 
-/* ===== BACK ===== */
-.mto-back{
-background:#000;
-}
-
-/* ===== ENGRANAJE ===== */
+/* ===== GEAR ===== */
 #gearWrap{
 position:fixed;
 left:-120px;
@@ -139,17 +122,15 @@ position:absolute;
 bottom:-60px;
 left:50%;
 transform:translateX(-50%);
-color:white;
 font-size:14px;
 }
-.gear-hint::before{ content:"⚙️ "; }
+.gear-hint::before{content:"⚙️ ";}
 
 /* ===== SLIDES ===== */
 #slides{
 position:absolute;
 width:100%;
 height:100%;
-overflow:hidden;
 }
 
 .slide{
@@ -160,21 +141,47 @@ display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-transition:transform 1s ease, opacity 1s ease;
+transition:transform 1s ease;
 }
 
 .content{
-max-width:800px;
-color:white;
+z-index:2;
 }
 
-/* fondos */
-.slide:nth-child(1){ background:#001a40; }
-.slide:nth-child(2){ background:#0d47a1; }
-.slide:nth-child(3){ background:#4a148c; }
-.slide:nth-child(4){ background:#1b5e20; }
-.slide:nth-child(5){ background:#b71c1c; }
-.slide:nth-child(6){ background:#e65100; }
+/* ===== BROADCAST GRID ===== */
+.grid{
+position:absolute;
+width:100%;
+height:100%;
+background:
+linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+background-size:40px 40px;
+pointer-events:none;
+}
+
+/* ===== LINES ===== */
+.lines{
+position:absolute;
+width:100%;
+height:100%;
+pointer-events:none;
+}
+
+.lines::before{
+content:"";
+position:absolute;
+width:200%;
+height:2px;
+background:#00c8ff;
+animation:scan 6s linear infinite;
+opacity:.3;
+}
+
+@keyframes scan{
+0%{ transform:translateY(0); }
+100%{ transform:translateY(100vh); }
+}
 
 /* ===== SUBAREAS ===== */
 .subareas{
@@ -187,16 +194,15 @@ gap:12px;
 .sub{
 cursor:pointer;
 opacity:.7;
-transition:.4s;
+transition:.3s;
 }
-
 .sub:hover{
 opacity:1;
 transform:translateX(10px);
 color:#00c8ff;
 }
 
-/* ===== PANEL LATERAL ===== */
+/* ===== PANEL ===== */
 .panel{
 position:fixed;
 right:-400px;
@@ -204,17 +210,13 @@ top:0;
 width:400px;
 height:100%;
 background:#111;
-color:white;
 padding:30px;
 transition:.5s;
 z-index:100;
 }
+.panel.open{ right:0; }
 
-.panel.open{
-right:0;
-}
-
-/* ===== BOTÓN VOLVER ===== */
+/* ===== VOLVER ===== */
 .back-btn{
 position:fixed;
 top:20px;
@@ -232,27 +234,26 @@ cursor:pointer;
 
 <body>
 
-<div id="mtoApp">
-<div class="mto-stage">
 <div class="mto-flip" id="flip">
 
 <!-- FRONT -->
 <div class="mto-front">
-<video autoplay muted loop playsinline>
+<video class="bg" autoplay muted loop>
 <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
 </video>
 
-<div class="mto-overlay">
+<div class="overlay">
 <h1>BIENVENIDOS A OPERACIONES - CHILE</h1>
-<button class="mto-cta" onclick="enter()">Conócenos</button>
+<button class="mto-cta" onclick="flip.classList.add('flipped')">Conócenos</button>
 </div>
 </div>
 
 <!-- BACK -->
 <div class="mto-back">
 
-<button class="back-btn" onclick="volver()">Volver</button>
+<button class="back-btn" onclick="flip.classList.remove('flipped')">Volver</button>
 
+<!-- GEAR -->
 <div id="gearWrap">
 <div id="gear"></div>
 <div class="gear-core">
@@ -264,9 +265,24 @@ cursor:pointer;
 
 <div id="slides">
 
-<section class="slide"><div class="content"><h1>NUESTRAS ÁREAS</h1></div></section>
-
+<!-- 1 -->
 <section class="slide">
+<video class="bg" autoplay muted loop>
+<source src="https://www.w3schools.com/howto/rain.mp4">
+</video>
+<div class="grid"></div>
+<div class="lines"></div>
+<div class="content">
+<h1 style="color:#00c8ff">NUESTRAS ÁREAS</h1>
+</div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+<video class="bg" autoplay muted loop>
+<source src="https://www.w3schools.com/howto/forest.mp4">
+</video>
+<div class="grid"></div>
 <div class="content">
 <h1>ESTUDIOS & OUTDOOR</h1>
 <div class="subareas">
@@ -276,7 +292,12 @@ cursor:pointer;
 </div>
 </section>
 
+<!-- 3 -->
 <section class="slide">
+<video class="bg" autoplay muted loop>
+<source src="https://www.w3schools.com/howto/matrix.mp4">
+</video>
+<div class="grid"></div>
 <div class="content">
 <h1>MOC</h1>
 <div class="subareas">
@@ -290,67 +311,53 @@ cursor:pointer;
 
 </div>
 </div>
-</div>
-</div>
 
-<!-- PANEL -->
 <div id="panel" class="panel"></div>
 
 <script>
-
-/* FLIP */
-function enter(){ flip.classList.add("flipped"); }
-function volver(){ flip.classList.remove("flipped"); }
 
 /* SLIDES */
 let current=0;
 const slides=document.querySelectorAll(".slide");
 
-function updateSlides(){
+function update(){
 slides.forEach((s,i)=>{
 s.style.transform=`translateY(${(i-current)*100}%)`;
 });
 }
-updateSlides();
+update();
 
-/* GEAR FÍSICA */
-let velocity=0;
-let rotation=0;
+/* GEAR */
+let v=0,r=0;
 
-function animate(){
-rotation+=velocity;
-velocity*=0.93;
-
-gear.style.transform=`rotate(${rotation}deg)`;
-
-const glow=Math.abs(velocity)*6;
-gear.style.filter=`drop-shadow(0 0 ${glow}px #00c8ff)`;
-
-requestAnimationFrame(animate);
+function anim(){
+r+=v;
+v*=0.94;
+gear.style.transform=`rotate(${r}deg)`;
+requestAnimationFrame(anim);
 }
-animate();
+anim();
 
 /* SCROLL */
 let lock=false;
 
 window.addEventListener("wheel",e=>{
-if(lock) return;
+if(lock)return;
 lock=true;
 
-if(e.deltaY>0){ current++; velocity+=2; }
-else{ current--; velocity-=2; }
+if(e.deltaY>0){current++;v+=2;}
+else{current--;v-=2;}
 
 current=Math.max(0,Math.min(current,slides.length-1));
-updateSlides();
+update();
 
 setTimeout(()=>lock=false,500);
 
 },{passive:false});
 
 /* PANEL */
-function openPanel(text){
-const panel=document.getElementById("panel");
-panel.innerHTML="<h2>"+text+"</h2><p>Contenido del área...</p>";
+function openPanel(t){
+panel.innerHTML=`<h2>${t}</h2><p>Contenido real aquí...</p>`;
 panel.classList.add("open");
 }
 
