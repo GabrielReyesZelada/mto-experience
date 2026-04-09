@@ -118,6 +118,49 @@ body, html{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
+/* 🔥 CORE DEL ENGRANAJE */
+.gear-core{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:180px;
+  height:180px;
+}
+
+/* metal */
+.gear-core-metal{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background: radial-gradient(circle,
+    #ffffff 0%,
+    #d0d0d0 25%,
+    #888 50%,
+    #333 75%,
+    #111 100%
+  );
+  box-shadow:
+    inset 0 6px 12px rgba(255,255,255,.8),
+    inset 0 -12px 25px rgba(0,0,0,.9);
+}
+
+/* logo */
+.gear-logo{
+  position:absolute;
+  width:90px;
+  height:90px;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
+  filter:
+    grayscale(1)
+    contrast(2)
+    brightness(.7)
+    drop-shadow(0 0 10px rgba(0,200,255,.5));
+}
+
 /* HINT */
 .gear-hint{
   position:absolute;
@@ -141,7 +184,7 @@ body, html{
   text-align:center;
 }
 
-/* COLORES POR ÁREA */
+/* COLORES */
 .slide:nth-child(1){ background:#001a40; }
 .slide:nth-child(2){ background:#0d47a1; }
 .slide:nth-child(3){ background:#4a148c; }
@@ -198,6 +241,13 @@ h1{
 
 <div id="gearWrap">
   <div id="gear"></div>
+
+  <!-- 🔥 CENTRO -->
+  <div class="gear-core">
+    <div class="gear-core-metal"></div>
+    <div class="gear-logo"></div>
+  </div>
+
   <div class="gear-hint">⚙️ Usa la rueda</div>
 </div>
 
@@ -281,7 +331,7 @@ function volver(){
   updateScroll();
 }
 
-/* SCROLL CONTROLADO */
+/* SCROLL */
 let current = 0;
 let scrollY = 0;
 const slides = document.querySelectorAll(".slide");
@@ -291,7 +341,7 @@ function updateScroll(){
     `translateY(-${scrollY}px)`;
 }
 
-/* ENGRANAJE INERCIA REAL */
+/* ENGRANAJE */
 let velocity = 0;
 let rotation = 0;
 
