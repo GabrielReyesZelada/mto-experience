@@ -240,6 +240,65 @@ h1{
   cursor:pointer;
 }
 
+/* ===== ENERGÍA BOTÓN ===== */
+
+.energy-burst{
+  position:absolute;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(0,200,255,.9), transparent 70%);
+  opacity:0;
+  transform:scale(0);
+  pointer-events:none;
+}
+
+/* expansión */
+.energy-burst.active{
+  animation:burst 0.8s ease-out forwards;
+}
+
+@keyframes burst{
+  0%{
+    opacity:1;
+    transform:scale(0);
+  }
+  70%{
+    opacity:.6;
+    transform:scale(25);
+  }
+  100%{
+    opacity:0;
+    transform:scale(40);
+  }
+}
+
+/* glow botón activo */
+.mto-cta.active{
+  box-shadow:
+    0 0 40px rgba(0,200,255,.9),
+    0 0 80px rgba(0,200,255,.6);
+}
+
+/* ===== ACTIVACIÓN ENGRANAJE ===== */
+.gear-activate{
+  animation:gearKick 0.6s ease-out;
+}
+
+@keyframes gearKick{
+  0%{ transform:scale(0.9) rotate(0deg); }
+  50%{ transform:scale(1.05) rotate(20deg); }
+  100%{ transform:scale(1) rotate(0deg); }
+}
+
+/* glow centro */
+.gear-core.active{
+  box-shadow:
+    inset 0 8px 20px rgba(255,255,255,.8),
+    inset 0 -15px 30px rgba(0,0,0,1),
+    0 0 60px rgba(0,200,255,.6);
+}
+
 </style>
 </head>
 
@@ -258,6 +317,8 @@ h1{
 <button class="mto-cta" onclick="enter()">Conócenos</button>
 </div>
 </div>
+
+<div class="energy-burst" id="energyBurst"></div>
 
 <!-- BACK -->
 <div class="mto-back">
@@ -373,11 +434,35 @@ h1{
 
 /* ===== FLIP ===== */
 function enter(){
-  velocity=6;
-  document.getElementById("video").style.transform="scale(1)";
+
+  const btn = document.querySelector(".mto-cta");
+  const burst = document.getElementById("energyBurst");
+  const gear = document.getElementById("gear");
+  const core = document.querySelector(".gear-core");
+
+  // activar botón
+  btn.classList.add("active");
+
+  // posicionar burst en botón
+  const rect = btn.getBoundingClientRect();
+  burst.style.left = rect.left + rect.width/2 + "px";
+  burst.style.top = rect.top + rect.height/2 + "px";
+
+  burst.classList.add("active");
+
+  // activar engranaje
+  setTimeout(()=>{
+    gear.classList.add("gear-activate");
+    core.classList.add("active");
+
+    velocity += 2.5; // 🔥 impulso inicial real
+
+  },200);
+
+  // flip final
   setTimeout(()=>{
     document.getElementById("flip").classList.add("flipped");
-  },300);
+  },900);
 }
 
 function volver(){
