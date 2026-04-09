@@ -440,29 +440,23 @@ function enter(){
 
   const btn = document.querySelector(".mto-cta");
   const burst = document.getElementById("energyBurst");
-  const gear = document.getElementById("gear");
+  const gearEl = document.getElementById("gear");
   const core = document.querySelector(".gear-core");
 
-  // activar botón
   btn.classList.add("active");
 
-  // posicionar burst en botón
   const rect = btn.getBoundingClientRect();
   burst.style.left = rect.left + rect.width/2 + "px";
   burst.style.top = rect.top + rect.height/2 + "px";
 
   burst.classList.add("active");
 
-  // activar engranaje
   setTimeout(()=>{
-    gear.classList.add("gear-activate");
+    gearEl.classList.add("gear-activate");
     core.classList.add("active");
-
-    velocity += 2.5; // 🔥 impulso inicial real
-
+    velocity += 2.5;
   },200);
 
-  // flip final
   setTimeout(()=>{
     document.getElementById("flip").classList.add("flipped");
   },900);
@@ -472,55 +466,61 @@ function volver(){
   document.getElementById("flip").classList.remove("flipped");
 }
 
-/* ===== SCROLL PRO (SUAVE + ESTABLE) ===== */
+/* ===== SCROLL SUAVE ===== */
 
 let current = 0;
 const slides = document.querySelectorAll(".slide");
-let isScrolling = false;
-
-function update(){
 let scrollAccumulator = 0;
 const SCROLL_THRESHOLD = 80;
 
+function update(){
+  document.getElementById("slides").style.transform =
+    `translateY(-${current * 100}vh)`;
+}
+
 window.addEventListener("wheel", e=>{
 
-  // acumulamos intención de scroll
   scrollAccumulator += e.deltaY;
 
-  // energía engranaje 🔥
+  // engranaje
   velocity += e.deltaY * 0.015;
 
   if(Math.abs(scrollAccumulator) < SCROLL_THRESHOLD) return;
 
-  // dirección
   if(scrollAccumulator > 0){
     current++;
   } else {
     current--;
   }
 
-  // reset acumulador
   scrollAccumulator = 0;
 
-  // límites
   current = Math.max(0, Math.min(current, slides.length - 1));
 
   update();
 
 },{ passive:true });
-  
+
 /* ===== ENGRANAJE ===== */
-let velocity=0;
-let rotation=0;
+
+let velocity = 0;
+let rotation = 0;
+const gear = document.getElementById("gear");
 
 function animate(){
-  rotation+=velocity;
-  velocity*=0.95;
+  rotation += velocity;
+  velocity *= 0.95;
+
+  if(gear){
+    gear.style.transform = `rotate(${rotation}deg)`;
+  }
+
   requestAnimationFrame(animate);
 }
 animate();
 
 /* ===== PANEL ===== */
+
 document.querySelectorAll(".bubble").forEach(b=>{
   b.onclick=()=>{
     document.getElementById("panel").classList.add("active");
@@ -534,6 +534,5 @@ function closePanel(){
 }
 
 </script>
-
 </body>
 </html>
