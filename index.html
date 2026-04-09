@@ -469,17 +469,24 @@ function volver(){
   document.getElementById("flip").classList.remove("flipped");
 }
 
-/* ===== CONTROL PRO SCROLL ===== */
+/* ===== SCROLL PRO (SUAVE + ESTABLE) ===== */
+
+let current = 0;
+const slides = document.querySelectorAll(".slide");
 let isScrolling = false;
+
+function update(){
+  document.getElementById("slides").style.transform =
+    `translateY(-${current * 100}vh)`;
+}
 
 window.addEventListener("wheel", e=>{
 
-  // evita spam de eventos
   if(isScrolling) return;
 
   isScrolling = true;
 
-  // energía del engranaje (se mantiene 🔥)
+  // energía engranaje 🔥
   velocity += e.deltaY * 0.015;
 
   // dirección
@@ -488,19 +495,22 @@ window.addEventListener("wheel", e=>{
   } else {
     current--;
   }
-  },{ passive: true });
 
   // límites
   current = Math.max(0, Math.min(current, slides.length - 1));
 
   update();
 
-  // 🔥 tiempo EXACTO de transición
   setTimeout(()=>{
     isScrolling = false;
-  }, 900); // ligeramente menor al CSS (1s)
+  }, 850);
+
+},{ passive:true });
+
+#slides{
+  will-change: transform;
+}
   
-});
 /* ===== ENGRANAJE ===== */
 let velocity=0;
 let rotation=0;
@@ -512,17 +522,6 @@ function animate(){
   requestAnimationFrame(animate);
 }
 animate();
-
-/* ===== CONTROL ===== */
-window.addEventListener("wheel", e=>{
-  velocity+=e.deltaY*0.01;
-
-  if(e.deltaY>0) current++;
-  else current--;
-
-  current=Math.max(0,Math.min(current,slides.length-1));
-  update();
-});
 
 /* ===== PANEL ===== */
 document.querySelectorAll(".bubble").forEach(b=>{
