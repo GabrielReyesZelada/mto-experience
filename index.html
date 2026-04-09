@@ -320,12 +320,79 @@ h1{
     0 0 60px rgba(0,200,255,.6);
 }
 
+/* ===== PARTICULAS ===== */
+#particles{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:rgba(0,200,255,.9);
+  box-shadow:0 0 10px rgba(0,200,255,.8);
+  opacity:0;
+}
+
+/* animación hacia engranaje */
+@keyframes flyToGear{
+  0%{
+    opacity:1;
+    transform:translate(0,0) scale(1);
+  }
+  100%{
+    opacity:0;
+    transform:translate(var(--tx), var(--ty)) scale(0.3);
+  }
+}
+
+/* ===== FLASH LUZ ===== */
+.gear-light{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:conic-gradient(
+    transparent,
+    rgba(0,200,255,.8),
+    transparent
+  );
+  opacity:0;
+  mix-blend-mode:screen;
+}
+
+.gear-light.active{
+  animation:spinLight 1.2s linear;
+}
+
+@keyframes spinLight{
+  0%{ opacity:1; transform:rotate(0deg); }
+  100%{ opacity:0; transform:rotate(360deg); }
+}
+
+/* ===== SHAKE SUTIL ===== */
+.shake{
+  animation:shake .3s ease;
+}
+
+@keyframes shake{
+  0%{ transform:translate(0,0); }
+  25%{ transform:translate(2px,-2px); }
+  50%{ transform:translate(-2px,2px); }
+  75%{ transform:translate(2px,2px); }
+  100%{ transform:translate(0,0); }
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="mto-flip" id="flip">
+<audio id="metalSound" src="https://assets.mixkit.co/active_storage/sfx/2001/2001-preview.mp3"></audio>
 
 <!-- FRONT -->
 <div class="mto-front">
@@ -337,6 +404,7 @@ h1{
 <h1>BIENVENIDOS A OPERACIONES</h1>
 <button class="mto-cta" onclick="enter()">Conócenos</button>
 <div class="energy-burst" id="energyBurst"></div>
+<div id="particles"></div>
 </div>
 </div>
 
@@ -389,34 +457,75 @@ function enter(){
 
   const btn = document.querySelector(".mto-cta");
   const burst = document.getElementById("energyBurst");
+  const particlesWrap = document.getElementById("particles");
   const gear = document.getElementById("gear");
   const core = document.querySelector(".gear-core");
+  const sound = document.getElementById("metalSound");
 
-  // activar botón
+  /* ===== SONIDO ===== */
+  sound.currentTime = 0;
+  sound.volume = 0.4;
+  sound.play();
+
+  /* ===== BOTÓN ACTIVO ===== */
   btn.classList.add("active");
 
-  // posicionar burst en botón
+  /* ===== BURST ===== */
   const rect = btn.getBoundingClientRect();
   burst.style.left = rect.left + rect.width/2 + "px";
   burst.style.top = rect.top + rect.height/2 + "px";
-
   burst.classList.add("active");
 
-  // activar engranaje
+  /* ===== SHAKE ===== */
+  document.body.classList.add("shake");
+  setTimeout(()=>document.body.classList.remove("shake"),300);
+
+  /* ===== PARTICULAS ===== */
+  const gearRect = document.getElementById("gearWrap").getBoundingClientRect();
+
+  for(let i=0;i<25;i++){
+    const p = document.createElement("div");
+    p.className = "particle";
+
+    // posición inicial (botón)
+    p.style.left = rect.left + rect.width/2 + "px";
+    p.style.top = rect.top + rect.height/2 + "px";
+
+    // destino (engranahe)
+    const tx = (gearRect.left + gearRect.width/2) - (rect.left + rect.width/2);
+    const ty = (gearRect.top + gearRect.height/2) - (rect.top + rect.height/2);
+
+    p.style.setProperty("--tx", tx + "px");
+    p.style.setProperty("--ty", ty + "px");
+
+    p.style.animation = `flyToGear ${0.6 + Math.random()*0.4}s ease-out forwards`;
+
+    particlesWrap.appendChild(p);
+
+    setTimeout(()=>p.remove(),1000);
+  }
+
+  /* ===== ACTIVACIÓN ENGRANAJE ===== */
   setTimeout(()=>{
     gear.classList.add("gear-activate");
     core.classList.add("active");
 
-    velocity += 2.5; // 🔥 impulso inicial real
+    velocity += 3; // impulso fuerte pero elegante
 
-  },200);
+    /* luz */
+    const light = document.createElement("div");
+    light.className = "gear-light active";
+    document.getElementById("gearWrap").appendChild(light);
 
-  // flip final
+    setTimeout(()=>light.remove(),1200);
+
+  },250);
+
+  /* ===== FLIP FINAL ===== */
   setTimeout(()=>{
     document.getElementById("flip").classList.add("flipped");
-  },900);
+  },1100);
 }
-
 /* SCROLL */
 let current=0;
 const slides=document.querySelectorAll(".slide");
