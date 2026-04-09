@@ -52,6 +52,46 @@ video{
   color:white;
 }
 
+/* ===== BOTÓN PRO 🔥 ===== */
+.mto-cta{
+  margin-top:25px;
+  padding:14px 34px;
+  border-radius:40px;
+
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.4);
+
+  color:white;
+  font-size:14px;
+  letter-spacing:1px;
+
+  cursor:pointer;
+  backdrop-filter:blur(8px);
+
+  transition:all .35s cubic-bezier(.22,1,.36,1);
+
+  box-shadow:
+    0 0 0 rgba(0,200,255,0),
+    inset 0 0 0 rgba(255,255,255,0);
+}
+
+/* HOVER */
+.mto-cta:hover{
+  background:rgba(0,200,255,0.15);
+  border:1px solid rgba(0,200,255,0.6);
+
+  transform:translateY(-2px) scale(1.05);
+
+  box-shadow:
+    0 0 20px rgba(0,200,255,.4),
+    inset 0 0 10px rgba(255,255,255,.2);
+}
+
+/* CLICK */
+.mto-cta:active{
+  transform:scale(0.97);
+}
+
 /* ===== BACK ===== */
 .mto-back{ background:#000; }
 
@@ -72,7 +112,7 @@ video{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
-/* ===== CORE PREMIUM ===== */
+/* ===== CORE ===== */
 .gear-core{
   position:absolute;
   top:50%;
@@ -95,7 +135,8 @@ video{
   position:absolute;
   inset:0;
   border-radius:50%;
-  background:radial-gradient(circle at 30% 30%, #fff, #ccc, #666, #111);
+  background:
+    radial-gradient(circle at 30% 30%, #fff, #bbb 30%, #555 60%, #111);
 }
 
 .gear-logo{
@@ -103,7 +144,6 @@ video{
   width:95px;
   height:95px;
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
-
   filter:brightness(0) invert(1) drop-shadow(0 0 6px rgba(0,200,255,.6));
 }
 
@@ -144,23 +184,30 @@ h1{
   gap:40px;
   flex-wrap:wrap;
   justify-content:center;
-  perspective:1000px;
 }
 
+/* burbujas */
 .bubble{
   width:160px;
   height:160px;
   border-radius:50%;
   overflow:hidden;
   position:relative;
+
   background-size:cover;
   background-position:center;
+
   box-shadow:0 20px 40px rgba(0,0,0,.5);
-  transform-style:preserve-3d;
-  transition:.2s;
+
+  transition:.3s;
   cursor:pointer;
 }
 
+.bubble:hover{
+  transform:scale(1.1);
+}
+
+/* overlay */
 .bubble::after{
   content:attr(data-name);
   position:absolute;
@@ -226,26 +273,24 @@ h1{
 <video autoplay muted loop>
 <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
 </video>
+
 <div class="mto-overlay">
 <h1>BIENVENIDOS A OPERACIONES</h1>
-<button onclick="enter()">Conócenos</button>
+<button class="mto-cta" onclick="enter()">Conócenos</button>
 </div>
 </div>
 
 <!-- BACK -->
 <div class="mto-back">
 
-<!-- ENGRANAJE -->
 <div id="gearWrap">
   <div id="gear"></div>
-
   <div class="gear-core">
     <div class="gear-core-metal"></div>
     <div class="gear-logo"></div>
   </div>
 </div>
 
-<!-- SLIDES -->
 <div id="slides">
 
 <section class="slide">
@@ -254,17 +299,13 @@ h1{
 
 <section class="slide">
 <h1>ESTUDIOS & OUTDOOR</h1>
-
 <div class="subareas">
 
 <div class="bubble" data-name="Cámara" data-img="https://images.unsplash.com/photo-1492724441997-5dc865305da7"></div>
-
 <div class="bubble" data-name="Iluminación" data-img="https://images.unsplash.com/photo-1504384308090-c894fdcc538d"></div>
-
 <div class="bubble" data-name="Audio" data-img="https://images.unsplash.com/photo-1511379938547-c1f69419868d"></div>
 
 </div>
-
 </section>
 
 </div>
@@ -283,16 +324,12 @@ h1{
 
 <script>
 
-/* ===== INIT ===== */
-const gear = document.getElementById("gear");
-const logo = document.querySelector(".gear-logo");
-
-/* ===== FLIP ===== */
+/* FLIP */
 function enter(){
   document.getElementById("flip").classList.add("flipped");
 }
 
-/* ===== SLIDES ===== */
+/* SCROLL */
 let current=0;
 const slides=document.querySelectorAll(".slide");
 
@@ -301,23 +338,17 @@ function update(){
     `translateY(-${current*100}vh)`;
 }
 
-/* ===== ENGRANAJE FÍSICO ===== */
-let velocity=0, rotation=0;
+/* ENGRANAJE */
+let velocity=0,rotation=0;
 
 function animate(){
   rotation+=velocity;
   velocity*=0.94;
-
-  gear.style.transform=`rotate(${rotation}deg)`;
-
-  /* 🔥 logo no rota (premium) */
-  logo.style.transform=`rotate(${-rotation}deg)`;
-
+  document.getElementById("gear").style.transform=`rotate(${rotation}deg)`;
   requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== SCROLL ===== */
 window.addEventListener("wheel", e=>{
   velocity+=e.deltaY*0.008;
 
@@ -328,39 +359,16 @@ window.addEventListener("wheel", e=>{
   update();
 });
 
-/* ===== BURBUJAS ===== */
+/* PANEL */
 document.querySelectorAll(".bubble").forEach(b=>{
-
-  /* cargar imagen */
-  b.style.backgroundImage = `url(${b.dataset.img})`;
-
-  b.addEventListener("mousemove", e=>{
-    const rect=b.getBoundingClientRect();
-    const x=e.clientX-rect.left;
-    const y=e.clientY-rect.top;
-
-    const rotateY=(x/rect.width-0.5)*20;
-    const rotateX=(y/rect.height-0.5)*-20;
-
-    b.style.transform=`rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.1)`;
-  });
-
-  b.addEventListener("mouseleave", ()=>{
-    b.style.transform="rotateX(0) rotateY(0) scale(1)";
-  });
-
   b.addEventListener("click", ()=>{
     document.getElementById("panel").classList.add("active");
-
     document.querySelector(".panel-img").style.backgroundImage =
       `url(${b.dataset.img})`;
-
     document.getElementById("pTitle").innerText = b.dataset.name;
   });
-
 });
 
-/* ===== CLOSE ===== */
 function closePanel(){
   document.getElementById("panel").classList.remove("active");
 }
