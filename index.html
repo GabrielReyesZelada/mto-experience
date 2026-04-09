@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MT&O Experience</title>
+<title>MT&O Experience PRO</title>
 
 <style>
 
@@ -52,22 +52,6 @@ video{
   color:white;
 }
 
-.mto-logo{
-  width:320px;
-  height:140px;
-  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
-  margin:20px 0;
-}
-
-.mto-cta{
-  padding:14px 30px;
-  border:1px solid white;
-  border-radius:30px;
-  background:transparent;
-  color:white;
-  cursor:pointer;
-}
-
 /* ===== BACK ===== */
 .mto-back{ background:#000; }
 
@@ -85,7 +69,7 @@ video{
 #gear{
   width:100%;
   height:100%;
-  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png") center/contain no-repeat;
 }
 
 /* ===== SLIDES ===== */
@@ -118,13 +102,14 @@ h1{
   color:#fff;
 }
 
-/* ===== SUBAREAS PREMIUM ===== */
+/* ===== SUBAREAS PRO ===== */
 .subareas{
   margin-top:40px;
   display:flex;
-  gap:30px;
+  gap:40px;
   flex-wrap:wrap;
   justify-content:center;
+  perspective:1000px;
 }
 
 /* burbuja */
@@ -138,27 +123,30 @@ h1{
   background-size:cover;
   background-position:center;
 
-  box-shadow:0 10px 30px rgba(0,0,0,.5);
+  box-shadow:0 20px 40px rgba(0,0,0,.5);
 
-  transform:translateY(40px) scale(.9);
-  opacity:0;
+  transform-style:preserve-3d;
+  transition:.2s;
 
-  transition:all .6s ease;
+  cursor:pointer;
 }
 
-/* entrada */
-.slide.active .bubble{
-  transform:translateY(0) scale(1);
+/* glow */
+.bubble::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  box-shadow:0 0 25px rgba(0,200,255,.6);
+  opacity:0;
+  transition:.3s;
+}
+
+.bubble:hover::before{
   opacity:1;
 }
 
-/* delays */
-.bubble:nth-child(1){ transition-delay:.2s;}
-.bubble:nth-child(2){ transition-delay:.35s;}
-.bubble:nth-child(3){ transition-delay:.5s;}
-.bubble:nth-child(4){ transition-delay:.65s;}
-
-/* hover reveal */
+/* overlay nombre */
 .bubble::after{
   content:attr(data-name);
   position:absolute;
@@ -166,40 +154,49 @@ h1{
   display:flex;
   align-items:center;
   justify-content:center;
-
-  background:rgba(0,0,0,.6);
+  background:rgba(0,0,0,.5);
   color:white;
-
   opacity:0;
-  transition:.4s;
+  transition:.3s;
 }
 
 .bubble:hover::after{
   opacity:1;
 }
 
-/* flotación */
-@keyframes float{
-  0%{ transform:translateY(0);}
-  50%{ transform:translateY(-10px);}
-  100%{ transform:translateY(0);}
-}
-
-.bubble{
-  animation:float 5s ease-in-out infinite;
-}
-
-/* ===== BOTÓN VOLVER ===== */
-.back-btn{
+/* ===== PANEL NETFLIX ===== */
+#panel{
   position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
+  opacity:0;
+  pointer-events:none;
+  transition:.5s;
+  z-index:999;
+}
+
+#panel.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.panel-img{
+  flex:1;
+  background-size:cover;
+  background-position:center;
+}
+
+.panel-content{
+  flex:1;
+  padding:60px;
+  color:white;
+}
+
+.close{
+  position:absolute;
   top:20px;
   right:20px;
-  z-index:60;
-  padding:10px 20px;
-  border:1px solid white;
-  border-radius:20px;
-  background:transparent;
-  color:white;
   cursor:pointer;
 }
 
@@ -210,116 +207,123 @@ h1{
 
 <div class="mto-flip" id="flip">
 
-<!-- FRONT -->
 <div class="mto-front">
 <video autoplay muted loop>
 <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
 </video>
-
 <div class="mto-overlay">
 <h1>BIENVENIDOS A OPERACIONES</h1>
-<div class="mto-logo"></div>
-<button class="mto-cta" onclick="enter()">Conócenos</button>
+<button onclick="enter()">Conócenos</button>
 </div>
 </div>
 
-<!-- BACK -->
 <div class="mto-back">
 
-<button class="back-btn" onclick="volver()">Volver</button>
-
-<div id="gearWrap">
-  <div id="gear"></div>
-</div>
+<div id="gearWrap"><div id="gear"></div></div>
 
 <div id="slides">
 
-<section class="slide active">
-<h1>NUESTRAS ÁREAS</h1>
-</section>
+<section class="slide"><h1>NUESTRAS ÁREAS</h1></section>
 
 <section class="slide">
 <h1>ESTUDIOS & OUTDOOR</h1>
 <div class="subareas">
-<div class="bubble" data-name="Cámara" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7')"></div>
-<div class="bubble" data-name="Iluminación" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d')"></div>
-<div class="bubble" data-name="Audio" style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d')"></div>
+
+<div class="bubble" data-name="Cámara" data-img="https://images.unsplash.com/photo-1492724441997-5dc865305da7"></div>
+
+<div class="bubble" data-name="Iluminación" data-img="https://images.unsplash.com/photo-1504384308090-c894fdcc538d"></div>
+
+<div class="bubble" data-name="Audio" data-img="https://images.unsplash.com/photo-1511379938547-c1f69419868d"></div>
+
 </div>
 </section>
 
-<section class="slide">
-<h1>MOC</h1>
-<div class="subareas">
-<div class="bubble" data-name="Ingesta"></div>
-<div class="bubble" data-name="Archivo"></div>
-<div class="bubble" data-name="Replay"></div>
-</div>
-</section>
-
-<section class="slide"><h1>BOC</h1></section>
-<section class="slide"><h1>GESTIÓN</h1></section>
-<section class="slide"><h1>GFX</h1></section>
-
 </div>
 
 </div>
+</div>
+
+<!-- PANEL -->
+<div id="panel">
+  <div class="panel-img"></div>
+  <div class="panel-content">
+    <div class="close" onclick="closePanel()">✕</div>
+    <h1 id="pTitle"></h1>
+    <p id="pDesc">Contenido del área...</p>
+  </div>
 </div>
 
 <script>
 
-/* ===== CONTROL ===== */
+/* FLIP */
 function enter(){
   document.getElementById("flip").classList.add("flipped");
 }
 
-function volver(){
-  document.getElementById("flip").classList.remove("flipped");
-}
-
-/* ===== SLIDES ===== */
+/* SCROLL */
 let current=0;
 const slides=document.querySelectorAll(".slide");
 
 function update(){
   document.getElementById("slides").style.transform =
     `translateY(-${current*100}vh)`;
-
-  slides.forEach(s=>s.classList.remove("active"));
-  slides[current].classList.add("active");
 }
 
-/* ===== ENGRANAJE ===== */
-let velocity=0;
-let rotation=0;
+/* ENGRANAJE */
+let velocity=0,rotation=0;
 
 function animate(){
   rotation+=velocity;
   velocity*=0.94;
-  document.getElementById("gear").style.transform =
-    `rotate(${rotation}deg)`;
+  gear.style.transform=`rotate(${rotation}deg)`;
   requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== SCROLL ===== */
-let lock=false;
-
 window.addEventListener("wheel", e=>{
-  if(lock) return;
-  lock=true;
-
-  velocity += e.deltaY * 0.008;
+  velocity+=e.deltaY*0.008;
 
   if(e.deltaY>0) current++;
   else current--;
 
   current=Math.max(0,Math.min(current,slides.length-1));
-
   update();
+});
 
-  setTimeout(()=>lock=false,500);
+/* ===== 3D INTERACTION ===== */
+document.querySelectorAll(".bubble").forEach(b=>{
 
-},{passive:false});
+  b.addEventListener("mousemove", e=>{
+    const rect=b.getBoundingClientRect();
+    const x=e.clientX-rect.left;
+    const y=e.clientY-rect.top;
+
+    const rotateY=(x/rect.width-0.5)*20;
+    const rotateX=(y/rect.height-0.5)*-20;
+
+    b.style.transform=`rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.1)`;
+  });
+
+  b.addEventListener("mouseleave", ()=>{
+    b.style.transform="rotateX(0) rotateY(0) scale(1)";
+  });
+
+  /* CLICK PANEL */
+  b.addEventListener("click", ()=>{
+    document.getElementById("panel").classList.add("active");
+
+    document.querySelector(".panel-img").style.backgroundImage =
+      `url(${b.dataset.img})`;
+
+    document.getElementById("pTitle").innerText = b.dataset.name;
+  });
+
+});
+
+/* CLOSE */
+function closePanel(){
+  document.getElementById("panel").classList.remove("active");
+}
 
 </script>
 
