@@ -386,6 +386,65 @@ h1{
   100%{ transform:translate(0,0); }
 }
 
+/* ===== AMBIENTE VIVO ===== */
+#ambientParticles{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+
+.ambient-dot{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:rgba(0,200,255,.4);
+  border-radius:50%;
+  animation:float 12s linear infinite;
+}
+
+@keyframes float{
+  from{ transform:translateY(100vh); opacity:0; }
+  10%{ opacity:.6; }
+  90%{ opacity:.6; }
+  to{ transform:translateY(-10vh); opacity:0; }
+}
+
+/* ===== LOGO VIVO ===== */
+.gear-logo{
+  animation:logoPulse 3s ease-in-out infinite;
+}
+
+@keyframes logoPulse{
+  0%,100%{ filter:brightness(1) drop-shadow(0 0 5px rgba(0,200,255,.4)); }
+  50%{ filter:brightness(1.3) drop-shadow(0 0 15px rgba(0,200,255,.8)); }
+}
+
+/* ===== PARALLAX ===== */
+#gearWrap{
+  transition:transform .2s ease-out;
+}
+
+/* ===== PORTAL TRANSITION ===== */
+.portal{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle, rgba(0,200,255,.3), black 70%);
+  opacity:0;
+  pointer-events:none;
+  z-index:999;
+}
+
+.portal.active{
+  animation:portalOpen .9s ease forwards;
+}
+
+@keyframes portalOpen{
+  0%{ opacity:0; transform:scale(0.8); }
+  50%{ opacity:1; }
+  100%{ opacity:0; transform:scale(1.5); }
+}
+
 </style>
 </head>
 
@@ -399,6 +458,10 @@ h1{
 <video autoplay muted loop>
 <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
 </video>
+
+<div id="ambientParticles"></div>
+
+<audio id="ambientSound" loop src="https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3"></audio>
 
 <div class="mto-overlay">
 <h1>BIENVENIDOS A OPERACIONES</h1>
@@ -450,10 +513,22 @@ h1{
   </div>
 </div>
 
+<div class="portal" id="portal"></div>
+
 <script>
 
+const portal = document.getElementById("portal");
+
+setTimeout(()=>{
+  portal.classList.add("active");
+},500);
+  
 /* FLIP */
 function enter(){
+
+const ambientSound = document.getElementById("ambientSound");
+ambientSound.volume = 0.2;
+ambientSound.play();
 
   const btn = document.querySelector(".mto-cta");
   const burst = document.getElementById("energyBurst");
@@ -521,6 +596,18 @@ function enter(){
 
   },250);
 
+  const ambient = document.getElementById("ambientParticles");
+
+for(let i=0;i<40;i++){
+  const dot = document.createElement("div");
+  dot.className = "ambient-dot";
+
+  dot.style.left = Math.random()*100 + "vw";
+  dot.style.animationDuration = (8 + Math.random()*10) + "s";
+
+  ambient.appendChild(dot);
+}
+
   /* ===== FLIP FINAL ===== */
   setTimeout(()=>{
     document.getElementById("flip").classList.add("flipped");
@@ -554,6 +641,14 @@ window.addEventListener("wheel", e=>{
 
   current=Math.max(0,Math.min(current,slides.length-1));
   update();
+});
+
+document.addEventListener("mousemove", e=>{
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+  document.getElementById("gearWrap").style.transform =
+    `translateY(-50%) translate(${x}px, ${y}px)`;
 });
 
 /* PANEL */
