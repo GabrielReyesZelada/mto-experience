@@ -7,249 +7,282 @@
 
 <style>
 
-/* ===== BASE ===== */
+/* ===== RESET ===== */
 body,html{
-margin:0;
-padding:0;
-height:100%;
-overflow:hidden;
-font-family:Segoe UI, Arial;
-background:black;
-color:white;
+  margin:0;
+  padding:0;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial, sans-serif;
+  background:black;
+}
+
+/* ===== APP ===== */
+#mtoApp{
+  width:100vw;
+  height:100vh;
+}
+
+/* ===== STAGE ===== */
+.mto-stage{
+  position:relative;
+  width:100%;
+  height:100%;
+  perspective:1200px;
 }
 
 /* ===== FLIP ===== */
 .mto-flip{
-width:100%;
-height:100%;
-position:absolute;
-transform-style:preserve-3d;
-transition:1s;
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  transition:1s;
 }
-.flipped{ transform:rotateY(180deg); }
+.mto-flip.flipped{
+  transform:rotateY(180deg);
+}
 
+/* ===== CARAS ===== */
 .mto-front,.mto-back{
-position:absolute;
-width:100%;
-height:100%;
-backface-visibility:hidden;
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
 }
-.mto-back{ transform:rotateY(180deg); }
+.mto-back{
+  transform:rotateY(180deg);
+}
 
 /* ===== VIDEO ===== */
-video.bg{
-position:absolute;
-width:100%;
-height:100%;
-object-fit:cover;
-filter:brightness(.35);
+.mto-front video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
 /* ===== OVERLAY ===== */
-.overlay{
-position:absolute;
-inset:0;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
+.mto-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.5);
+  color:white;
+  text-align:center;
 }
 
-.overlay h1{
-font-size:2.8rem;
-letter-spacing:3px;
-margin-bottom:10px;
+/* 🔥 TITULO RESTAURADO */
+.mto-overlay h1{
+  font-size:2.2rem;
+  letter-spacing:2px;
 }
 
-.overlay p{
-opacity:.8;
+/* LOGO */
+.mto-logo{
+  width:300px;
+  height:120px;
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
+  margin:20px 0;
 }
 
-/* ===== CTA ===== */
+/* BOTÓN */
 .mto-cta{
-margin-top:25px;
-padding:14px 32px;
-border:1px solid #00c8ff;
-border-radius:30px;
-background:transparent;
-color:#00c8ff;
-cursor:pointer;
+  padding:12px 28px;
+  border:1px solid white;
+  border-radius:30px;
+  background:transparent;
+  color:white;
+  cursor:pointer;
 }
 
-/* ===== GEAR ===== */
+/* BACK */
+.mto-back{
+  background:#000;
+}
+
+/* ===== ENGRANAJE ===== */
 #gearWrap{
-position:fixed;
-left:-120px;
-top:50%;
-transform:translateY(-50%);
-width:520px;
-height:520px;
-z-index:20;
+  position:fixed;
+  width:520px;
+  height:520px;
+  left:-120px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:50;
 }
 
 #gear{
-width:100%;
-height:100%;
-background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
+  width:100%;
+  height:100%;
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
+/* CENTRO */
 .gear-core{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:180px;
-height:180px;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:180px;
+  height:180px;
 }
-
 .gear-core-metal{
-width:100%;
-height:100%;
-border-radius:50%;
-background:radial-gradient(circle,#fff,#888,#111);
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background: radial-gradient(circle,#fff,#ccc,#888,#222);
 }
-
 .gear-logo{
-position:absolute;
-width:90px;
-height:90px;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
+  position:absolute;
+  width:90px;
+  height:90px;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
 }
 
-/* ===== SLIDES ===== */
+/* HINT UX */
+.gear-hint{
+  position:absolute;
+  left:50%;
+  bottom:-60px;
+  transform:translateX(-50%);
+  color:#fff;
+  font-size:14px;
+  opacity:.8;
+}
+.gear-hint::before{
+  content:"⚙️ ";
+}
+
+/* BOTÓN VOLVER */
+.back-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:60;
+  padding:10px 20px;
+  border:1px solid white;
+  border-radius:20px;
+  background:transparent;
+  color:white;
+  cursor:pointer;
+}
+
+/* ===== SLIDES (SCROLL REAL) ===== */
+#slides{
+  position:absolute;
+  width:100%;
+  height:100%;
+  transition:transform .9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .slide{
-position:absolute;
-width:100%;
-height:100%;
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-transition:all 1s ease;
+  width:100%;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
 }
 
 .content{
-max-width:900px;
+  max-width:800px;
 }
 
+/* 🎨 FONDOS LIMPIOS */
+.slide:nth-child(1){ background:#001a40;}
+.slide:nth-child(2){ background:#0d47a1;}
+.slide:nth-child(3){ background:#4a148c;}
+.slide:nth-child(4){ background:#1b5e20;}
+.slide:nth-child(5){ background:#b71c1c;}
+.slide:nth-child(6){ background:#e65100;}
+
+/* TITULOS */
 h1{
-font-size:3rem;
-letter-spacing:2px;
+  font-size:3rem;
+  letter-spacing:2px;
 }
 
-p{
-font-size:1.2rem;
-opacity:.8;
-}
-
-/* fondos corporativos */
-.slide:nth-child(1){ background:#001a40; }
-.slide:nth-child(2){ background:#0d47a1; }
-.slide:nth-child(3){ background:#311b92; }
-.slide:nth-child(4){ background:#1b5e20; }
-.slide:nth-child(5){ background:#b71c1c; }
-.slide:nth-child(6){ background:#e65100; }
-
-/* subareas */
+/* ===== SUBAREAS PRO ===== */
 .subareas{
-margin-top:30px;
-display:flex;
-flex-direction:column;
-gap:12px;
+  margin-top:30px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
 .sub{
-cursor:pointer;
-opacity:.7;
-transition:.3s;
-}
-.sub:hover{
-opacity:1;
-color:#00c8ff;
-transform:translateX(8px);
+  opacity:0;
+  transform:translateY(20px);
+  transition:.6s ease;
 }
 
-/* PANEL */
-.panel{
-position:fixed;
-right:-420px;
-top:0;
-width:420px;
-height:100%;
-background:#0a0a0a;
-padding:40px;
-transition:.5s;
-z-index:100;
-border-left:1px solid rgba(255,255,255,.1);
+.slide.active .sub{
+  opacity:1;
+  transform:translateY(0);
 }
-.panel.open{ right:0; }
 
-/* volver */
-.back-btn{
-position:fixed;
-top:20px;
-right:20px;
-z-index:200;
-padding:10px 20px;
-border:1px solid #00c8ff;
-color:#00c8ff;
-background:transparent;
-cursor:pointer;
-}
+/* delays */
+.sub:nth-child(1){transition-delay:.2s;}
+.sub:nth-child(2){transition-delay:.35s;}
+.sub:nth-child(3){transition-delay:.5s;}
 
 </style>
 </head>
 
 <body>
 
+<div id="mtoApp">
+<div class="mto-stage">
 <div class="mto-flip" id="flip">
 
 <!-- FRONT -->
 <div class="mto-front">
-<video class="bg" autoplay muted loop>
+<video autoplay muted loop playsinline>
 <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
 </video>
 
-<div class="overlay">
+<div class="mto-overlay">
 <h1>BIENVENIDOS A OPERACIONES - CHILE</h1>
-<p>Media Technology & Operations</p>
-<button class="mto-cta" onclick="flip.classList.add('flipped')">Conócenos</button>
+<div class="mto-logo"></div>
+<button class="mto-cta" onclick="enter()">Conócenos</button>
 </div>
 </div>
 
 <!-- BACK -->
 <div class="mto-back">
 
-<button class="back-btn" onclick="flip.classList.remove('flipped')">Volver</button>
+<button class="back-btn" onclick="volver()">Volver</button>
 
 <div id="gearWrap">
-<div id="gear"></div>
-<div class="gear-core">
-<div class="gear-core-metal"></div>
-<div class="gear-logo"></div>
-</div>
+  <div id="gear"></div>
+  <div class="gear-core">
+    <div class="gear-core-metal"></div>
+    <div class="gear-logo"></div>
+  </div>
+  <div class="gear-hint">Usa la rueda del mouse</div>
 </div>
 
 <div id="slides">
 
-<section class="slide">
+<section class="slide active">
 <div class="content">
-<h1 style="color:#00c8ff">NUESTRAS ÁREAS</h1>
-<p>Equipos que trabajan en sincronía para llevar contenido a millones de pantallas</p>
+<h1>NUESTRAS ÁREAS</h1>
+<p>Equipos sincronizados que llevan el fútbol a millones de pantallas</p>
 </div>
 </section>
 
 <section class="slide">
 <div class="content">
 <h1>ESTUDIOS & OUTDOOR</h1>
-<p>Producción en estudio y operaciones en terreno</p>
 <div class="subareas">
-<div class="sub" onclick="openPanel('Producción en estudio')">Producción en estudio</div>
-<div class="sub" onclick="openPanel('Operaciones en terreno')">Operaciones en terreno</div>
+<div class="sub">Producción en estudio</div>
+<div class="sub">Producción en terreno</div>
+<div class="sub">Soporte técnico</div>
 </div>
 </div>
 </section>
@@ -257,10 +290,40 @@ cursor:pointer;
 <section class="slide">
 <div class="content">
 <h1>MOC</h1>
-<p>Monitoreo, ingesta y control de señales</p>
 <div class="subareas">
-<div class="sub" onclick="openPanel('Ingesta')">Ingesta</div>
-<div class="sub" onclick="openPanel('Monitoreo')">Monitoreo</div>
+<div class="sub">Ingesta</div>
+<div class="sub">Monitoreo</div>
+<div class="sub">Control señales</div>
+</div>
+</div>
+</section>
+
+<section class="slide">
+<div class="content">
+<h1>BOC</h1>
+<div class="subareas">
+<div class="sub">Continuidad</div>
+<div class="sub">Transmisión</div>
+</div>
+</div>
+</section>
+
+<section class="slide">
+<div class="content">
+<h1>GESTIÓN</h1>
+<div class="subareas">
+<div class="sub">Planificación</div>
+<div class="sub">Coordinación</div>
+</div>
+</div>
+</section>
+
+<section class="slide">
+<div class="content">
+<h1>GFX</h1>
+<div class="subareas">
+<div class="sub">Gráfica</div>
+<div class="sub">Branding</div>
 </div>
 </div>
 </section>
@@ -269,57 +332,67 @@ cursor:pointer;
 
 </div>
 </div>
-
-<div id="panel" class="panel"></div>
+</div>
+</div>
 
 <script>
 
+/* ===== CONTROL ===== */
+function enter(){
+  document.getElementById("flip").classList.add("flipped");
+}
+function volver(){
+  document.getElementById("flip").classList.remove("flipped");
+}
+
+/* ===== SLIDES ===== */
 let current=0;
 const slides=document.querySelectorAll(".slide");
 
-function update(){
-slides.forEach((s,i)=>{
-s.style.transform=`translateY(${(i-current)*100}%)`;
-});
-}
-update();
+function updateSlides(){
+  document.getElementById("slides").style.transform =
+    `translateY(-${current*100}vh)`;
 
-/* engranaje */
-let v=0,r=0;
-function anim(){
-r+=v;
-v*=0.94;
-gear.style.transform=`rotate(${r}deg)`;
-requestAnimationFrame(anim);
+  slides.forEach(s=>s.classList.remove("active"));
+  slides[current].classList.add("active");
 }
-anim();
 
-/* scroll */
+/* ===== ENGRANAJE FÍSICA REAL ===== */
+let velocity=0;
+let rotation=0;
+
+function animate(){
+  rotation+=velocity;
+  velocity*=0.94; // 🔥 inercia real
+
+  document.getElementById("gear").style.transform =
+    `rotate(${rotation}deg)`;
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* ===== SCROLL PRO ===== */
 let lock=false;
 
-window.addEventListener("wheel",e=>{
-if(lock)return;
-lock=true;
+window.addEventListener("wheel", e=>{
+  if(lock) return;
+  lock=true;
 
-if(e.deltaY>0){current++;v+=1.8;}
-else{current--;v-=1.8;}
+  const force = e.deltaY * 0.015; // 🔥 sensibilidad real
 
-current=Math.max(0,Math.min(current,slides.length-1));
-update();
+  velocity += force;
 
-setTimeout(()=>lock=false,500);
+  if(e.deltaY>0) current++;
+  else current--;
+
+  current=Math.max(0,Math.min(current,slides.length-1));
+
+  updateSlides();
+
+  setTimeout(()=>lock=false,500);
 
 },{passive:false});
-
-/* panel */
-function openPanel(t){
-panel.innerHTML=`
-<h2>${t}</h2>
-<p>Información operacional detallada.</p>
-<p>• Procesos<br>• Equipos<br>• Tecnología</p>
-`;
-panel.classList.add("open");
-}
 
 </script>
 
