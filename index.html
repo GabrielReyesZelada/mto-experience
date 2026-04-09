@@ -50,12 +50,6 @@ video{
   align-items:center;
   background:rgba(0,0,0,.55);
   color:white;
-  text-align:center;
-}
-
-.mto-overlay h1{
-  font-size:2.5rem;
-  letter-spacing:3px;
 }
 
 .mto-logo{
@@ -94,56 +88,7 @@ video{
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
 }
 
-.gear-core{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  width:180px;
-  height:180px;
-}
-.gear-core-metal{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  background: radial-gradient(circle,#fff,#bbb,#444,#111);
-}
-.gear-logo{
-  position:absolute;
-  width:90px;
-  height:90px;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
-}
-
-/* ===== HINT ===== */
-.gear-hint{
-  position:absolute;
-  left:50%;
-  bottom:-60px;
-  transform:translateX(-50%);
-  color:white;
-  font-size:14px;
-  opacity:.7;
-}
-
-/* ===== BOTÓN VOLVER ===== */
-.back-btn{
-  position:fixed;
-  top:20px;
-  right:20px;
-  z-index:60;
-  padding:10px 20px;
-  border:1px solid white;
-  border-radius:20px;
-  background:transparent;
-  color:white;
-  cursor:pointer;
-}
-
-/* ===== SLIDES CONTENEDOR ===== */
+/* ===== SLIDES ===== */
 #slides{
   position:absolute;
   width:100%;
@@ -151,13 +96,12 @@ video{
   transition:transform 1.2s cubic-bezier(.22,1,.36,1);
 }
 
-/* ===== SECCIONES ===== */
 .slide{
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  text-align:center;
+  flex-direction:column;
 }
 
 /* ===== FONDOS ===== */
@@ -172,20 +116,91 @@ video{
 h1{
   font-size:3.5rem;
   color:#fff;
-  letter-spacing:2px;
 }
 
-/* HERO (NUESTRAS ÁREAS) */
-.hero-title{
-  font-size:4rem;
-  background:linear-gradient(90deg,#ffffff,#cfd8dc);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+/* ===== SUBAREAS PREMIUM ===== */
+.subareas{
+  margin-top:40px;
+  display:flex;
+  gap:30px;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
-.hero-sub{
-  margin-top:15px;
-  opacity:.7;
+/* burbuja */
+.bubble{
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  overflow:hidden;
+  position:relative;
+
+  background-size:cover;
+  background-position:center;
+
+  box-shadow:0 10px 30px rgba(0,0,0,.5);
+
+  transform:translateY(40px) scale(.9);
+  opacity:0;
+
+  transition:all .6s ease;
+}
+
+/* entrada */
+.slide.active .bubble{
+  transform:translateY(0) scale(1);
+  opacity:1;
+}
+
+/* delays */
+.bubble:nth-child(1){ transition-delay:.2s;}
+.bubble:nth-child(2){ transition-delay:.35s;}
+.bubble:nth-child(3){ transition-delay:.5s;}
+.bubble:nth-child(4){ transition-delay:.65s;}
+
+/* hover reveal */
+.bubble::after{
+  content:attr(data-name);
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(0,0,0,.6);
+  color:white;
+
+  opacity:0;
+  transition:.4s;
+}
+
+.bubble:hover::after{
+  opacity:1;
+}
+
+/* flotación */
+@keyframes float{
+  0%{ transform:translateY(0);}
+  50%{ transform:translateY(-10px);}
+  100%{ transform:translateY(0);}
+}
+
+.bubble{
+  animation:float 5s ease-in-out infinite;
+}
+
+/* ===== BOTÓN VOLVER ===== */
+.back-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:60;
+  padding:10px 20px;
+  border:1px solid white;
+  border-radius:20px;
+  background:transparent;
+  color:white;
+  cursor:pointer;
 }
 
 </style>
@@ -215,27 +230,32 @@ h1{
 
 <div id="gearWrap">
   <div id="gear"></div>
-  <div class="gear-core">
-    <div class="gear-core-metal"></div>
-    <div class="gear-logo"></div>
-  </div>
-  <div class="gear-hint">⚙ Usa la rueda del mouse</div>
 </div>
 
 <div id="slides">
 
-<!-- HERO -->
-<section class="slide">
-  <div>
-    <h1 class="hero-title">NUESTRAS ÁREAS</h1>
-    <p class="hero-sub">
-      Equipos sincronizados que hacen posible que el contenido llegue a millones de pantallas
-    </p>
-  </div>
+<section class="slide active">
+<h1>NUESTRAS ÁREAS</h1>
 </section>
 
-<section class="slide"><h1>ESTUDIOS & OUTDOOR</h1></section>
-<section class="slide"><h1>MOC</h1></section>
+<section class="slide">
+<h1>ESTUDIOS & OUTDOOR</h1>
+<div class="subareas">
+<div class="bubble" data-name="Cámara" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7')"></div>
+<div class="bubble" data-name="Iluminación" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d')"></div>
+<div class="bubble" data-name="Audio" style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d')"></div>
+</div>
+</section>
+
+<section class="slide">
+<h1>MOC</h1>
+<div class="subareas">
+<div class="bubble" data-name="Ingesta"></div>
+<div class="bubble" data-name="Archivo"></div>
+<div class="bubble" data-name="Replay"></div>
+</div>
+</section>
+
 <section class="slide"><h1>BOC</h1></section>
 <section class="slide"><h1>GESTIÓN</h1></section>
 <section class="slide"><h1>GFX</h1></section>
@@ -258,40 +278,42 @@ function volver(){
 
 /* ===== SLIDES ===== */
 let current=0;
-const total=6;
+const slides=document.querySelectorAll(".slide");
 
 function update(){
   document.getElementById("slides").style.transform =
     `translateY(-${current*100}vh)`;
+
+  slides.forEach(s=>s.classList.remove("active"));
+  slides[current].classList.add("active");
 }
 
-/* ===== ENGRANAJE (INERCIA REAL) ===== */
+/* ===== ENGRANAJE ===== */
 let velocity=0;
 let rotation=0;
 
 function animate(){
   rotation+=velocity;
-  velocity*=0.94; // 🔥 inercia natural
+  velocity*=0.94;
   document.getElementById("gear").style.transform =
     `rotate(${rotation}deg)`;
   requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== SCROLL CONTROLADO SOLO POR ENGRANAJE ===== */
+/* ===== SCROLL ===== */
 let lock=false;
 
 window.addEventListener("wheel", e=>{
-
   if(lock) return;
   lock=true;
 
-  velocity += e.deltaY * 0.008; // 🔥 sensibilidad real
+  velocity += e.deltaY * 0.008;
 
   if(e.deltaY>0) current++;
   else current--;
 
-  current=Math.max(0,Math.min(current,total-1));
+  current=Math.max(0,Math.min(current,slides.length-1));
 
   update();
 
