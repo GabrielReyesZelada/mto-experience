@@ -394,6 +394,45 @@ h1{
   will-change: transform; /* 🔥 AQUÍ sí va */
 }
 
+.bubble::marker{ content:none; } /* evitar bugs raros */
+
+.bubble::before{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+
+  background: conic-gradient(
+    from 0deg,
+    rgba(0,200,255,0),
+    rgba(0,200,255,.8),
+    rgba(255,0,200,.9),
+    rgba(0,200,255,.8),
+    rgba(0,200,255,0)
+  );
+
+  filter: blur(4px);
+  animation: spinEnergy 4s linear infinite;
+  z-index:2;
+}
+
+@keyframes spinEnergy{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+
+.bubble{
+  backdrop-filter: blur(6px) contrast(1.2);
+  -webkit-backdrop-filter: blur(6px) contrast(1.2);
+}
+
+.bubble:active{
+  transform:scale(0.9);
+  box-shadow:
+    0 0 40px rgba(0,200,255,1),
+    inset 0 0 30px rgba(255,255,255,.4);
+}
+
 </style>
 </head>
 
@@ -595,21 +634,20 @@ window.addEventListener("wheel", e=>{
 
 /* ===== ENGRANAJE ===== */
 
-let velocity = 0;
-let rotation = 0;
-const gear = document.getElementById("gear");
-
 function animate(){
   rotation += velocity;
   velocity *= 0.95;
 
-  if(gear){
-    gear.style.transform = `rotate(${rotation}deg)`;
-  }
+  gear.style.transform = `rotate(${rotation}deg)`;
+
+  // 🔥 conexión con burbujas
+  document.querySelectorAll(".bubble").forEach(b=>{
+    let influence = Math.min(Math.abs(velocity)*2, 5);
+    b.style.filter = `brightness(${1 + influence*0.1})`;
+  });
 
   requestAnimationFrame(animate);
 }
-animate();
 
 /* ===== PANEL ===== */
 
