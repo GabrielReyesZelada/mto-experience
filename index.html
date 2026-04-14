@@ -447,11 +447,6 @@ h1{
   will-change: transform;
 }
 
-@keyframes spinMini{
-  from{ transform:rotate(0deg); }
-  to{ transform:rotate(360deg); }
-}
-
 </style>
 </head>
 
@@ -673,8 +668,8 @@ function animate(){
   gear.style.transform = `rotate(${rotation}deg)`;
 
   // 🔥 MINI ENGRANAJE (más rápido y sensible)
-  miniRotation += velocity * 1.5;
-  miniGear.style.transform = `rotate(${miniRotation}deg)`;
+  miniGear.style.transform =
+  `rotate(${miniRotation}deg) translate(${Math.sin(rotation*0.1)*1}px, ${Math.cos(rotation*0.1)*1}px)`;
 
   // conexión con burbujas
   document.querySelectorAll(".bubble").forEach(b=>{
