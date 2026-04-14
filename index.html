@@ -145,12 +145,16 @@ video{
 /* ===== HINT ===== */
 .gear-hint{
   position:absolute;
-  bottom:-60px;
+  bottom:-30px; /* 🔥 antes -60px */
   left:50%;
   transform:translateX(-50%);
   color:white;
-  opacity:.7;
+  opacity:.8;
   font-size:14px;
+
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
 /* ===== SLIDES ===== */
@@ -434,6 +438,21 @@ h1{
     inset 0 0 30px rgba(255,255,255,.4);
 }
 
+.mini-gear{
+  width:18px;
+  height:18px;
+
+  background:url("https://cdn-icons-png.flaticon.com/512/3523/3523063.png") center/contain no-repeat;
+
+  animation: spinMini 3s linear infinite;
+  opacity:.9;
+}
+
+@keyframes spinMini{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+
 </style>
 </head>
 
@@ -464,7 +483,10 @@ h1{
   <div id="gear"></div>
   <div class="gear-core"></div>
   <div class="gear-logo"></div>
-  <div class="gear-hint">Usa la rueda del mouse</div>
+  <div class="gear-hint">
+  <div class="mini-gear"></div>
+  <span>Usa la rueda del mouse</span>
+</div>
 </div>
 
 <div id="slides">
@@ -670,6 +692,19 @@ document.querySelectorAll(".bubble").forEach(b=>{
 function closePanel(){
   document.getElementById("panel").classList.remove("active");
 }
+
+// 🚫 BLOQUEAR scroll con teclado
+window.addEventListener("keydown", e=>{
+  const keys = ["ArrowUp","ArrowDown","PageUp","PageDown","Home","End"," "];
+  if(keys.includes(e.key)){
+    e.preventDefault();
+  }
+});
+
+// 🚫 BLOQUEAR touch (móvil)
+window.addEventListener("touchmove", e=>{
+  e.preventDefault();
+},{ passive:false });
 
 </script>
 </body>
