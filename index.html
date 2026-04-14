@@ -668,8 +668,7 @@ function animate(){
   gear.style.transform = `rotate(${rotation}deg)`;
 
   // 🔥 MINI ENGRANAJE (más rápido y sensible)
-  miniGear.style.transform =
-  `rotate(${miniRotation}deg) translate(${Math.sin(rotation*0.1)*1}px, ${Math.cos(rotation*0.1)*1}px)`;
+  let miniRotation = 0; const miniGear = document.querySelector(".mini-gear");
 
   // conexión con burbujas
   document.querySelectorAll(".bubble").forEach(b=>{
