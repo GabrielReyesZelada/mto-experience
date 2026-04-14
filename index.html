@@ -111,6 +111,8 @@ video{
   top:50%;
   transform:translateY(-50%);
   z-index:50;
+  pointer-events: none;
+}
 }
 
 #gear{
@@ -633,7 +635,10 @@ window.addEventListener("wheel", e=>{
 },{ passive:true });
 
 /* ===== ENGRANAJE ===== */
-
+const gear = document.getElementById("gear");
+let velocity = 0;
+let rotation = 0;
+  
 function animate(){
   rotation += velocity;
   velocity *= 0.95;
@@ -649,6 +654,8 @@ function animate(){
   requestAnimationFrame(animate);
 }
 
+animate();
+  
 /* ===== PANEL ===== */
 
 document.querySelectorAll(".bubble").forEach(b=>{
