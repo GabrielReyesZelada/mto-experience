@@ -195,69 +195,80 @@ h1{
   width:150px;
   height:150px;
   border-radius:50%;
-  background-size:cover;
-  background-position:center;
-  cursor:pointer;
   position:relative;
   overflow:hidden;
+  cursor:pointer;
 
-  transition: transform .25s ease-out;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-  /* 🔥 look gel */
+  /* vidrio base */
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), rgba(255,255,255,.05) 40%, rgba(0,0,0,.4) 100%);
+
   box-shadow:
-    inset 0 10px 25px rgba(255,255,255,.25),
-    inset 0 -20px 40px rgba(0,0,0,.4),
-    0 10px 30px rgba(0,0,0,.4);
+    inset 0 10px 25px rgba(255,255,255,.35),
+    inset 0 -20px 40px rgba(0,0,0,.9),
+    0 10px 30px rgba(0,0,0,.8);
 
-  backdrop-filter: blur(8px) saturate(1.2);
+  backdrop-filter: blur(6px) contrast(1.2);
+  -webkit-backdrop-filter: blur(6px) contrast(1.2);
+
+  transition: transform .5s ease, box-shadow .5s ease;
 }
 
-/* SEGUNDA CAPA (más profundidad) */
+.bubble-img{
+  position:absolute;
+  width:120%;
+  height:120%;
+  background-size:cover;
+  background-position:center;
+
+  transform: translate(0,0) scale(1.1);
+  transition: transform .6s ease;
+
+  filter: contrast(1.1) brightness(.9);
+}
+
 .bubble::after{
   content:"";
   position:absolute;
   inset:0;
-  border-radius:50%;
 
   background:inherit;
-  background-size:cover;
-  background-position:center;
+  border-radius:50%;
 
-  transform: scale(1.15);
-  filter: blur(8px);
+  filter: blur(12px);
   opacity:.25;
 
-  mix-blend-mode: soft-light;
+  transform:scale(1.15);
 }
 
-.bubble{
-  width:150px;
-  height:150px;
+.bubble::before{
+  content:"";
+  position:absolute;
+  top:10%;
+  left:20%;
+  width:60%;
+  height:40%;
+
+  background: radial-gradient(circle, rgba(255,255,255,.8), transparent 70%);
   border-radius:50%;
-  overflow:hidden;
-  position:relative;
-  cursor:pointer;
 
-  background-size:cover;
-  background-position:center;
+  filter: blur(8px);
+  opacity:.7;
+}
 
-  transition: transform .3s ease;
-
-  /* vidrio */
+.bubble:hover{
+  transform: scale(1.08);
   box-shadow:
-    inset 0 10px 20px rgba(255,255,255,.3),
-    inset 0 -20px 40px rgba(0,0,0,.5),
-    0 10px 30px rgba(0,0,0,.5);
-
-  backdrop-filter: blur(6px) saturate(1.2);
+    inset 0 15px 30px rgba(255,255,255,.5),
+    inset 0 -25px 50px rgba(0,0,0,1),
+    0 20px 50px rgba(0,0,0,.9);
 }
 
-.bubble:hover::before{
-  filter: blur(35px);
-}
-
-.bubble:hover::after{
-  transform:scale(1.35);
+.bubble:hover .bubble-img{
+  transform: translate(-10px, -10px) scale(1.2);
 }
 
 /* ===== PANEL ===== */
@@ -447,15 +458,26 @@ h1{
 <h1>ESTUDIOS & OUTDOOR</h1>
 <div class="subareas">
 
-<div class="bubble" data-name="Cámara" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=400&auto=compress')"></div>
+<div class="bubble" data-name="Cámara">
+  <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=400')"></div>
+</div>
 
-<div class="bubble" data-name="Iluminación" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d')"></div>
+<div class="bubble" data-name="Iluminación">
+  <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=400')"></div>
+</div>
 
-<div class="bubble" data-name="Audio" style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d')"></div>
+<div class="bubble" data-name="Audio">
+  <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=400')"></div>
+</div>
 
-<div class="bubble" data-name="Switching" style="background-image:url('https://images.unsplash.com/photo-1581092921461-eab62e97a780')"></div>
+<div class="bubble" data-name="Switching">
+  <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=400')"></div>
+</div>
 
-<div class="bubble" data-name="Producción en terreno" style="background-image:url('https://images.unsplash.com/photo-1505238680356-667803448bb6')"></div>
+<div class="bubble" data-name="Producción en terreno">
+  <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=400')"></div>
+</div>
+  
 
 </div>
 </section>
@@ -625,10 +647,10 @@ function animate(){
   let miniRotation = 0; const miniGear = document.querySelector(".mini-gear");
 
   // conexión con burbujas
-  document.querySelectorAll(".bubble").forEach(b=>{
-    let influence = Math.min(Math.abs(velocity)*2, 5);
-    b.style.filter = `brightness(${1 + influence*0.1})`;
-  });
+ document.querySelectorAll(".bubble-img").forEach(img=>{
+  let shift = Math.min(Math.abs(velocity)*3, 15);
+  img.style.transform = `translate(${shift}px, ${-shift}px) scale(1.15)`;
+});
 
   requestAnimationFrame(animate);
 }
