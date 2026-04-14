@@ -635,17 +635,19 @@ window.addEventListener("wheel", e=>{
 },{ passive:true });
 
 /* ===== ENGRANAJE ===== */
-const gear = document.getElementById("gear");
+  
 let velocity = 0;
 let rotation = 0;
-  
+
+const gear = document.getElementById("gear"); // 🔥 ESTA LÍNEA FALTABA
+
 function animate(){
   rotation += velocity;
   velocity *= 0.95;
 
   gear.style.transform = `rotate(${rotation}deg)`;
 
-  // 🔥 conexión con burbujas
+  // conexión con burbujas
   document.querySelectorAll(".bubble").forEach(b=>{
     let influence = Math.min(Math.abs(velocity)*2, 5);
     b.style.filter = `brightness(${1 + influence*0.1})`;
