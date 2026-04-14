@@ -443,9 +443,8 @@ h1{
   height:18px;
 
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
-
-  animation: spinMini 3s linear infinite;
   opacity:.9;
+  will-change: transform;
 }
 
 @keyframes spinMini{
@@ -668,6 +667,10 @@ function animate(){
 
   gear.style.transform = `rotate(${rotation}deg)`;
 
+  // 🔥 MINI ENGRANAJE (más rápido y sensible)
+  miniRotation += velocity * 1.5;
+  miniGear.style.transform = `rotate(${miniRotation}deg)`;
+
   // conexión con burbujas
   document.querySelectorAll(".bubble").forEach(b=>{
     let influence = Math.min(Math.abs(velocity)*2, 5);
@@ -678,6 +681,11 @@ function animate(){
 }
 
 animate();
+
+/* ===== MINI ENGRANAJE ===== */
+  
+let miniRotation = 0;
+const miniGear = document.querySelector(".mini-gear");
   
 /* ===== PANEL ===== */
 
