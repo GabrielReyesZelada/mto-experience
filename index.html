@@ -654,6 +654,11 @@ window.addEventListener("wheel", e=>{
 
 },{ passive:true });
 
+/* ===== MINI ENGRANAJE ===== */
+  
+let miniRotation = 0;
+const miniGear = document.querySelector(".mini-gear");
+
 /* ===== ENGRANAJE ===== */
   
 let velocity = 0;
@@ -682,10 +687,6 @@ function animate(){
 
 animate();
 
-/* ===== MINI ENGRANAJE ===== */
-  
-let miniRotation = 0;
-const miniGear = document.querySelector(".mini-gear");
   
 /* ===== PANEL ===== */
 
