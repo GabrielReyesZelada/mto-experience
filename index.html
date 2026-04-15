@@ -334,7 +334,7 @@ h1{
   opacity:0;
   pointer-events:none;
   transition:.4s;
-  z-index:999;
+  z-index:9999;
 }
 
 #panel.active{
@@ -345,14 +345,25 @@ h1{
 .panel-img{
   flex:1;
   background-size:cover;
+  background-position:center;
 }
 
 .panel-content{
   flex:1;
   padding:60px;
   color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
+.close{
+  position:absolute;
+  top:20px;
+  right:20px;
+  cursor:pointer;
+  font-size:20px;
+}
 .close{
   position:absolute;
   top:20px;
@@ -922,56 +933,30 @@ pointer-events: auto;
 </div>
 
 
-<!-- ===== PANEL ===== -->
+<!-- ===== PANEL LATERAL (REEMPLAZA CINEMA) ===== -->
 <div id="panel">
-  <div class="panel-img"></div>
+  <div class="panel-img" id="panelImg"></div>
   <div class="panel-content">
     <div class="close" onclick="closePanel()">✕</div>
     <h1 id="pTitle"></h1>
+    <p id="pText">Aquí puedes agregar descripción del área.</p>
   </div>
 </div>
-
-</body>
 
 <script>
 
 /* ===== FLIP ===== */
 function enter(){
-
-  const btn = document.querySelector(".mto-cta");
-  const burst = document.getElementById("energyBurst");
-  const gearEl = document.getElementById("gear");
-  const core = document.querySelector(".gear-core");
-
-  btn.classList.add("active");
-
-  const rect = btn.getBoundingClientRect();
-  burst.style.left = rect.left + rect.width/2 + "px";
-  burst.style.top = rect.top + rect.height/2 + "px";
-
-  burst.classList.add("active");
-
-  setTimeout(()=>{
-    gearEl.classList.add("gear-activate");
-    core.classList.add("active");
-    velocity += 2.5;
-  },200);
-
-  setTimeout(()=>{
-    document.getElementById("flip").classList.add("flipped");
-  },900);
+  document.getElementById("flip").classList.add("flipped");
 }
 
 function volver(){
   document.getElementById("flip").classList.remove("flipped");
 }
 
-/* ===== SCROLL SUAVE ===== */
-
+/* ===== SCROLL ===== */
 let current = 0;
 const slides = document.querySelectorAll(".slide");
-let scrollAccumulator = 0;
-const SCROLL_THRESHOLD = 80;
 
 function update(){
   document.getElementById("slides").style.transform =
@@ -979,138 +964,49 @@ function update(){
 }
 
 window.addEventListener("wheel", e => {
-
-  scrollAccumulator += e.deltaY;
-
-  // engranaje
-  velocity += e.deltaY * 0.015;
-
-  if(Math.abs(scrollAccumulator) < SCROLL_THRESHOLD) return;
-
-  if(scrollAccumulator > 0){
-    current++;
-  } else {
-    current--;
-  }
-
-  scrollAccumulator = 0;
+  if(e.deltaY > 0) current++;
+  else current--;
 
   current = Math.max(0, Math.min(current, slides.length - 1));
-
   update();
-
-}, { passive: true });
-
-/* ===== MINI ENGRANAJE ===== */
-  
-let miniRotation = 0;
-const miniGear = document.querySelector(".mini-gear");
+});
 
 /* ===== ENGRANAJE ===== */
-  
 let velocity = 0;
 let rotation = 0;
-
-const gear = document.getElementById("gear"); // 🔥 ESTA LÍNEA FALTABA
+const gear = document.getElementById("gear");
+const miniGear = document.querySelector(".mini-gear");
 
 function animate(){
   rotation += velocity;
   velocity *= 0.95;
 
-  gear.style.transform = `rotate(${rotation}deg)`;
-
-  // mini engranaje (más rápido)
-  miniRotation += velocity * 1.5;
-  miniGear.style.transform = `rotate(${miniRotation}deg)`;
+  if(gear) gear.style.transform = `rotate(${rotation}deg)`;
+  if(miniGear) miniGear.style.transform = `rotate(${rotation*1.5}deg)`;
 
   requestAnimationFrame(animate);
 }
-
 animate();
 
-  
-/* ===== PANEL ===== */
-let isTransitioning = false;
-
+/* ===== PANEL INTERACTIVO ===== */
 document.querySelectorAll(".crystal-ball").forEach(ball=>{
 
   ball.addEventListener("click", ()=>{
 
-    // 🚫 bloquear múltiples clicks
-    if(isTransitioning) return;
-    isTransitioning = true;
-
-    const rect = ball.getBoundingClientRect();
-
-    /* 🔮 crear clon visual */
-    const clone = document.createElement("div");
-    clone.className = "portal-clone";
-
-    clone.style.left = rect.left + "px";
-    clone.style.top = rect.top + "px";
-    clone.style.width = rect.width + "px";
-    clone.style.height = rect.height + "px";
-
-    const img = ball.querySelector(".bubble-img");
-    clone.style.backgroundImage = img.style.backgroundImage;
-
-    document.body.appendChild(clone);
-
-    requestAnimationFrame(()=>{
-      clone.classList.add("portal-zoom");
-    });
-
     const name = ball.dataset.name;
+    const img = ball.querySelector(".bubble-img").style.backgroundImage;
 
-    const cinema = document.getElementById("cinema");
-    const video = document.getElementById("cinemaVideo");
-    const title = document.getElementById("cinemaTitle");
-
-    const videos = {
-      "Cámara": "https://www.w3schools.com/html/mov_bbb.mp4",
-      "Iluminación": "https://www.w3schools.com/html/movie.mp4",
-      "Audio": "https://www.w3schools.com/html/mov_bbb.mp4",
-      "Switching": "https://www.w3schools.com/html/movie.mp4"
-    };
-
-    setTimeout(()=>{
-      cinema.classList.add("active");
-      video.src = videos[name] || videos["Cámara"];
-      title.innerText = name;
-
-      video.load();
-      video.play();
-    },500);
-
-    setTimeout(()=>{
-      clone.remove();
-      isTransitioning = false; // 🔓 desbloquear clicks
-    },1000);
+    document.getElementById("panel").classList.add("active");
+    document.getElementById("panelImg").style.backgroundImage = img;
+    document.getElementById("pTitle").innerText = name;
 
   });
 
 });
-/* ===== PARTICULAS ===== */
 
-document.querySelectorAll(".particles").forEach(container=>{
-  for(let i=0;i<15;i++){
-    const p = document.createElement("div");
-    p.className = "particle";
-
-    p.style.left = Math.random()*100 + "%";
-    p.style.animationDuration = (3 + Math.random()*4) + "s";
-    p.style.animationDelay = (Math.random()*5) + "s";
-
-    container.appendChild(p);
-  }
-});
-
-
-/* ===== CERRAR CINEMA ===== */
-
-document.getElementById("cinema").addEventListener("click", ()=>{
-  document.getElementById("cinema").classList.remove("active");
-});
+function closePanel(){
+  document.getElementById("panel").classList.remove("active");
+}
 
 </script>
 </body>
