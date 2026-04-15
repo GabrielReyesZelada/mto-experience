@@ -431,6 +431,7 @@ h1{
   position:relative;
   cursor:pointer;
   overflow:hidden;
+   will-change: transform;
 
   transform-style: preserve-3d;
   transition: transform .25s ease;
@@ -691,7 +692,19 @@ h1{
   50%{opacity:1;}
   100%{opacity:0;}
 }
-  
+
+/* 🔥 PERMITIR INTERACCIÓN CON LAS ESFERAS */
+.crystal-ball *,
+.crystal-ball::before,
+.crystal-ball::after{
+  pointer-events: none;
+}
+
+/* 👇 pero el contenedor sí recibe eventos */
+.crystal-ball{
+  pointer-events: auto;
+}
+    
 </style>
 </head>
 
@@ -1100,40 +1113,6 @@ document.querySelectorAll(".particles").forEach(container=>{
 
     container.appendChild(p);
   }
-});
-
-
-/* ===== CLICK PORTAL ===== */
-
-document.querySelectorAll(".crystal-ball").forEach(ball=>{
-
-  ball.addEventListener("click", ()=>{
-
-    const flash = document.getElementById("portalFlash");
-    const cinema = document.getElementById("cinema");
-    const video = document.getElementById("cinemaVideo");
-    const title = document.getElementById("cinemaTitle");
-
-    const videos = {
-      "Cámara": "https://www.w3schools.com/html/mov_bbb.mp4",
-      "Iluminación": "https://www.w3schools.com/html/movie.mp4",
-      "Audio": "https://www.w3schools.com/html/mov_bbb.mp4",
-      "Switching": "https://www.w3schools.com/html/movie.mp4"
-    };
-
-    const name = ball.dataset.name;
-
-    flash.classList.add("active");
-    ball.classList.add("opening");
-
-    setTimeout(()=>{
-      cinema.classList.add("active");
-      video.src = videos[name] || "https://www.w3schools.com/html/mov_bbb.mp4";
-      title.innerText = name;
-    },300);
-
-  });
-
 });
 
 
