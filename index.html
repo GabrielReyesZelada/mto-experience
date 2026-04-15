@@ -179,132 +179,181 @@ video{
 </style>
 </head>
 
+
 <body>
 
 <div class="mto-stage">
-<div class="mto-flip" id="flip">
+  <div class="mto-flip" id="flip">
 
-<!-- FRONT -->
-<div class="mto-front">
-<video autoplay muted loop>
-<source src="https://www.w3schools.com/html/mov_bbb.mp4">
-</video>
+    <!-- ===== FRONT ===== -->
+    <div class="mto-front">
+      <video autoplay muted loop>
+        <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
+      </video>
 
-<div class="mto-overlay">
-<h1>BIENVENIDOS A OPERACIONES</h1>
-<button class="mto-cta" onclick="enter()">Conócenos</button>
+      <div class="mto-overlay">
+        <h1>BIENVENIDOS A OPERACIONES</h1>
+        <button class="mto-cta" onclick="enter()">Conócenos</button>
+      </div>
+
+      <div class="energy-burst" id="energyBurst"></div>
+    </div>
+
+    <!-- ===== BACK ===== -->
+    <div class="mto-back">
+
+      <button class="back-btn" onclick="volver()">Volver</button>
+
+      <!-- ENGRANAJE -->
+      <div id="gearWrap">
+        <div id="gear"></div>
+        <div class="gear-core"></div>
+        <div class="gear-logo"></div>
+        <div class="gear-hint">
+          <div class="mini-gear"></div>
+          <span>Usa la rueda del mouse</span>
+        </div>
+      </div>
+
+      <!-- SLIDES -->
+      <div id="slides">
+
+        <section class="slide">
+          <h1>NUESTRAS ÁREAS</h1>
+        </section>
+
+        <!-- ===== ESTUDIOS ===== -->
+        <section class="slide">
+          <h1>ESTUDIOS & OUTDOOR</h1>
+          <div class="subareas">
+
+            <div class="crystal-ball" data-name="Cámara">
+              <div class="lens">
+                <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
+                <div class="energy"></div>
+              </div>
+            </div>
+
+            <div class="crystal-ball" data-name="Iluminación">
+              <div class="lens">
+                <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7')"></div>
+                <div class="energy"></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ===== MOC ===== -->
+        <section class="slide">
+          <h1>MOC</h1>
+          <div class="subareas">
+
+            <div class="crystal-ball" data-name="Switching">
+              <div class="lens">
+                <div class="portal-bg"></div>
+                <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475')"></div>
+                <div class="energy"></div>
+                <div class="particles"></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+  </div>
 </div>
-</div>
 
-<!-- BACK -->
-<div class="mto-back">
-
-<button class="back-btn" onclick="volver()">Volver</button>
-
-<div id="slides">
-
-<section class="slide">
-<h1>NUESTRAS ÁREAS</h1>
-</section>
-
-<section class="slide">
-<h1>ESTUDIOS & OUTDOOR</h1>
-<div class="subareas">
-
-<div class="crystal-ball" data-name="Cámara">
-<div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-</div>
-
-<div class="crystal-ball" data-name="Iluminación">
-<div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7')"></div>
-</div>
-
-</div>
-</section>
-
-<section class="slide">
-<h1>MOC</h1>
-<div class="subareas">
-
-<div class="crystal-ball" data-name="Switching">
-<div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475')"></div>
-</div>
-
-</div>
-</section>
-
-<section class="slide">
-<h1>BOC</h1>
-<div class="subareas"></div>
-</section>
-
-<section class="slide">
-<h1>GESTIÓN</h1>
-<div class="subareas"></div>
-</section>
-
-<section class="slide">
-<h1>GFX</h1>
-<div class="subareas"></div>
-</section>
-
-</div>
-</div>
-</div>
-</div>
-
-<!-- PANEL -->
+<!-- ===== PANEL ===== -->
 <div id="panel">
-<div class="panel-img" id="panelImg"></div>
-<div class="panel-content">
-<div class="close" onclick="closePanel()">✕</div>
-<h1 id="pTitle"></h1>
-<p>Descripción del área...</p>
-</div>
+  <div class="panel-img" id="panelImg"></div>
+  <div class="panel-content">
+    <div class="close" onclick="closePanel()">✕</div>
+    <h1 id="pTitle"></h1>
+    <p id="pText">Aquí puedes agregar descripción del área.</p>
+  </div>
 </div>
 
 <script>
 
-/* FLIP */
+/* ===== FLIP ===== */
 function enter(){
-document.getElementById("flip").classList.add("flipped");
+  document.getElementById("flip").classList.add("flipped");
 }
 
 function volver(){
-document.getElementById("flip").classList.remove("flipped");
+  document.getElementById("flip").classList.remove("flipped");
 }
 
-/* SCROLL */
-let current=0;
-const slides=document.querySelectorAll(".slide");
+/* ===== SCROLL ===== */
+let current = 0;
+const slides = document.querySelectorAll(".slide");
 
-window.addEventListener("wheel",e=>{
-if(e.deltaY>0) current++;
-else current--;
+window.addEventListener("wheel", e=>{
+  if(e.deltaY > 0) current++;
+  else current--;
 
-current=Math.max(0,Math.min(current,slides.length-1));
+  current = Math.max(0, Math.min(current, slides.length - 1));
 
-document.getElementById("slides").style.transform=
-`translateY(-${current*100}vh)`;
+  document.getElementById("slides").style.transform =
+    `translateY(-${current * 100}vh)`;
+
+  velocity += e.deltaY * 0.02;
 });
 
-/* PANEL */
+/* ===== ENGRANAJE ===== */
+let velocity = 0;
+let rotation = 0;
+
+const gear = document.getElementById("gear");
+const miniGear = document.querySelector(".mini-gear");
+
+function animate(){
+  rotation += velocity;
+  velocity *= 0.95;
+
+  if(gear) gear.style.transform = `rotate(${rotation}deg)`;
+  if(miniGear) miniGear.style.transform = `rotate(${rotation * 1.5}deg)`;
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* ===== PANEL (CLICK ESFERAS) ===== */
 document.querySelectorAll(".crystal-ball").forEach(ball=>{
-ball.addEventListener("click",()=>{
-const name=ball.dataset.name;
-const img=ball.querySelector(".bubble-img").style.backgroundImage;
 
-document.getElementById("panel").classList.add("active");
-document.getElementById("panelImg").style.backgroundImage=img;
-document.getElementById("pTitle").innerText=name;
-});
+  ball.addEventListener("click", ()=>{
+
+    const name = ball.dataset.name;
+    const img = ball.querySelector(".bubble-img").style.backgroundImage;
+
+    document.getElementById("panel").classList.add("active");
+    document.getElementById("panelImg").style.backgroundImage = img;
+    document.getElementById("pTitle").innerText = name;
+
+  });
+
 });
 
 function closePanel(){
-document.getElementById("panel").classList.remove("active");
+  document.getElementById("panel").classList.remove("active");
 }
+
+/* ===== PARTICULAS ===== */
+document.querySelectorAll(".particles").forEach(container=>{
+  for(let i=0;i<15;i++){
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random()*100 + "%";
+    p.style.animationDuration = (3 + Math.random()*4) + "s";
+    p.style.animationDelay = (Math.random()*5) + "s";
+    container.appendChild(p);
+  }
+});
 
 </script>
 
 </body>
-</html>
