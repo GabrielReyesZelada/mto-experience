@@ -788,6 +788,29 @@ pointer-events: auto;
     filter: blur(20px);
     opacity:0;
   }
+
+/* ===== CONTROL REAL DE INTERACCIÓN ===== */
+
+/* FRONT activo solo antes del flip */
+.mto-front{
+  pointer-events: auto;
+  z-index: 2;
+}
+
+/* BACK bloqueado inicialmente */
+.mto-back{
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Cuando se hace flip */
+.mto-flip.flipped .mto-front{
+  pointer-events: none; /* 🔥 deja de bloquear */
+}
+
+.mto-flip.flipped .mto-back{
+  pointer-events: auto; /* 🔥 ahora sí interactivo */
+  z-index: 3;
 }
     
 </style>
