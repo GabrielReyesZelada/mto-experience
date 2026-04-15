@@ -761,24 +761,41 @@ function enter(){
   const burst = document.getElementById("energyBurst");
   const gearEl = document.getElementById("gear");
   const core = document.querySelector(".gear-core");
+  const video = document.getElementById("video");
 
+  // 1. ACTIVACIÓN INICIAL (click)
   btn.classList.add("active");
 
   const rect = btn.getBoundingClientRect();
   burst.style.left = rect.left + rect.width/2 + "px";
   burst.style.top = rect.top + rect.height/2 + "px";
-
   burst.classList.add("active");
 
+  // 2. ARRANQUE DEL SISTEMA (0s - 0.8s)
+  gearEl.classList.add("gear-activate");
+  core.classList.add("active");
+
+  // 🔥 impulso fuerte inicial (sensación de motor encendiendo)
+  velocity += 4;
+
+  // 🎥 el video pierde protagonismo (se “apaga”)
+  video.style.transform = "scale(1.15)";
+  video.style.filter = "brightness(0.4) blur(2px)";
+
+  // 3. ESCALAMIENTO PROGRESIVO (0.2s - 1s)
   setTimeout(()=>{
-    gearEl.classList.add("gear-activate");
-    core.classList.add("active");
-    velocity += 2.5;
+    velocity += 2; // segundo impulso más suave
   },200);
 
   setTimeout(()=>{
+    velocity += 1; // tercer impulso (cola de energía)
+  },400);
+
+  // 4. TRANSICIÓN AL SISTEMA (1.1s)
+  setTimeout(()=>{
     document.getElementById("flip").classList.add("flipped");
-  },900);
+  },1100);
+
 }
 
 function volver(){
