@@ -303,40 +303,128 @@ video{
 
 <script>
 
+/* ===== FLIP ===== */
 function enter(){
   document.getElementById("flip").classList.add("flipped");
 }
-
 function volver(){
   document.getElementById("flip").classList.remove("flipped");
 }
 
+/* ===== SCROLL CON INERCIA ===== */
+
 let current = 0;
 const slides = document.querySelectorAll(".slide");
 
+let scrollForce = 0;
+
 window.addEventListener("wheel", e=>{
-  current += e.deltaY > 0 ? 1 : -1;
+  scrollForce += e.deltaY * 0.002;
+
+  velocity += e.deltaY * 0.02; // conecta con engranaje
+},{ passive:true });
+
+function updateScroll(){
+  current += scrollForce;
+
+  scrollForce *= 0.85; // fricción
+
   current = Math.max(0, Math.min(current, slides.length-1));
 
   document.getElementById("slides").style.transform =
-    `translateY(-${current*100}vh)`;
-},{ passive:true });
+    `translateY(-${current * 100}vh)`;
+
+  requestAnimationFrame(updateScroll);
+}
+updateScroll();
+
+/* ===== ENGRANAJE FÍSICO ===== */
 
 let velocity = 0;
 let rotation = 0;
+
 const gear = document.getElementById("gear");
 
-function animate(){
+function animateGear(){
   rotation += velocity;
-  velocity *= 0.95;
+  velocity *= 0.96;
 
   if(gear){
     gear.style.transform = `rotate(${rotation}deg)`;
   }
 
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animateGear);
 }
-animate();
+animateGear();
+
+/* ===== BURBUJAS ORBITALES ===== */
+
+const bubbles = document.querySelectorAll(".bubble");
+
+bubbles.forEach((b,i)=>{
+  b.dataset.angle = Math.random()*360;
+  b.dataset.radius = 20 + Math.random()*40;
+});
+
+function animateBubbles(){
+
+  bubbles.forEach((b,i)=>{
+
+    let angle = parseFloat(b.dataset.angle);
+    let radius = parseFloat(b.dataset.radius);
+
+    // velocidad depende del engranaje
+    angle += velocity * 2 + 0.05;
+
+    let x = Math.cos(angle) * radius;
+    let y = Math.sin(angle) * radius;
+
+    b.style.transform = `translate(${x}px, ${y}px) scale(${1 + Math.abs(velocity)*0.1})`;
+
+    // glow dinámico
+    let glow = Math.min(Math.abs(velocity)*20, 40);
+
+    b.style.boxShadow = `
+      0 0 ${10+glow}px rgba(0,200,255,.6),
+      0 0 ${20+glow}px rgba(255,0,200,.4)
+    `;
+
+    b.dataset.angle = angle;
+  });
+
+  requestAnimationFrame(animateBubbles);
+}
+animateBubbles();
+
+/* ===== PARALLAX TÍTULOS ===== */
+
+const titles = document.querySelectorAll(".slide h1");
+
+function animateTitles(){
+  titles.forEach((t,i)=>{
+    let offset = (i - current) * 50;
+
+    t.style.transform = `translateY(${offset}px)`;
+    t.style.opacity = 1 - Math.abs(i-current)*0.5;
+  });
+
+  requestAnimationFrame(animateTitles);
+}
+animateTitles();
+
+/* ===== PANEL ===== */
+
+document.querySelectorAll(".bubble").forEach(b=>{
+  b.onclick=()=>{
+    document.getElementById("panel").classList.add("active");
+    document.querySelector(".panel-img").style.backgroundImage=b.style.backgroundImage;
+    document.getElementById("pTitle").innerText=b.dataset.name;
+  }
+});
+
+function closePanel(){
+  document.getElementById("panel").classList.remove("active");
+}
 
 </script>
 
