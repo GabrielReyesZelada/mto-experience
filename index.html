@@ -206,27 +206,69 @@ video{
   width:160px;
   height:160px;
   border-radius:50%;
-  position:relative;
 
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,.2), transparent 60%),
-    radial-gradient(circle at 70% 70%, rgba(0,200,255,.4), transparent 60%);
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
   backdrop-filter: blur(10px);
-  
+  border:1px solid rgba(255,255,255,.08);
+
   box-shadow:
-    inset 0 0 30px rgba(255,255,255,.1),
-    0 0 40px rgba(0,200,255,.3);
+    inset 0 0 30px rgba(255,255,255,.08),
+    0 0 40px rgba(0,200,255,.25);
 
   overflow:hidden;
-}
-.bubble:hover{
-  transform:scale(1.12);
-  box-shadow:
-    0 0 40px rgba(0,200,255,.8),
-    0 0 80px rgba(255,0,200,.6);
+
+  transition:.4s;
 }
 
+.node:hover{
+  transform:scale(1.08);
+  box-shadow:
+    0 0 60px rgba(0,200,255,.6),
+    0 0 100px rgba(255,0,200,.4);
+}
+
+.node-liquid{
+  position:absolute;
+  inset:0;
+
+  background:
+    radial-gradient(circle at 30% 30%, rgba(0,200,255,.5), transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(255,0,200,.4), transparent 60%);
+
+  filter: blur(20px);
+  mix-blend-mode: screen;
+
+  animation: liquidFlow 6s ease-in-out infinite alternate;
+}
+
+@keyframes liquidFlow{
+  0%{ transform:translate(-10px,10px) scale(1); }
+  50%{ transform:translate(10px,-10px) scale(1.1); }
+  100%{ transform:translate(-5px,5px) scale(1); }
+}
+
+.node-label{
+  position:absolute;
+  bottom:-70px;
+  text-align:center;
+  color:white;
+}
+
+.node-label h3{
+  margin:0;
+  font-size:16px;
+}
+
+.node-label p{
+  margin:5px 0 0;
+  font-size:13px;
+  opacity:.7;
+}
+  
 /* ===== PANEL ===== */
 #panel{
   position:fixed;
@@ -294,21 +336,34 @@ video{
   
   <h1>ESTUDIOS & OUTDOOR</h1>
 
-  <div class="subareas">
+ <div class="subareas">
 
-    <div class="node">
-  <div class="node-liquid"></div>
+  <div class="node">
+    <div class="node-liquid"></div>
+    <div class="node-label">
+      <h3>Cámara</h3>
+      <p>Capturamos lo invisible</p>
+    </div>
+  </div>
+
+  <div class="node">
+    <div class="node-liquid"></div>
+    <div class="node-label">
+      <h3>Iluminación</h3>
+      <p>Diseñamos la percepción</p>
+    </div>
+  </div>
+
+  <div class="node">
+    <div class="node-liquid"></div>
+    <div class="node-label">
+      <h3>Audio</h3>
+      <p>Hacemos audible la emoción</p>
+    </div>
+  </div>
+
 </div>
-<h3>Cámara</h3>
-<p>Capturamos lo invisible</p>
-
-    <div class="bubble" data-name="Iluminación"
-      style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d')">
-    </div>
-
-    <div class="bubble" data-name="Audio"
-      style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d')">
-    </div>
+   
 
     <div class="bubble" data-name="Switching"
       style="background-image:url('https://images.unsplash.com/photo-1581092921461-eab62e97a780')">
@@ -382,48 +437,13 @@ function animateGear(){
 }
 animateGear();
 
-/* ===== BURBUJAS ORBITALES ===== */
+document.querySelectorAll(".node-liquid").forEach(n=>{
+  let intensity = Math.min(Math.abs(velocity)*0.5, 2);
 
-const bubbles = document.querySelectorAll(".bubble");
-
-bubbles.forEach((b,i)=>{
-  b.style.willChange = "transform";
-  b.dataset.angle = Math.random()*360;
-  b.dataset.radius = 20 + Math.random()*40;
+  n.style.filter = `blur(${20 + intensity*10}px) brightness(${1 + intensity*0.3})`;
 });
 
-function animateBubbles(){
 
-  bubbles.forEach((b,i)=>{
-
-    let angle = parseFloat(b.dataset.angle);
-    let radius = parseFloat(b.dataset.radius);
-
-    // velocidad depende del engranaje
-    angle += velocity * 2 + 0.05;
-
-    let x = Math.cos(angle) * radius;
-    let y = Math.sin(angle) * radius;
-
-    b.style.transform = `
-  translate(${x}px, ${y}px)
-  scale(${1 + Math.abs(velocity)*0.1})
-`;
-
-    // glow dinámico
-    let glow = Math.min(Math.abs(velocity)*20, 40);
-
-    b.style.boxShadow = `
-      0 0 ${10+glow}px rgba(0,200,255,.6),
-      0 0 ${20+glow}px rgba(255,0,200,.4)
-    `;
-
-    b.dataset.angle = angle;
-  });
-
-  requestAnimationFrame(animateBubbles);
-}
-animateBubbles();
 
 /* ===== PARALLAX TÍTULOS ===== */
 
