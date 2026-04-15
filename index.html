@@ -729,6 +729,55 @@ h1{
 .crystal-ball::after{
 pointer-events: auto;
 }
+
+/* ===== PORTAL ZOOM UNIVERSO ===== */
+
+.portal-clone{
+  position:fixed;
+  border-radius:50%;
+  z-index:99999;
+  pointer-events:none;
+
+  background-size:cover;
+  background-position:center;
+
+  transform-origin:center;
+  will-change: transform, opacity;
+
+  box-shadow:
+    0 0 60px rgba(0,255,255,.8),
+    0 0 120px rgba(255,0,255,.6);
+}
+
+/* animación expansión */
+.portal-zoom{
+  animation: zoomUniverse 0.9s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+@keyframes zoomUniverse{
+  0%{
+    transform:scale(1);
+    filter: blur(0px);
+    opacity:1;
+  }
+
+  40%{
+    transform:scale(2.5);
+    filter: blur(2px);
+  }
+
+  70%{
+    transform:scale(6);
+    filter: blur(6px);
+    opacity:.9;
+  }
+
+  100%{
+    transform:scale(20);
+    filter: blur(20px);
+    opacity:0;
+  }
+}
     
 </style>
 </head>
@@ -1090,16 +1139,31 @@ document.querySelectorAll(".crystal-ball").forEach(ball=>{
 
   ball.addEventListener("click", ()=>{
 
+    const rect = ball.getBoundingClientRect();
+
+    /* 🔮 crear clon visual */
+    const clone = document.createElement("div");
+    clone.className = "portal-clone";
+
+    clone.style.left = rect.left + "px";
+    clone.style.top = rect.top + "px";
+    clone.style.width = rect.width + "px";
+    clone.style.height = rect.height + "px";
+
+    const img = ball.querySelector(".bubble-img");
+    clone.style.backgroundImage = img.style.backgroundImage;
+
+    document.body.appendChild(clone);
+
+    /* activar animación */
+    requestAnimationFrame(()=>{
+      clone.classList.add("portal-zoom");
+    });
+
+    /* ===== LÓGICA ORIGINAL ===== */
+
     const name = ball.dataset.name;
 
-    /* ===== PANEL ===== */
-    document.getElementById("panel").classList.add("active");
-    document.querySelector(".panel-img").style.backgroundImage =
-      ball.querySelector(".bubble-img").style.backgroundImage;
-    document.getElementById("pTitle").innerText = name;
-
-    /* ===== CINEMA ===== */
-    const flash = document.getElementById("portalFlash");
     const cinema = document.getElementById("cinema");
     const video = document.getElementById("cinemaVideo");
     const title = document.getElementById("cinemaTitle");
@@ -1111,19 +1175,21 @@ document.querySelectorAll(".crystal-ball").forEach(ball=>{
       "Switching": "https://www.w3schools.com/html/movie.mp4"
     };
 
-    flash.classList.add("active");
-    ball.classList.add("opening");
-
+    /* ⏳ sincronizar con animación */
     setTimeout(()=>{
       cinema.classList.add("active");
       video.src = videos[name] || videos["Cámara"];
       title.innerText = name;
-    },300);
+    },600);
+
+    /* 🧹 limpiar clon */
+    setTimeout(()=>{
+      clone.remove();
+    },1000);
 
   });
 
 });
-
 
 /* ===== PARTICULAS ===== */
 
