@@ -1080,9 +1080,7 @@ function update(){
     `translateY(-${current * 100}vh)`;
 }
 
-window.addEventListener("load", () => {
-  document.body.classList.add("ready");
-});
+window.addEventListener("wheel", e => {
 
   scrollAccumulator += e.deltaY;
 
@@ -1103,7 +1101,7 @@ window.addEventListener("load", () => {
 
   update();
 
-},{ passive:true });
+}, { passive: true });
 
 /* ===== MINI ENGRANAJE ===== */
   
