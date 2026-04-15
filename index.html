@@ -29,18 +29,22 @@ body{
   transition:1.1s cubic-bezier(.22,1,.36,1);
   transition: transform 1.6s cubic-bezier(.22,1,.36,1);
   will-change: transform;
+  position: relative;
 }
 
 .mto-flip.flipped{
-  transform: rotateY(180deg) rotateX(4deg) translateZ(60px) scale(0.98);
+  transform: rotateY(180deg);
 }
 
 .mto-front,.mto-back{
   position:absolute;
   width:100%;
   height:100%;
-  backface-visibility:hidden;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
   transform-style: preserve-3d; /* 👈 AGREGA ESTO */
+  -webkit-backface-visibility: hidden;
 }
 .mto-back{ transform:rotateY(180deg); }
 
@@ -210,6 +214,7 @@ video{
   align-items:center;
   flex-direction:column;
   will-change: transform;
+  backface-visibility: hidden;
 }
 
 /* ===== FONDOS ===== */
@@ -421,6 +426,7 @@ h1{
   height:100%;
   z-index: 5;
   transition:transform 0.85s cubic-bezier(.22,1,.36,1);
+  transform-style: flat;
   will-change: transform; /* 🔥 AQUÍ sí va */
 }
 
