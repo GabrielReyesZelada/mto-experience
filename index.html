@@ -798,7 +798,7 @@ pointer-events: auto;
 <div class="mto-stage">
   <div class="mto-flip" id="flip">
 
-    <!-- FRONT -->
+    <!-- ===== FRONT ===== -->
     <div class="mto-front">
       <video id="video" autoplay muted loop>
         <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
@@ -808,9 +808,13 @@ pointer-events: auto;
         <h1>BIENVENIDOS A OPERACIONES</h1>
         <button class="mto-cta" onclick="enter()">Conócenos</button>
       </div>
+
+      <!-- 🔥 ESTO FALTABA -->
+      <div class="energy-burst" id="energyBurst"></div>
     </div>
 
-    <!-- BACK -->
+
+    <!-- ===== BACK ===== -->
     <div class="mto-back">
 
       <button class="back-btn" onclick="volver()">Volver</button>
@@ -825,228 +829,86 @@ pointer-events: auto;
         </div>
       </div>
 
-      <!-- TODO tu contenido BACK sigue igual -->
+      <!-- ===== SLIDES (TODO DEBE ESTAR AQUÍ DENTRO) ===== -->
       <div id="slides">
-        ...
+
+        <section class="slide">
+          <h1>NUESTRAS ÁREAS</h1>
+        </section>
+
+        <section class="slide">
+          <h1>ESTUDIOS & OUTDOOR</h1>
+          <div class="subareas">
+
+            <div class="crystal-ball" data-name="Cámara">
+              <div class="lens">
+                <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
+                <div class="energy"></div>
+              </div>
+            </div>
+
+            <div class="crystal-ball" data-name="Cámara">
+              <div class="lens">
+                <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
+                <div class="energy"></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="slide">
+          <h1>MOC</h1>
+          <div class="subareas">
+
+            <div class="crystal-ball" data-name="Cámara">
+              <div class="lens">
+                <div class="portal-bg"></div>
+                <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
+                <div class="energy"></div>
+                <div class="particles"></div>
+                <div class="energy-explosion"></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="slide">
+          <h1>BOC</h1>
+          <div class="subareas"></div>
+        </section>
+
+        <section class="slide">
+          <h1>GESTIÓN</h1>
+          <div class="subareas"></div>
+        </section>
+
+        <section class="slide">
+          <h1>GFX</h1>
+          <div class="subareas"></div>
+        </section>
+
       </div>
+      <!-- ===== FIN SLIDES ===== -->
 
     </div>
+    <!-- ===== FIN BACK ===== -->
 
   </div>
 </div>
 
-<section class="slide">
-<h1>NUESTRAS ÁREAS</h1>
-</section>
 
-<section class="slide">
-<h1>ESTUDIOS & OUTDOOR</h1>
-<div class="subareas">
-
-  <div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-  <div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-  <div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-  <div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-</div>
-</section>
-
-<section class="slide">
-<h1>MOC</h1>
-<div class="subareas">
-
-<div class="crystal-ball" data-name="Cámara">
-
-  <div class="lens">
-
-    <div class="portal-bg"></div>
-
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-
-    <div class="energy"></div>
-
-    <div class="particles"></div>
-
-    <div class="energy-explosion"></div>
-
-  </div>
-
-</div>
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-  
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-</div>
-</section>
-
-<section class="slide">
-<h1>BOC</h1>
-<div class="subareas">
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-
-</div>
-</section>
-
-<section class="slide">
-<h1>GESTIÓN</h1>
-<div class="subareas">
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-  
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-</div>
-</section>
-
-<section class="slide">
-<h1>GFX</h1>
-<div class="subareas">
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-  
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-<div class="crystal-ball" data-name="Cámara">
-  <div class="lens">
-    <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-    <div class="energy"></div>
-  </div>
-</div>
-
-</div>
-
-  
-</section>
-
-</div>
-
-</div>
-</div>
-
+<!-- ===== PANEL ===== -->
 <div id="panel">
-<div class="panel-img"></div>
-<div class="panel-content">
-<div class="close" onclick="closePanel()">✕</div>
-<h1 id="pTitle"></h1>
+  <div class="panel-img"></div>
+  <div class="panel-content">
+    <div class="close" onclick="closePanel()">✕</div>
+    <h1 id="pTitle"></h1>
+  </div>
 </div>
-</div>
+
+</body>
 
 <script>
 
