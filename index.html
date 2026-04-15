@@ -805,8 +805,29 @@ function update(){
     menuItems[current].classList.add("active");
   }
 }
-},{ passive:true });
 
+window.addEventListener("wheel", e=>{
+
+  scrollAccumulator += e.deltaY;
+
+  // engranaje
+  velocity += e.deltaY * 0.015;
+
+  if(Math.abs(scrollAccumulator) < SCROLL_THRESHOLD) return;
+
+  if(scrollAccumulator > 0){
+    current++;
+  } else {
+    current--;
+  }
+
+  scrollAccumulator = 0;
+
+  current = Math.max(0, Math.min(current, slides.length - 1));
+
+  update();
+
+},{ passive:true });
 
 const menuItems = document.querySelectorAll(".menu-item");
 
