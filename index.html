@@ -231,16 +231,28 @@ video{
     0 0 100px rgba(255,0,200,.4);
 }
 
+.node::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.4), transparent 40%);
+
+  pointer-events:none;
+}
+
 .node-liquid{
   position:absolute;
   inset:0;
 
   background:
-    radial-gradient(circle at 30% 30%, rgba(0,200,255,.5), transparent 60%),
-    radial-gradient(circle at 70% 70%, rgba(255,0,200,.4), transparent 60%);
+    radial-gradient(circle at 30% 30%, rgba(0,200,255,.7), transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(255,0,200,.6), transparent 60%),
+    radial-gradient(circle at center, rgba(255,255,255,.15), transparent 70%);
 
-  filter: blur(20px);
-  mix-blend-mode: screen;
+  filter: blur(18px);
 
   animation: liquidFlow 6s ease-in-out infinite alternate;
 }
@@ -365,10 +377,6 @@ video{
 </div>
    
 
-    <div class="bubble" data-name="Switching"
-      style="background-image:url('https://images.unsplash.com/photo-1581092921461-eab62e97a780')">
-    </div>
-
   </div>
 </section>
   
@@ -396,20 +404,26 @@ function volver(){
 let current = 0;
 const slides = document.querySelectorAll(".slide");
 
-let scrollForce = 0;
+let velocityScroll = 0;
+let target = 0;
 
 window.addEventListener("wheel", e=>{
-  scrollForce += e.deltaY * 0.002;
+  velocityScroll += e.deltaY * 0.002;
 
-  velocity += e.deltaY * 0.02; // conecta con engranaje
+  // conexión con engranaje
+  velocity += e.deltaY * 0.02;
 },{ passive:true });
 
 function updateScroll(){
-  current += scrollForce;
 
-  scrollForce *= 0.85; // fricción
+  // inercia
+  target += velocityScroll;
+  velocityScroll *= 0.85;
 
-  current = Math.max(0, Math.min(current, slides.length-1));
+  // 🔥 SNAP INTELIGENTE
+  current += (Math.round(target) - current) * 0.12;
+
+  current = Math.max(0, Math.min(current, slides.length - 1));
 
   document.getElementById("slides").style.transform =
     `translateY(-${current * 100}vh)`;
@@ -437,42 +451,22 @@ function animateGear(){
 }
 animateGear();
 
-document.querySelectorAll(".node-liquid").forEach(n=>{
-  let intensity = Math.min(Math.abs(velocity)*0.5, 2);
+function animateGear(){
+  rotation += velocity;
+  velocity *= 0.96;
 
-  n.style.filter = `blur(${20 + intensity*10}px) brightness(${1 + intensity*0.3})`;
-});
+  if(gear){
+    gear.style.transform = `rotate(${rotation}deg)`;
+  }
 
+  // 🔥 GEL REACTIVO REAL
+  document.querySelectorAll(".node-liquid").forEach(n=>{
+    let intensity = Math.min(Math.abs(velocity)*0.5, 2);
 
-
-/* ===== PARALLAX TÍTULOS ===== */
-
-const titles = document.querySelectorAll(".slide h1");
-
-function animateTitles(){
-  titles.forEach((t,i)=>{
-    let offset = (i - current) * 50;
-
-    t.style.transform = `translateY(${offset}px)`;
-    t.style.opacity = 1 - Math.abs(i-current)*0.5;
+    n.style.filter = `blur(${18 + intensity*12}px) brightness(${1 + intensity*0.4})`;
   });
 
-  requestAnimationFrame(animateTitles);
-}
-animateTitles();
-
-/* ===== PANEL ===== */
-
-document.querySelectorAll(".bubble").forEach(b=>{
-  b.onclick=()=>{
-    document.getElementById("panel").classList.add("active");
-    document.querySelector(".panel-img").style.backgroundImage=b.style.backgroundImage;
-    document.getElementById("pTitle").innerText=b.dataset.name;
-  }
-});
-
-function closePanel(){
-  document.getElementById("panel").classList.remove("active");
+  requestAnimationFrame(animateGear);
 }
 
 </script>
