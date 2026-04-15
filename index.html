@@ -798,47 +798,42 @@ pointer-events: auto;
 <div class="mto-stage">
   <div class="mto-flip" id="flip">
 
+    <!-- FRONT -->
+    <div class="mto-front">
+      <video id="video" autoplay muted loop>
+        <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
+      </video>
+
+      <div class="mto-overlay">
+        <h1>BIENVENIDOS A OPERACIONES</h1>
+        <button class="mto-cta" onclick="enter()">Conócenos</button>
+      </div>
+    </div>
+
+    <!-- BACK -->
+    <div class="mto-back">
+
+      <button class="back-btn" onclick="volver()">Volver</button>
+
+      <div id="gearWrap">
+        <div id="gear"></div>
+        <div class="gear-core"></div>
+        <div class="gear-logo"></div>
+        <div class="gear-hint">
+          <div class="mini-gear"></div>
+          <span>Usa la rueda del mouse</span>
+        </div>
+      </div>
+
+      <!-- TODO tu contenido BACK sigue igual -->
+      <div id="slides">
+        ...
+      </div>
+
+    </div>
+
+  </div>
 </div>
-</div>
-
-<!-- FRONT -->
-<div class="mto-front">
-<video id="video" autoplay muted loop>
-<source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
-</video>
-
-<div class="mto-overlay">
-<h1>BIENVENIDOS A OPERACIONES</h1>
-<button class="mto-cta" onclick="enter()">Conócenos</button>
-</div>
-</div>
-
-<div class="energy-burst" id="energyBurst"></div>
-
-<!-- BACK -->
-<div class="mto-back">
-
-<button class="back-btn" onclick="volver()">Volver</button>
-
-<div id="gearWrap">
-  <div id="gear"></div>
-  <div class="gear-core"></div>
-  <div class="gear-logo"></div>
-  <div class="gear-hint">
-  <div class="mini-gear"></div>
-  <span>Usa la rueda del mouse</span>
-</div>
-</div>
-
-<div id="cinema">
-  <video class="cinema-video" id="cinemaVideo" autoplay muted loop></video>
-  <div class="cinema-overlay"></div>
-  <div class="cinema-title" id="cinemaTitle"></div>
-</div>
-
-<div class="portal-flash" id="portalFlash"></div>
-
-<div id="slides">
 
 <section class="slide">
 <h1>NUESTRAS ÁREAS</h1>
