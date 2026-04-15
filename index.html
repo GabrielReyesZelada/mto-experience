@@ -16,58 +16,30 @@ body,html{
   background:black;
 }
 
-/* ===== STAGE ===== */
-.mto-stage{
-  position:relative;
-  width:100%;
-  height:100%;
-  perspective:1200px;
-}
-
 /* ===== FLIP ===== */
 .mto-flip{
-  position:absolute;
   width:100%;
   height:100%;
   transform-style:preserve-3d;
-  transition: transform 1s ease;
+  transition:1.1s cubic-bezier(.22,1,.36,1);
 }
+.mto-flip.flipped{ transform:rotateY(180deg); }
 
-.mto-flip.flipped{
-  transform: rotateY(180deg);
-}
-
-/* ===== FRONT / BACK ===== */
 .mto-front,.mto-back{
   position:absolute;
   width:100%;
   height:100%;
   backface-visibility:hidden;
 }
-
-.mto-back{
-  transform:rotateY(180deg);
-}
-
-/* CONTROL INTERACCIÓN */
-.mto-front{ z-index:2; }
-.mto-back{ z-index:1; pointer-events:none; }
-
-.mto-flip.flipped .mto-front{
-  pointer-events:none;
-}
-
-.mto-flip.flipped .mto-back{
-  pointer-events:auto;
-  z-index:3;
-}
+.mto-back{ transform:rotateY(180deg); }
 
 /* ===== VIDEO ===== */
 video{
   width:100%;
   height:100%;
   object-fit:cover;
-  pointer-events:none;
+  transform:scale(1.08);
+  transition:2s;
 }
 
 /* ===== OVERLAY ===== */
@@ -80,76 +52,257 @@ video{
   align-items:center;
   background:rgba(0,0,0,.6);
   color:white;
+  text-align:center;
 }
 
+.mto-overlay h1{
+  font-size:2.6rem;
+  letter-spacing:4px;
+}
+
+/* ===== BOTÓN CINE (RECUPERADO) ===== */
 .mto-cta{
   margin-top:30px;
   padding:16px 40px;
   border-radius:40px;
+  border:1px solid rgba(255,255,255,.6);
+  background:rgba(255,255,255,.05);
+  color:white;
+  cursor:pointer;
+  backdrop-filter:blur(8px);
+  transition:.4s;
+}
+
+.mto-cta:hover{
+  transform:scale(1.1);
+  background:white;
+  color:black;
+  box-shadow:0 0 30px rgba(255,255,255,.7);
+}
+
+.mto-cta:active{
+  transform:scale(.95);
+  box-shadow:0 0 40px rgba(0,200,255,1);
+}
+
+/* ===== BACK ===== */
+.mto-back{ background:#000; }
+
+/* ===== BOTÓN VOLVER ===== */
+.back-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+  z-index:100;
+  padding:10px 20px;
+  border-radius:20px;
   border:1px solid white;
   background:transparent;
   color:white;
   cursor:pointer;
 }
 
-/* ===== BACK ===== */
-.back-btn{
+/* ===== ENGRANAJE ===== */
+#gearWrap{
   position:fixed;
-  top:20px;
-  right:20px;
-  z-index:9999;
+  width:520px;
+  height:520px;
+  left:-120px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:50;
+  pointer-events: none;
+}
+
+#gear{
+  width:100%;
+  height:100%;
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
+}
+
+/* ===== CENTRO ===== */
+.gear-core{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background: radial-gradient(circle,#fff,#bbb,#444,#111);
+}
+
+.gear-logo{
+  position:absolute;
+  width:95px;
+  height:95px;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/LOGOS/MTO%20LOGO.png?csf=1&web=1&e=XAGkma") center/contain no-repeat;
+}
+
+/* ===== HINT ===== */
+.gear-hint{
+  position:absolute;
+  bottom:-60px;
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  opacity:.7;
+  font-size:14px;
 }
 
 /* ===== SLIDES ===== */
-#slides{
-  position:absolute;
-  width:100%;
-  height:100%;
-  transition:transform .8s;
-}
 
 .slide{
   height:100vh;
   display:flex;
-  flex-direction:column;
   justify-content:center;
   align-items:center;
+  flex-direction:column;
+  will-change: transform;
+}
+
+/* ===== FONDOS ===== */
+.slide:nth-child(1){ background:#00c8ff;}
+.slide:nth-child(2){ background:#102a54;}
+.slide:nth-child(3){ background:#1d1f4d;}
+.slide:nth-child(4){ background:#153b2e;}
+.slide:nth-child(5){ background:#4a1b1b;}
+.slide:nth-child(6){ background:#5a2d0c;}
+
+/* ===== TITULOS ===== */
+h1{
+  font-size:3.5rem;
   color:white;
 }
 
 /* ===== SUBAREAS ===== */
 .subareas{
+  margin-top:40px;
   display:flex;
   gap:30px;
   flex-wrap:wrap;
   justify-content:center;
 }
 
-.crystal-ball{
-  width:140px;
-  height:140px;
+.bubble{
+  width:150px;
+  height:150px;
   border-radius:50%;
-  overflow:hidden;
+  background-size:cover;
+  background-position:center;
   cursor:pointer;
-  background:#222;
+  position:relative;
+  overflow:hidden;
+  transition:.4s;
+
+/* glow base */
+  box-shadow:
+    0 0 10px rgba(255,0,200,.4),
+    0 0 20px rgba(0,200,255,.4);
 }
 
-.bubble-img{
-  width:100%;
-  height:100%;
-  background-size:cover;
+/* CAPA DE DISTORSIÓN */
+.bubble::before{
+  content:"";
+  position:absolute;
+  inset:-30%;
+
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.15), transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(0,200,255,.2), transparent 60%);
+
+  filter: blur(25px);
+  mix-blend-mode: overlay;
+
+  animation: liquidMove 7s ease-in-out infinite alternate;
+}
+
+/* SEGUNDA CAPA (más profundidad) */
+.bubble::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:inherit;
+
+  opacity:.2;
+  transform:scale(1.2);
+  filter: blur(10px);
+
+  animation: liquidShift 10s ease-in-out infinite;
+}
+
+@keyframes liquidMove{
+  0%{ transform:translate(0,0) scale(1); }
+  50%{ transform:translate(-10px,10px) scale(1.1); }
+  100%{ transform:translate(10px,-10px) scale(1); }
+}
+
+@keyframes liquidShift{
+  0%{ transform:scale(1.2) translate(0,0); }
+  50%{ transform:scale(1.3) translate(6px,-6px); }
+  100%{ transform:scale(1.2) translate(-6px,6px); }
+}
+
+/* MOVIMIENTO ORGÁNICO */
+@keyframes liquidMove{
+  0%{
+    transform:translate(0,0) scale(1);
+  }
+  50%{
+    transform:translate(-10px,10px) scale(1.1);
+  }
+  100%{
+    transform:translate(10px,-10px) scale(1);
+  }
+}
+
+@keyframes liquidShift{
+  0%{
+    transform:scale(1.2) translate(0,0);
+  }
+  50%{
+    transform:scale(1.3) translate(5px,-5px);
+  }
+  100%{
+    transform:scale(1.2) translate(-5px,5px);
+  }
+}
+
+  .bubble{
+  box-shadow:
+    0 0 10px rgba(255,0,200,.6),
+    0 0 30px rgba(0,200,255,.6);
+  transition:.4s;
+}
+
+.bubble:hover{
+  transform:scale(1.12);
+  box-shadow:
+    0 0 25px rgba(255,0,200,.9),
+    0 0 60px rgba(0,200,255,.9);
+}
+
+.bubble:hover::before{
+  filter: blur(35px);
+}
+
+.bubble:hover::after{
+  transform:scale(1.35);
 }
 
 /* ===== PANEL ===== */
 #panel{
   position:fixed;
   inset:0;
+  background:black;
   display:flex;
   opacity:0;
   pointer-events:none;
-  transition:.3s;
-  z-index:99999;
-  background:black;
+  transition:.4s;
+  z-index:999;
 }
 
 #panel.active{
@@ -160,7 +313,6 @@ video{
 .panel-img{
   flex:1;
   background-size:cover;
-  background-position:center;
 }
 
 .panel-content{
@@ -176,184 +328,349 @@ video{
   cursor:pointer;
 }
 
+/* ===== ENERGÍA BOTÓN ===== */
+
+.energy-burst{
+  position:absolute;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(0,200,255,.9), transparent 70%);
+  opacity:0;
+  transform:scale(0);
+  pointer-events:none;
+}
+
+/* expansión */
+.energy-burst.active{
+  animation:burst 0.8s ease-out forwards;
+}
+
+@keyframes burst{
+  0%{
+    opacity:1;
+    transform:scale(0);
+  }
+  70%{
+    opacity:.6;
+    transform:scale(25);
+  }
+  100%{
+    opacity:0;
+    transform:scale(40);
+  }
+}
+
+/* glow botón activo */
+.mto-cta.active{
+  box-shadow:
+    0 0 40px rgba(0,200,255,.9),
+    0 0 80px rgba(0,200,255,.6);
+}
+
+/* ===== ACTIVACIÓN ENGRANAJE ===== */
+.gear-activate{
+  animation:gearKick 0.6s ease-out;
+}
+
+@keyframes gearKick{
+  0%{ transform:scale(0.9) rotate(0deg); }
+  50%{ transform:scale(1.05) rotate(20deg); }
+  100%{ transform:scale(1) rotate(0deg); }
+}
+
+/* glow centro */
+.gear-core.active{
+  box-shadow:
+    inset 0 8px 20px rgba(255,255,255,.8),
+    inset 0 -15px 30px rgba(0,0,0,1),
+    0 0 60px rgba(0,200,255,.6);
+}
+
+#slides{
+  position:absolute;
+  width:100%;
+  height:100%;
+  transition:transform 0.85s cubic-bezier(.22,1,.36,1);
+  will-change: transform; /* 🔥 AQUÍ sí va */
+}
+
+.bubble::marker{ content:none; } /* evitar bugs raros */
+
+.bubble::before{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+
+  background: conic-gradient(
+    from 0deg,
+    rgba(0,200,255,0),
+    rgba(0,200,255,.8),
+    rgba(255,0,200,.9),
+    rgba(0,200,255,.8),
+    rgba(0,200,255,0)
+  );
+
+  filter: blur(4px);
+  animation: spinEnergy 4s linear infinite;
+  z-index:2;
+}
+
+@keyframes spinEnergy{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+
+.bubble{
+  backdrop-filter: blur(6px) contrast(1.2);
+  -webkit-backdrop-filter: blur(6px) contrast(1.2);
+}
+
+.bubble:active{
+  transform:scale(0.9);
+  box-shadow:
+    0 0 40px rgba(0,200,255,1),
+    inset 0 0 30px rgba(255,255,255,.4);
+}
+
 </style>
 </head>
 
-
 <body>
 
-<div class="mto-stage">
-  <div class="mto-flip" id="flip">
+<div class="mto-flip" id="flip">
 
-    <!-- ===== FRONT ===== -->
-    <div class="mto-front">
-      <video autoplay muted loop>
-        <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
-      </video>
+<!-- FRONT -->
+<div class="mto-front">
+<video id="video" autoplay muted loop>
+<source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/VIDEOS/Video%20Anfitrion%20Operaciones.mp4">
+</video>
 
-      <div class="mto-overlay">
-        <h1>BIENVENIDOS A OPERACIONES</h1>
-        <button class="mto-cta" onclick="enter()">Conócenos</button>
-      </div>
-
-      <div class="energy-burst" id="energyBurst"></div>
-    </div>
-
-    <!-- ===== BACK ===== -->
-    <div class="mto-back">
-
-      <button class="back-btn" onclick="volver()">Volver</button>
-
-      <!-- ENGRANAJE -->
-      <div id="gearWrap">
-        <div id="gear"></div>
-        <div class="gear-core"></div>
-        <div class="gear-logo"></div>
-        <div class="gear-hint">
-          <div class="mini-gear"></div>
-          <span>Usa la rueda del mouse</span>
-        </div>
-      </div>
-
-      <!-- SLIDES -->
-      <div id="slides">
-
-        <section class="slide">
-          <h1>NUESTRAS ÁREAS</h1>
-        </section>
-
-        <!-- ===== ESTUDIOS ===== -->
-        <section class="slide">
-          <h1>ESTUDIOS & OUTDOOR</h1>
-          <div class="subareas">
-
-            <div class="crystal-ball" data-name="Cámara">
-              <div class="lens">
-                <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
-                <div class="energy"></div>
-              </div>
-            </div>
-
-            <div class="crystal-ball" data-name="Iluminación">
-              <div class="lens">
-                <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7')"></div>
-                <div class="energy"></div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- ===== MOC ===== -->
-        <section class="slide">
-          <h1>MOC</h1>
-          <div class="subareas">
-
-            <div class="crystal-ball" data-name="Switching">
-              <div class="lens">
-                <div class="portal-bg"></div>
-                <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475')"></div>
-                <div class="energy"></div>
-                <div class="particles"></div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-      </div>
-
-    </div>
-  </div>
+<div class="mto-overlay">
+<h1>BIENVENIDOS A OPERACIONES</h1>
+<button class="mto-cta" onclick="enter()">Conócenos</button>
+</div>
 </div>
 
-<!-- ===== PANEL ===== -->
+<div class="energy-burst" id="energyBurst"></div>
+
+<!-- BACK -->
+<div class="mto-back">
+
+<button class="back-btn" onclick="volver()">Volver</button>
+
+<div id="gearWrap">
+  <div id="gear"></div>
+  <div class="gear-core"></div>
+  <div class="gear-logo"></div>
+  <div class="gear-hint">Usa la rueda del mouse</div>
+</div>
+
+<div id="slides">
+
+<section class="slide">
+<h1>NUESTRAS ÁREAS</h1>
+</section>
+
+<section class="slide">
+<h1>ESTUDIOS & OUTDOOR</h1>
+<div class="subareas">
+
+<div class="bubble" data-name="Cámara" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=400&auto=compress')"></div>
+
+<div class="bubble" data-name="Iluminación" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d')"></div>
+
+<div class="bubble" data-name="Audio" style="background-image:url('https://images.unsplash.com/photo-1511379938547-c1f69419868d')"></div>
+
+<div class="bubble" data-name="Switching" style="background-image:url('https://images.unsplash.com/photo-1581092921461-eab62e97a780')"></div>
+
+<div class="bubble" data-name="Producción en terreno" style="background-image:url('https://images.unsplash.com/photo-1505238680356-667803448bb6')"></div>
+
+</div>
+</section>
+
+<section class="slide">
+<h1>MOC</h1>
+<div class="subareas">
+
+<div class="bubble" data-name="Ingesta" style="background-image:url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b')"></div>
+
+<div class="bubble" data-name="Monitoreo" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475')"></div>
+
+<div class="bubble" data-name="Control de señales" style="background-image:url('https://images.unsplash.com/photo-1581090700227-1e8c1b1c9c53')"></div>
+
+<div class="bubble" data-name="Archivo" style="background-image:url('https://images.unsplash.com/photo-1531297484001-80022131f5a1')"></div>
+
+<div class="bubble" data-name="Replay" style="background-image:url('https://images.unsplash.com/photo-1511512578047-dfb367046420')"></div>
+
+</div>
+</section>
+
+<section class="slide">
+<h1>BOC</h1>
+<div class="subareas">
+
+<div class="bubble" data-name="Continuidad" style="background-image:url('https://images.unsplash.com/photo-1527443224154-c4a3942d3acf')"></div>
+
+<div class="bubble" data-name="Playout" style="background-image:url('https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc')"></div>
+
+<div class="bubble" data-name="Automatización" style="background-image:url('https://images.unsplash.com/photo-1581092335397-9583eb92d232')"></div>
+
+<div class="bubble" data-name="Señales en vivo" style="background-image:url('https://images.unsplash.com/photo-1498050108023-c5249f4df085')"></div>
+
+</div>
+</section>
+
+<section class="slide">
+<h1>GESTIÓN</h1>
+<div class="subareas">
+
+<div class="bubble" data-name="Planificación" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
+
+<div class="bubble" data-name="Pañol técnico" style="background-image:url('https://images.unsplash.com/photo-1581093458791-9d1c5c67d53c')"></div>
+
+<div class="bubble" data-name="Logística" style="background-image:url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d')"></div>
+
+<div class="bubble" data-name="Coordinación" style="background-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d')"></div>
+
+</div>
+</section>
+
+<section class="slide">
+<h1>GFX</h1>
+<div class="subareas">
+
+<div class="bubble" data-name="Gráfica en vivo" style="background-image:url('https://images.unsplash.com/photo-1492724441997-5dc865305da7')"></div>
+
+<div class="bubble" data-name="Realidad aumentada" style="background-image:url('https://images.unsplash.com/photo-1581090700227-1e8c1b1c9c53')"></div>
+
+<div class="bubble" data-name="Animaciones" style="background-image:url('https://images.unsplash.com/photo-1518779578993-ec3579fee39f')"></div>
+
+<div class="bubble" data-name="Diseño broadcast" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e')"></div>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</div>
+
 <div id="panel">
-  <div class="panel-img" id="panelImg"></div>
-  <div class="panel-content">
-    <div class="close" onclick="closePanel()">✕</div>
-    <h1 id="pTitle"></h1>
-    <p id="pText">Aquí puedes agregar descripción del área.</p>
-  </div>
+<div class="panel-img"></div>
+<div class="panel-content">
+<div class="close" onclick="closePanel()">✕</div>
+<h1 id="pTitle"></h1>
+</div>
 </div>
 
 <script>
 
 /* ===== FLIP ===== */
 function enter(){
-  document.getElementById("flip").classList.add("flipped");
+
+  const btn = document.querySelector(".mto-cta");
+  const burst = document.getElementById("energyBurst");
+  const gearEl = document.getElementById("gear");
+  const core = document.querySelector(".gear-core");
+
+  btn.classList.add("active");
+
+  const rect = btn.getBoundingClientRect();
+  burst.style.left = rect.left + rect.width/2 + "px";
+  burst.style.top = rect.top + rect.height/2 + "px";
+
+  burst.classList.add("active");
+
+  setTimeout(()=>{
+    gearEl.classList.add("gear-activate");
+    core.classList.add("active");
+    velocity += 2.5;
+  },200);
+
+  setTimeout(()=>{
+    document.getElementById("flip").classList.add("flipped");
+  },900);
 }
 
 function volver(){
   document.getElementById("flip").classList.remove("flipped");
 }
 
-/* ===== SCROLL ===== */
+/* ===== SCROLL SUAVE ===== */
+
 let current = 0;
 const slides = document.querySelectorAll(".slide");
+let scrollAccumulator = 0;
+const SCROLL_THRESHOLD = 80;
+
+function update(){
+  document.getElementById("slides").style.transform =
+    `translateY(-${current * 100}vh)`;
+}
 
 window.addEventListener("wheel", e=>{
-  if(e.deltaY > 0) current++;
-  else current--;
+
+  scrollAccumulator += e.deltaY;
+
+  // engranaje
+  velocity += e.deltaY * 0.015;
+
+  if(Math.abs(scrollAccumulator) < SCROLL_THRESHOLD) return;
+
+  if(scrollAccumulator > 0){
+    current++;
+  } else {
+    current--;
+  }
+
+  scrollAccumulator = 0;
 
   current = Math.max(0, Math.min(current, slides.length - 1));
 
-  document.getElementById("slides").style.transform =
-    `translateY(-${current * 100}vh)`;
+  update();
 
-  velocity += e.deltaY * 0.02;
-});
+},{ passive:true });
 
 /* ===== ENGRANAJE ===== */
+  
 let velocity = 0;
 let rotation = 0;
 
-const gear = document.getElementById("gear");
-const miniGear = document.querySelector(".mini-gear");
+const gear = document.getElementById("gear"); // 🔥 ESTA LÍNEA FALTABA
 
 function animate(){
   rotation += velocity;
   velocity *= 0.95;
 
-  if(gear) gear.style.transform = `rotate(${rotation}deg)`;
-  if(miniGear) miniGear.style.transform = `rotate(${rotation * 1.5}deg)`;
+  gear.style.transform = `rotate(${rotation}deg)`;
+
+  // conexión con burbujas
+  document.querySelectorAll(".bubble").forEach(b=>{
+    let influence = Math.min(Math.abs(velocity)*2, 5);
+    b.style.filter = `brightness(${1 + influence*0.1})`;
+  });
 
   requestAnimationFrame(animate);
 }
+
 animate();
+  
+/* ===== PANEL ===== */
 
-/* ===== PANEL (CLICK ESFERAS) ===== */
-document.querySelectorAll(".crystal-ball").forEach(ball=>{
-
-  ball.addEventListener("click", ()=>{
-
-    const name = ball.dataset.name;
-    const img = ball.querySelector(".bubble-img").style.backgroundImage;
-
+document.querySelectorAll(".bubble").forEach(b=>{
+  b.onclick=()=>{
     document.getElementById("panel").classList.add("active");
-    document.getElementById("panelImg").style.backgroundImage = img;
-    document.getElementById("pTitle").innerText = name;
-
-  });
-
+    document.querySelector(".panel-img").style.backgroundImage=b.style.backgroundImage;
+    document.getElementById("pTitle").innerText=b.dataset.name;
+  }
 });
 
 function closePanel(){
   document.getElementById("panel").classList.remove("active");
 }
 
-/* ===== PARTICULAS ===== */
-document.querySelectorAll(".particles").forEach(container=>{
-  for(let i=0;i<15;i++){
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.style.left = Math.random()*100 + "%";
-    p.style.animationDuration = (3 + Math.random()*4) + "s";
-    p.style.animationDelay = (Math.random()*5) + "s";
-    container.appendChild(p);
-  }
-});
-
 </script>
-
 </body>
+</html>
