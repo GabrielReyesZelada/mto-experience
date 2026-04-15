@@ -655,7 +655,7 @@ h1{
   position:fixed;
   inset:0;
   background:black;
-  z-index:9999;
+  z-index: 999999; /* más alto que todo */
   opacity:0;
   pointer-events:none;
   transition:0.6s ease;
@@ -751,7 +751,7 @@ pointer-events: auto;
 
 /* animación expansión */
 .portal-zoom{
-  animation: zoomUniverse 0.9s cubic-bezier(.22,1,.36,1) forwards;
+  animation: zoomUniverse 0.5s steps(6, end) forwards;
 }
 
 @keyframes zoomUniverse{
@@ -814,6 +814,14 @@ pointer-events: auto;
   <span>Usa la rueda del mouse</span>
 </div>
 </div>
+
+<div id="cinema">
+  <video class="cinema-video" id="cinemaVideo" autoplay muted loop></video>
+  <div class="cinema-overlay"></div>
+  <div class="cinema-title" id="cinemaTitle"></div>
+</div>
+
+<div class="portal-flash" id="portalFlash"></div>
 
 <div id="slides">
 
@@ -1014,13 +1022,6 @@ pointer-events: auto;
 
 </div>
 
-<div id="cinema">
-  <video class="cinema-video" id="cinemaVideo" autoplay muted loop></video>
-  <div class="cinema-overlay"></div>
-  <div class="cinema-title" id="cinemaTitle"></div>
-</div>
-
-<div class="portal-flash" id="portalFlash"></div>
   
 </section>
 
@@ -1134,10 +1135,15 @@ animate();
 
   
 /* ===== PANEL ===== */
+let isTransitioning = false;
 
 document.querySelectorAll(".crystal-ball").forEach(ball=>{
 
   ball.addEventListener("click", ()=>{
+
+    // 🚫 bloquear múltiples clicks
+    if(isTransitioning) return;
+    isTransitioning = true;
 
     const rect = ball.getBoundingClientRect();
 
@@ -1155,12 +1161,9 @@ document.querySelectorAll(".crystal-ball").forEach(ball=>{
 
     document.body.appendChild(clone);
 
-    /* activar animación */
     requestAnimationFrame(()=>{
       clone.classList.add("portal-zoom");
     });
-
-    /* ===== LÓGICA ORIGINAL ===== */
 
     const name = ball.dataset.name;
 
@@ -1175,22 +1178,23 @@ document.querySelectorAll(".crystal-ball").forEach(ball=>{
       "Switching": "https://www.w3schools.com/html/movie.mp4"
     };
 
-    /* ⏳ sincronizar con animación */
     setTimeout(()=>{
       cinema.classList.add("active");
       video.src = videos[name] || videos["Cámara"];
       title.innerText = name;
-    },600);
 
-    /* 🧹 limpiar clon */
+      video.load();
+      video.play();
+    },500);
+
     setTimeout(()=>{
       clone.remove();
+      isTransitioning = false; // 🔓 desbloquear clicks
     },1000);
 
   });
 
 });
-
 /* ===== PARTICULAS ===== */
 
 document.querySelectorAll(".particles").forEach(container=>{
