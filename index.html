@@ -375,12 +375,15 @@ video{
   </div>
 
 </div>
-   
-
-  </div>
 </section>
   
-<section class="slide"><h1>MOC</h1></section>
+<section class="slide">
+  <h1>MOC</h1>
+  <p style="opacity:.6; margin-top:10px;">
+    Donde convergen todas las señales
+  </p>
+</section>
+  
 <section class="slide"><h1>BOC</h1></section>
 <section class="slide"><h1>GESTIÓN</h1></section>
 <section class="slide"><h1>GFX</h1></section>
@@ -416,21 +419,20 @@ window.addEventListener("wheel", e=>{
 
 function updateScroll(){
 
-  // inercia
   target += velocityScroll;
   velocityScroll *= 0.85;
 
-  // 🔥 SNAP INTELIGENTE
-  current += (Math.round(target) - current) * 0.12;
+  // 🔥 LIMITAR target
+  target = Math.max(0, Math.min(target, slides.length - 1));
 
-  current = Math.max(0, Math.min(current, slides.length - 1));
+  // 🔥 SNAP REAL
+  current += (target - current) * 0.12;
 
   document.getElementById("slides").style.transform =
     `translateY(-${current * 100}vh)`;
 
   requestAnimationFrame(updateScroll);
 }
-updateScroll();
 
 /* ===== ENGRANAJE FÍSICO ===== */
 
@@ -439,16 +441,7 @@ let rotation = 0;
 
 const gear = document.getElementById("gear");
 
-function animateGear(){
-  rotation += velocity;
-  velocity *= 0.96;
 
-  if(gear){
-    gear.style.transform = `rotate(${rotation}deg)`;
-  }
-
-  requestAnimationFrame(animateGear);
-}
 animateGear();
 
 function animateGear(){
