@@ -40,6 +40,7 @@ video{
   object-fit:cover;
   transform:scale(1.08);
   transition:2s;
+  pointer-events:none; /* 🔥 ESTO SOLUCIONA TODO */
 }
 
 /* ===== OVERLAY ===== */
@@ -53,6 +54,7 @@ video{
   background:rgba(0,0,0,.6);
   color:white;
   text-align:center;
+  z-index:10; /* 🔥 prioridad sobre el video */
 }
 
 .mto-overlay h1{
@@ -71,6 +73,8 @@ video{
   cursor:pointer;
   backdrop-filter:blur(8px);
   transition:.4s;
+  position:relative;
+  z-index:20;
 }
 
 .mto-cta:hover{
