@@ -530,6 +530,89 @@ h1{
 .crystal-ball:hover .bubble-img{
   transform: scale(1.45);
 }
+
+/* ===== ULTRA FX ===== */
+
+/* 🌌 PORTAL INTERNO */
+.portal-bg{
+  position:absolute;
+  inset:-30%;
+  background:
+    radial-gradient(circle at center, rgba(0,255,255,.25), transparent 60%),
+    radial-gradient(circle at 70% 30%, rgba(255,0,255,.25), transparent 60%),
+    radial-gradient(circle at 30% 70%, rgba(0,100,255,.2), transparent 60%);
+  filter: blur(20px);
+  animation: portalMove 10s linear infinite;
+}
+
+@keyframes portalMove{
+  0%{ transform: rotate(0deg) scale(1); }
+  50%{ transform: rotate(180deg) scale(1.2); }
+  100%{ transform: rotate(360deg) scale(1); }
+}
+
+/* ✨ PARTÍCULAS */
+.particles{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  border-radius:50%;
+}
+
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:white;
+  opacity:.8;
+  filter: blur(1px);
+  animation: floatParticle linear infinite;
+}
+
+@keyframes floatParticle{
+  from{
+    transform: translateY(160px) scale(.5);
+    opacity:0;
+  }
+  20%{ opacity:1; }
+  to{
+    transform: translateY(-40px) scale(1.2);
+    opacity:0;
+  }
+}
+
+/* ⚡ EXPLOSIÓN CLICK */
+.energy-explosion{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(0,255,255,.8), transparent 70%);
+  opacity:0;
+  transform:scale(0);
+}
+
+.energy-explosion.active{
+  animation: explode 0.6s ease-out forwards;
+}
+
+@keyframes explode{
+  0%{ opacity:1; transform:scale(0); }
+  80%{ opacity:.6; transform:scale(2.5); }
+  100%{ opacity:0; transform:scale(3); }
+}
+
+/* 🚀 EFECTO PORTAL ABRIENDO */
+.crystal-ball.opening{
+  animation: portalOpen 0.6s ease forwards;
+}
+
+@keyframes portalOpen{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.3); }
+  100%{ transform:scale(0); opacity:0; }
+}
+  
 </style>
 </head>
 
@@ -612,10 +695,21 @@ h1{
 <div class="subareas">
 
 <div class="crystal-ball" data-name="Cámara">
+
   <div class="lens">
+
+    <div class="portal-bg"></div>
+
     <div class="bubble-img" style="background-image:url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe')"></div>
+
     <div class="energy"></div>
+
+    <div class="particles"></div>
+
+    <div class="energy-explosion"></div>
+
   </div>
+
 </div>
 
 <div class="crystal-ball" data-name="Cámara">
@@ -904,6 +998,43 @@ document.querySelectorAll(".crystal-ball").forEach(ball=>{
     ball.querySelector(".bubble-img").style.transform =
       "translate(0,0) scale(1.3)";
   });
+
+// ===== PARTICULAS =====
+document.querySelectorAll(".particles").forEach(container=>{
+
+  for(let i=0;i<15;i++){
+
+    const p = document.createElement("div");
+    p.className = "particle";
+
+    p.style.left = Math.random()*100 + "%";
+    p.style.animationDuration = (3 + Math.random()*4) + "s";
+    p.style.animationDelay = (Math.random()*5) + "s";
+
+    container.appendChild(p);
+  }
+});
+
+
+// ===== CLICK PORTAL =====
+document.querySelectorAll(".crystal-ball").forEach(ball=>{
+
+  ball.addEventListener("click", ()=>{
+
+    const explosion = ball.querySelector(".energy-explosion");
+
+    explosion.classList.add("active");
+    ball.classList.add("opening");
+
+    // abrir panel después del efecto
+    setTimeout(()=>{
+      document.getElementById("panel").classList.add("active");
+      document.getElementById("pTitle").innerText = ball.dataset.name;
+    },400);
+
+  });
+
+});
 
 });
 </script>
