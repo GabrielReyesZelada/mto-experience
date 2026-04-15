@@ -434,6 +434,64 @@ h1{
     inset 0 0 30px rgba(255,255,255,.4);
 }
 
+<!-- SOLO TE MARCO LOS CAMBIOS CLAVE, EL RESTO ES TUYO -->
+
+<style>
+
+/* 🔥 FIX CAPAS (CLAVE DEL BUG) */
+.mto-front{
+  z-index:2;
+}
+
+.mto-back{
+  z-index:1;
+  pointer-events:none;
+}
+
+.mto-flip.flipped .mto-front{
+  pointer-events:none;
+}
+
+.mto-flip.flipped .mto-back{
+  pointer-events:auto;
+  z-index:3;
+}
+
+/* 🔥 BOTÓN VOLVER SIEMPRE ARRIBA */
+.back-btn{
+  z-index:9999;
+}
+
+/* 🔥 ENGRANAJE MÁS VISIBLE */
+#gearWrap{
+  z-index:200;
+}
+
+/* 🔥 HINT MEJORADO */
+.gear-hint{
+  bottom:-35px;
+  opacity:.9;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* mini engranaje visual */
+.gear-hint::before{
+  content:"";
+  width:16px;
+  height:16px;
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
+  display:inline-block;
+}
+
+/* 🔥 ASEGURAR CLICK EN BURBUJAS */
+.bubble{
+  pointer-events:auto;
+  z-index:10;
+}
+
 </style>
 </head>
 
@@ -644,12 +702,14 @@ function animate(){
   rotation += velocity;
   velocity *= 0.95;
 
-  gear.style.transform = `rotate(${rotation}deg)`;
+  if(gear){
+    gear.style.transform = `rotate(${rotation}deg)`;
+  }
 
-  // conexión con burbujas
+  // 🔥 feedback visual más limpio
   document.querySelectorAll(".bubble").forEach(b=>{
-    let influence = Math.min(Math.abs(velocity)*2, 5);
-    b.style.filter = `brightness(${1 + influence*0.1})`;
+    let influence = Math.min(Math.abs(velocity)*1.5, 3);
+    b.style.filter = `brightness(${1 + influence*0.15})`;
   });
 
   requestAnimationFrame(animate);
