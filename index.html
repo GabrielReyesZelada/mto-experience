@@ -16,19 +16,13 @@ body,html{
   background:black;
 }
 
-body{
-  perspective: none;
-}
-
 /* ===== FLIP ===== */
 .mto-flip{
+  position:absolute;
   width:100%;
   height:100%;
   transform-style:preserve-3d;
-  transition: transform 1.2s cubic-bezier(.22,1,.36,1);
-  will-change: transform;
-  position: relative;
-  perspective: 1400px;
+  transition: transform 1s ease;
 }
   
 .mto-flip.flipped{
@@ -109,7 +103,20 @@ video{
 
 .mto-front,
 .mto-back{
-  pointer-events: none;
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
+
+.mto-back{
+  transform:rotateY(180deg);
+  pointer-events:none;
+}
+
+.mto-flip.flipped .mto-back{
+  pointer-events:auto;
 }
 
 .mto-flip:not(.flipped) .mto-front{
@@ -119,6 +126,13 @@ video{
 
 .mto-flip.flipped .mto-back{
   pointer-events: auto;
+}
+
+.mto-stage{
+  position:relative;
+  width:100%;
+  height:100%;
+  perspective:1200px;
 }
 
 /* ===== BOTÓN VOLVER ===== */
@@ -781,7 +795,11 @@ pointer-events: auto;
 
 <body>
 
-<div class="mto-flip" id="flip">
+<div class="mto-stage">
+  <div class="mto-flip" id="flip">
+
+</div>
+</div>
 
 <!-- FRONT -->
 <div class="mto-front">
