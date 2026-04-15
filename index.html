@@ -411,7 +411,7 @@ let velocityScroll = 0;
 let target = 0;
 
 window.addEventListener("wheel", e=>{
-  velocityScroll += e.deltaY * 0.002;
+  velocityScroll += e.deltaY * 0.004;
 
   // conexión con engranaje
   velocity += e.deltaY * 0.02;
@@ -422,11 +422,12 @@ function updateScroll(){
   target += velocityScroll;
   velocityScroll *= 0.85;
 
-  // 🔥 LIMITAR target
+  // 🔥 límites
   target = Math.max(0, Math.min(target, slides.length - 1));
 
-  // 🔥 SNAP REAL
-  current += (target - current) * 0.12;
+  // 🔥 SNAP SUAVE (NO redondear directo)
+  let snap = Math.round(target);
+  current += (snap - current) * 0.12;
 
   document.getElementById("slides").style.transform =
     `translateY(-${current * 100}vh)`;
