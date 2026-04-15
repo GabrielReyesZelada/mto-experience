@@ -312,7 +312,7 @@ h1{
 }
 
 .bubble:hover::after{
-  transform:scale(10);
+  transform:scale(1.35);
 }
 
 /* ===== PANEL ===== */
@@ -566,6 +566,52 @@ body::after{
   pointer-events:none;
 }
 
+/* ===== MENÚ SUPERIOR ===== */
+#topMenu{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:25px;
+  z-index:500;
+  backdrop-filter: blur(10px);
+  padding:10px 20px;
+  border-radius:30px;
+  background:rgba(0,0,0,.3);
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.menu-item{
+  color:white;
+  font-size:14px;
+  cursor:pointer;
+  opacity:.6;
+  transition:.3s;
+  position:relative;
+}
+
+.menu-item:hover{
+  opacity:1;
+  text-shadow:0 0 10px rgba(0,200,255,.8);
+}
+
+/* activo */
+.menu-item.active{
+  opacity:1;
+}
+
+.menu-item.active::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:100%;
+  height:2px;
+  background:linear-gradient(to right, #00c8ff, #ff00c8);
+  box-shadow:0 0 10px rgba(0,200,255,.8);
+}
+
 </style>
 </head>
 
@@ -591,6 +637,16 @@ body::after{
 <div class="mto-back">
 
 <button class="back-btn" onclick="volver()">Volver</button>
+
+<div id="topMenu">
+  <div class="menu-item" data-index="0">Inicio</div>
+  <div class="menu-item" data-index="1">Estudios</div>
+  <div class="menu-item" data-index="2">MOC</div>
+  <div class="menu-item" data-index="3">BOC</div>
+  <div class="menu-item" data-index="4">Gestión</div>
+  <div class="menu-item" data-index="5">GFX</div>
+</div>
+  
 
 <div id="gearWrap">
   <div id="gear"></div>
@@ -740,30 +796,39 @@ const SCROLL_THRESHOLD = 80;
 function update(){
   document.getElementById("slides").style.transform =
     `translateY(-${current * 100}vh)`;
-}
 
-window.addEventListener("wheel", e=>{
+  // actualizar menú activo
+  menuItems.forEach(item=>{
+    item.classList.remove("active");
+  });
 
-  scrollAccumulator += e.deltaY;
-
-  // engranaje
-  velocity += e.deltaY * 0.015;
-
-  if(Math.abs(scrollAccumulator) < SCROLL_THRESHOLD) return;
-
-  if(scrollAccumulator > 0){
-    current++;
-  } else {
-    current--;
+  if(menuItems[current]){
+    menuItems[current].classList.add("active");
   }
-
-  scrollAccumulator = 0;
-
-  current = Math.max(0, Math.min(current, slides.length - 1));
-
-  update();
-
+}
 },{ passive:true });
+
+
+const menuItems = document.querySelectorAll(".menu-item");
+
+
+menuItems.forEach(item=>{
+  item.addEventListener("click", ()=>{
+
+    const targetIndex = parseInt(item.dataset.index);
+
+    // dirección del movimiento
+    const direction = targetIndex > current ? 1 : -1;
+    const steps = Math.abs(targetIndex - current);
+
+    // pequeño impulso al engranaje (coherencia física)
+    velocity += direction * (1.5 + steps * 0.5);
+
+    // transición directa (manteniendo sistema)
+    current = targetIndex;
+    update();
+  });
+});
 
 /* ===== ENGRANAJE ===== */
   
