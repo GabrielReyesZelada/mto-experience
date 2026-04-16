@@ -900,7 +900,20 @@ const gear = document.getElementById("gear"); // 🔥 ESTA LÍNEA FALTABA
 
 function animate(){
 
-  const behavior = sectionBehavior[current] || sectionBehavior[0];
+const baseIndex = Math.floor(position);
+const nextIndex = Math.min(baseIndex + 1, slides.length - 1);
+const t = position - baseIndex;
+
+const base = sectionBehavior[baseIndex] || sectionBehavior[0];
+const next = sectionBehavior[nextIndex] || sectionBehavior[0];
+
+// interpolación suave
+const behavior = {
+  speed: base.speed + (next.speed - base.speed) * t,
+  brightness: base.brightness + (next.brightness - base.brightness) * t,
+  gearBoost: base.gearBoost + (next.gearBoost - base.gearBoost) * t
+};
+  
 rotation += velocity * behavior.speed;
   velocity *= 0.975;
 
