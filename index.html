@@ -220,6 +220,7 @@ h1{
 }
 
 .bubble{
+  overflow:hidden; /* 🔥 CLAVE */
   width:160px;              /* 🔥 TAMAÑO CLAVE */
   height:160px;             /* 🔥 TAMAÑO CLAVE */
   border-radius:50%;
@@ -276,7 +277,7 @@ h1{
 .bubble::before{
   content:"";
   position:absolute;
-  inset:-30%;
+  inset:-15%;
   border-radius:50%;
 
   background:
@@ -299,6 +300,7 @@ h1{
   opacity:.2;
   transform:scale(1.2);
   filter: blur(10px);
+  border-radius:50%;
 
   animation: liquidShift 10s ease-in-out infinite;
 }
