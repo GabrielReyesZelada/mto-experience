@@ -220,6 +220,16 @@ h1{
 }
 
 .bubble{
+  width:160px;              /* 🔥 TAMAÑO CLAVE */
+  height:160px;             /* 🔥 TAMAÑO CLAVE */
+  border-radius:50%;
+
+  background-size:cover;
+  background-position:center;
+
+  position:relative;        /* 🔥 necesario para efectos internos */
+  display:block;
+
   backdrop-filter: blur(8px) contrast(1.2);
   border:1px solid rgba(255,255,255,.08);
 
@@ -229,6 +239,40 @@ h1{
 
   transition:.4s;
 }
+
+.bubble{
+  box-shadow:
+    0 0 10px rgba(255,0,200,.6),
+    0 0 30px rgba(0,200,255,.6);
+  transition:.4s;
+}
+
+.bubble{
+  backdrop-filter: blur(6px) contrast(1.2);
+  -webkit-backdrop-filter: blur(6px) contrast(1.2);
+}
+
+/* 🔥 ASEGURAR CLICK EN BURBUJAS */
+.bubble{
+  pointer-events:auto;
+  z-index:10;
+}
+
+.bubble:hover{
+  transform:scale(1.12);
+  box-shadow:
+    0 0 40px rgba(0,200,255,.8),
+    0 0 80px rgba(255,0,200,.6);
+}
+
+.bubble:hover::before{
+  filter: blur(35px);
+}
+
+.bubble:hover::after{
+  transform:scale(1.35);
+}
+  
 /* CAPA DE DISTORSIÓN */
 .bubble::before{
   content:"";
@@ -294,28 +338,6 @@ h1{
   100%{
     transform:scale(1.2) translate(-5px,5px);
   }
-}
-
-  .bubble{
-  box-shadow:
-    0 0 10px rgba(255,0,200,.6),
-    0 0 30px rgba(0,200,255,.6);
-  transition:.4s;
-}
-
-.bubble:hover{
-  transform:scale(1.12);
-  box-shadow:
-    0 0 40px rgba(0,200,255,.8),
-    0 0 80px rgba(255,0,200,.6);
-}
-
-.bubble:hover::before{
-  filter: blur(35px);
-}
-
-.bubble:hover::after{
-  transform:scale(1.35);
 }
 
 /* ===== PANEL ===== */
@@ -447,10 +469,6 @@ h1{
   to{ transform:rotate(360deg); }
 }
 
-.bubble{
-  backdrop-filter: blur(6px) contrast(1.2);
-  -webkit-backdrop-filter: blur(6px) contrast(1.2);
-}
 
 .bubble:active{
   transform:scale(0.9);
@@ -505,12 +523,6 @@ h1{
   height:16px;
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
   display:inline-block;
-}
-
-/* 🔥 ASEGURAR CLICK EN BURBUJAS */
-.bubble{
-  pointer-events:auto;
-  z-index:10;
 }
 
 /* ===== SISTEMA GLOBAL (coherencia visual) ===== */
