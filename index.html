@@ -816,12 +816,22 @@ let current = 0;
 const slides = document.querySelectorAll(".slide");
 let scrollAccumulator = 0;
 const SCROLL_THRESHOLD = 80;
+let position = 0;  // posición real continua (decimales)
+let target = 0;    // índice destino (slide objetivo)
 
 function update(){
-  document.getElementById("slides").style.transform =
-    `translateY(-${current * 100}vh)`;
 
-  // actualizar menú activo
+  // 1. interpolación (movimiento físico)
+  position += (target - position) * 0.08;
+
+  // 2. aplicar movimiento visual
+  document.getElementById("slides").style.transform =
+    `translateY(-${position * 100}vh)`;
+
+  // 3. detectar slide activa real
+  current = Math.round(position);
+
+  // 4. actualizar menú
   menuItems.forEach(item=>{
     item.classList.remove("active");
   });
@@ -829,28 +839,26 @@ function update(){
   if(menuItems[current]){
     menuItems[current].classList.add("active");
   }
-}
 
+  // 5. snap final (evita que quede entre slides)
+  if(Math.abs(target - position) < 0.001){
+    position = target;
+  }
+}
 window.addEventListener("wheel", e=>{
 
-  scrollAccumulator += e.deltaY;
+  // 1. energía al sistema (engrana​je)
+  velocity += e.deltaY * 0.02;
 
-  // engranaje
-  velocity += e.deltaY * 0.015;
-
-  if(Math.abs(scrollAccumulator) < SCROLL_THRESHOLD) return;
-
-  if(scrollAccumulator > 0){
-    current++;
+  // 2. mover destino (NO el current)
+  if(e.deltaY > 0){
+    target += 1;
   } else {
-    current--;
+    target -= 1;
   }
 
-  scrollAccumulator = 0;
-
-  current = Math.max(0, Math.min(current, slides.length - 1));
-
-  update();
+  // 3. límites
+  target = Math.max(0, Math.min(target, slides.length - 1));
 
 },{ passive:true });
 
@@ -870,8 +878,7 @@ menuItems.forEach(item=>{
     velocity += direction * (1.5 + steps * 0.5);
 
     // transición directa (manteniendo sistema)
-    current = targetIndex;
-    update();
+    target = targetIndex;
   });
 });
 
@@ -883,14 +890,16 @@ let rotation = 0;
 const gear = document.getElementById("gear"); // 🔥 ESTA LÍNEA FALTABA
 
 function animate(){
+
   rotation += velocity;
-  velocity *= 0.979;
+  velocity *= 0.975;
 
   if(gear){
     gear.style.transform = `rotate(${rotation}deg)`;
   }
 
-  // 🔥 feedback visual más limpio
+  update(); // 🔥 ESTA LÍNEA ES CLAVE
+
   document.querySelectorAll(".bubble").forEach(b=>{
     let influence = Math.min(Math.abs(velocity)*1.5, 3);
     b.style.filter = `brightness(${1 + influence*0.15})`;
