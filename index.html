@@ -288,9 +288,9 @@ h1{
   animation: none;
 
   box-shadow:
-    0 0 0 2px #fff, /* borde blanco sólido */
-    0 0 20px rgba(255,255,255,.6),
-    0 0 45px rgba(255,255,255,.35);
+    0 0 0 2px #fff,
+    0 0 15px rgba(255,255,255,.4),
+    0 0 30px rgba(255,255,255,.2);
 }
 
 .bubble:hover::after{
@@ -935,10 +935,12 @@ rotation += velocity * behavior.speed;
 
   update(); // 🔥 ESTA LÍNEA ES CLAVE
 
-  document.querySelectorAll(".bubble").forEach(b=>{
-    let influence = Math.min(Math.abs(velocity)*1.5, 3);
-b.style.filter = `brightness(${(1 + influence*0.15) * behavior.brightness})`;
-  });
+ document.querySelectorAll(".bubble").forEach(b=>{
+  let influence = Math.min(Math.abs(velocity)*1.2, 2);
+
+  // SOLO afecta levemente, evita quemar imagen
+  b.style.filter = `brightness(${1 + influence*0.05})`;
+});
 
   requestAnimationFrame(animate);
 }
