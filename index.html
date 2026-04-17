@@ -1016,22 +1016,25 @@ function animate(){
 
   document.querySelectorAll(".bubble").forEach((b,i)=>{
 
-    const seed = i * 1.37;
-    const time = performance.now() * 0.0003;
+  const img = b.querySelector(".bubble-img"); // 👈 clave
 
-    const wave = Math.sin(time * (0.8 + (i % 5)*0.15) + seed);
-    const distortion = 28 + (wave * 10);
+  const seed = i * 1.37;
+  const time = performance.now() * 0.0003;
 
-    let influence = Math.min(Math.abs(velocity)*1.5, 3);
-    const brightness = (1 + influence*0.15) * behavior.brightness;
+  const wave = Math.sin(time * (0.8 + (i % 5)*0.15) + seed);
 
-    b.style.filter = `
-      url(#liquidDistortion)
-      brightness(${brightness})
-    `;
+  let influence = Math.min(Math.abs(velocity)*1.5, 3);
+  const brightness = (1 + influence*0.15);
 
-    b.style.transform = `scale(${1 + wave * 0.015})`;
-  });
+  // ✅ distorsión SOLO en la imagen interna
+  img.style.filter = `
+    url(#liquidDistortion)
+    brightness(${brightness})
+  `;
+
+  // ✅ escala suave del contenedor (no rompe forma)
+  b.style.transform = `scale(${1 + wave * 0.015})`;
+});
 
   requestAnimationFrame(animate); // ✅ ESTA es la llamada correcta
 }
