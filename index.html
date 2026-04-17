@@ -252,6 +252,8 @@ h1{
   z-index:10;
 
   animation: bubbleBreath 6s ease-in-out infinite;
+
+  will-change: transform, filter;
 }
   
 @keyframes bubbleBreath{
@@ -1015,13 +1017,31 @@ rotation += velocity * behavior.speed;
 
   update(); // 🔥 ESTA LÍNEA ES CLAVE
 
-  document.querySelectorAll(".bubble").forEach(b=>{
-    let influence = Math.min(Math.abs(velocity)*1.5, 3);
-b.style.filter = `brightness(${(1 + influence*0.15) * behavior.brightness})`;
-  });
+document.querySelectorAll(".bubble").forEach((b,i)=>{
 
-  requestAnimationFrame(animate);
-}
+  // 🔥 variación única por burbuja
+  const seed = i * 1.37;
+
+  const time = performance.now() * 0.0003;
+
+  // velocidad distinta por burbuja
+  const wave = Math.sin(time * (0.8 + (i % 5)*0.15) + seed);
+
+  // intensidad orgánica
+  const distortion = 28 + (wave * 10);
+
+  // brillo existente (NO lo rompemos)
+  let influence = Math.min(Math.abs(velocity)*1.5, 3);
+  const brightness = (1 + influence*0.15) * behavior.brightness;
+
+  b.style.filter = `
+    url(#liquidDistortion)
+    brightness(${brightness})
+  `;
+
+  // 🔥 clave: variamos levemente el scale del SVG indirectamente
+  b.style.transform = `scale(${1 + wave * 0.015})`;
+});
 
 animate();
   
