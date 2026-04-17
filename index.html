@@ -230,18 +230,6 @@ h1{
 
   position:relative;
   display:block;
-
-  /* 🔥 NUEVO: desvanecimiento hacia el borde */
-  -webkit-mask-image: radial-gradient(circle, 
-    rgba(0,0,0,1) 55%, 
-    rgba(0,0,0,0.6) 70%, 
-    rgba(0,0,0,0) 100%);
-    
-  mask-image: radial-gradient(circle, 
-    rgba(0,0,0,1) 55%, 
-    rgba(0,0,0,0.6) 70%, 
-    rgba(0,0,0,0) 100%);
-}
   
   /* vidrio suave */
   backdrop-filter: blur(8px) saturate(1.2);
@@ -264,6 +252,18 @@ h1{
   z-index:10;
 
   animation: bubbleBreath 6s ease-in-out infinite;
+
+   /* 🔥 NUEVO: desvanecimiento hacia el borde */
+  -webkit-mask-image: radial-gradient(circle, 
+    rgba(0,0,0,1) 55%, 
+    rgba(0,0,0,0.6) 70%, 
+    rgba(0,0,0,0) 100%);
+    
+  mask-image: radial-gradient(circle, 
+    rgba(0,0,0,1) 55%, 
+    rgba(0,0,0,0.6) 70%, 
+    rgba(0,0,0,0) 100%);
+}
 }
   
 @keyframes bubbleBreath{
