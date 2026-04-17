@@ -1010,18 +1010,20 @@ function closePanel(){
 <svg width="0" height="0" style="position:absolute">
   <filter id="liquidDistortion">
     <feTurbulence 
-      type="turbulence" 
-      baseFrequency="0.01" 
-      numOctaves="2" 
-      result="turb"
-    >
-      <animate 
-        attributeName="baseFrequency" 
-        dur="12s" 
-        values="0.02;0.03;0.02" 
-        repeatCount="indefinite" 
-      />
-    </feTurbulence>
+  type="turbulence"
+  baseFrequency="0.02"
+  numOctaves="2"
+  seed="2"
+  result="turb"
+>
+  <animate 
+    attributeName="seed"
+    from="1"
+    to="100"
+    dur="20s"
+    repeatCount="indefinite"
+  />
+</feTurbulence>
 
     <feDisplacementMap 
       in="SourceGraphic" 
