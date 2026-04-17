@@ -993,21 +993,20 @@ const gear = document.getElementById("gear"); // 🔥 ESTA LÍNEA FALTABA
 
 function animate(){
 
-const baseIndex = Math.floor(position);
-const nextIndex = Math.min(baseIndex + 1, slides.length - 1);
-const t = position - baseIndex;
+  const baseIndex = Math.floor(position);
+  const nextIndex = Math.min(baseIndex + 1, slides.length - 1);
+  const t = position - baseIndex;
 
-const base = sectionBehavior[baseIndex] || sectionBehavior[0];
-const next = sectionBehavior[nextIndex] || sectionBehavior[0];
+  const base = sectionBehavior[baseIndex] || sectionBehavior[0];
+  const next = sectionBehavior[nextIndex] || sectionBehavior[0];
 
-// interpolación suave
-const behavior = {
-  speed: base.speed + (next.speed - base.speed) * t,
-  brightness: base.brightness + (next.brightness - base.brightness) * t,
-  gearBoost: base.gearBoost + (next.gearBoost - base.gearBoost) * t
-};
+  const behavior = {
+    speed: base.speed + (next.speed - base.speed) * t,
+    brightness: base.brightness + (next.brightness - base.brightness) * t,
+    gearBoost: base.gearBoost + (next.gearBoost - base.gearBoost) * t
+  };
   
-rotation += velocity * behavior.speed;
+  rotation += velocity * behavior.speed;
   velocity *= 0.975;
 
   if(gear){
@@ -1015,35 +1014,29 @@ rotation += velocity * behavior.speed;
     gear.style.filter = `brightness(${1 + Math.abs(velocity)*0.05 * behavior.gearBoost})`;
   }
 
-  update(); // 🔥 ESTA LÍNEA ES CLAVE
+  update();
 
-document.querySelectorAll(".bubble").forEach((b,i)=>{
+  document.querySelectorAll(".bubble").forEach((b,i)=>{
 
-  // 🔥 variación única por burbuja
-  const seed = i * 1.37;
+    const seed = i * 1.37;
+    const time = performance.now() * 0.0003;
 
-  const time = performance.now() * 0.0003;
+    const wave = Math.sin(time * (0.8 + (i % 5)*0.15) + seed);
+    const distortion = 28 + (wave * 10);
 
-  // velocidad distinta por burbuja
-  const wave = Math.sin(time * (0.8 + (i % 5)*0.15) + seed);
+    let influence = Math.min(Math.abs(velocity)*1.5, 3);
+    const brightness = (1 + influence*0.15) * behavior.brightness;
 
-  // intensidad orgánica
-  const distortion = 28 + (wave * 10);
+    b.style.filter = `
+      url(#liquidDistortion)
+      brightness(${brightness})
+    `;
 
-  // brillo existente (NO lo rompemos)
-  let influence = Math.min(Math.abs(velocity)*1.5, 3);
-  const brightness = (1 + influence*0.15) * behavior.brightness;
+    b.style.transform = `scale(${1 + wave * 0.015})`;
+  });
 
-  b.style.filter = `
-    url(#liquidDistortion)
-    brightness(${brightness})
-  `;
-
-  // 🔥 clave: variamos levemente el scale del SVG indirectamente
-  b.style.transform = `scale(${1 + wave * 0.015})`;
-});
-
-animate();
+  requestAnimationFrame(animate); // ✅ ESTA es la llamada correcta
+}
   
 /* ===== PANEL ===== */
 
