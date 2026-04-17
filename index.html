@@ -364,7 +364,7 @@ h1{
   background-size:cover;
   background-position:center;
 
-  /* 🔥 NUEVO FADE PROFUNDO (tipo referencia) */
+  /* fade que ya tienes */
   -webkit-mask-image: radial-gradient(circle,
     rgba(0,0,0,1) 40%,
     rgba(0,0,0,0.6) 55%,
@@ -380,6 +380,9 @@ h1{
     rgba(0,0,0,0.08) 75%,
     rgba(0,0,0,0) 85%
   );
+
+  /* 🔥 DISTORSIÓN REAL */
+  filter: url(#liquidDistortion);
 }
 /* MOVIMIENTO ORGÁNICO */
 @keyframes liquidMove{
@@ -1001,6 +1004,32 @@ document.querySelectorAll(".bubble").forEach(b=>{
 function closePanel(){
   document.getElementById("panel").classList.remove("active");
 }
+
+<svg width="0" height="0" style="position:absolute">
+  <filter id="liquidDistortion">
+    <feTurbulence 
+      type="turbulence" 
+      baseFrequency="0.02" 
+      numOctaves="2" 
+      result="turb"
+    >
+      <animate 
+        attributeName="baseFrequency" 
+        dur="8s" 
+        values="0.02;0.03;0.02" 
+        repeatCount="indefinite" 
+      />
+    </feTurbulence>
+
+    <feDisplacementMap 
+      in="SourceGraphic" 
+      in2="turb" 
+      scale="25" 
+      xChannelSelector="R" 
+      yChannelSelector="G"
+    />
+  </filter>
+</svg>
 
 </script>
 </body>
