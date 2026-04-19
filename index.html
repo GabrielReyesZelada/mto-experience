@@ -664,10 +664,13 @@ body::after{
 /* ===== NUEVO LAYOUT POR SECCIÓN ===== */
 .area-layout{
   display:grid;
-  grid-template-columns: 1fr 300px 320px;
+
+  grid-template-columns: 1fr 260px 1fr; /* 👈 la derecha ahora es flexible */
+
   align-items:center;
   height:100%;
-  padding:0 4%;
+
+  padding:0 1%; /* 👈 casi sin margen */
 }
 
 /* CENTRO (TÍTULO) */
@@ -681,7 +684,7 @@ body::after{
   justify-self:end;     /* 👈 la acercamos a la lista */
   align-items:center;
 
-  transform: translateX(140px); /* 👈 la metemos encima de la lista */
+  transform: translateX(220px); /* 👈 la metemos encima de la lista */
   z-index:20;                   /* 👈 queda por SOBRE la lista */
 }
 
@@ -696,31 +699,42 @@ body::after{
 
 /* LISTA SUBÁREAS */
 .area-list{
+  position:relative;
+
   display:flex;
   flex-direction:column;
-  gap:18px;
-  align-items:flex-start;
+  gap:22px;
+
+  align-items:flex-end;
   justify-self:end;
-  margin-right:20; 
+
+  width:100%;
   text-align:right;
-  position:relative;
-  z-index:10;
+
+  right:-200px; /* 👈 🔥 ESTE ES EL TRUCO REAL */
+  padding-right:10px;
 }
 
 .area-list-item{
-  font-size:1.05rem;
-  color:rgba(255,255,255,.75);
+  font-size:1.35rem;        /* 👈 MÁS GRANDE */
+  font-weight:500;
+
+  color:rgba(255,255,255,.85);
   cursor:pointer;
-  padding:10px 0;
-  width:240px;
-  border-bottom:1px solid rgba(255,255,255,.08);
+
+  padding:14px 0;
+  width:320px;              /* 👈 más presencia */
+
+  border-bottom:1px solid rgba(255,255,255,.12);
+
   transition:.3s;
 }
 
 .area-list-item:hover{
   color:#fff;
-  transform:translateX(6px);
-  border-bottom:1px solid rgba(0,200,255,.6);
+  transform:translateX(10px);
+  border-bottom:1px solid rgba(0,200,255,.9);
+  text-shadow:0 0 12px rgba(0,200,255,.9);
 }
 
 /* tamaño más compacto lista */
@@ -885,35 +899,35 @@ body::after{
 
 <div class="area-list">
   <div class="area-list-item"
-       data-img="URL_IMAGEN_1"
+       data-img="https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD"
        data-title="Cámara"
        data-desc="Captura y operación de imagen profesional.">
        Cámara
   </div>
 
   <div class="area-list-item"
-       data-img="URL_IMAGEN_2"
+       data-img="https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD"
        data-title="Iluminación"
        data-desc="Diseño y control de luz en estudio y terreno.">
        Iluminación
   </div>
 
   <div class="area-list-item"
-       data-img="URL_IMAGEN_3"
+       data-img="https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD"
        data-title="Audio"
        data-desc="Captura, mezcla y control de sonido.">
        Audio
   </div>
 
   <div class="area-list-item"
-       data-img="URL_IMAGEN_4"
+       data-img="https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD"
        data-title="Switching"
        data-desc="Dirección técnica y selección de señales.">
        Switching
   </div>
 
   <div class="area-list-item"
-       data-img="URL_IMAGEN_5"
+       data-img="https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD"
        data-title="Producción en terreno"
        data-desc="Operación completa fuera de estudio.">
        Producción en terreno
