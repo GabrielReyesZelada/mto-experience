@@ -664,13 +664,11 @@ body::after{
 /* ===== NUEVO LAYOUT POR SECCIÓN ===== */
 .area-layout{
   display:grid;
-
-  grid-template-columns: 1fr 260px 1fr; /* 👈 la derecha ahora es flexible */
-
+  grid-template-columns: 1fr 520px; /* título | lista */
   align-items:center;
   height:100%;
-
-  padding:0 1%; /* 👈 casi sin margen */
+  padding:0 2%;
+  position:relative;
 }
 
 /* CENTRO (TÍTULO) */
@@ -680,21 +678,29 @@ body::after{
 
 /* ESFERA DESTACADA */
 .area-sphere{
-  display:flex;
-  justify-self:end;     /* 👈 la acercamos a la lista */
-  align-items:center;
-
-  transform: translateX(220px); /* 👈 la metemos encima de la lista */
-  z-index:20;                   /* 👈 queda por SOBRE la lista */
+  position:absolute;
+  right: 110px; /* 👈 AJUSTA fino según gusto */
+  top:50%;
+  transform:translateY(-50%);
+  z-index:5; /* encima de líneas */
 }
 
 .area-sphere .bubble{
-  width:260px;
-  height:260px;
+  width:340px;
+  height:340px;
 
   box-shadow:
     0 0 60px rgba(0,200,255,.25),
     0 20px 60px rgba(0,0,0,.6);
+}
+
+.area-list-item{
+  position:relative;
+  z-index:2;
+}
+
+.area-list-item::before{
+  z-index:1;
 }
 
 /* LISTA SUBÁREAS */
@@ -711,7 +717,8 @@ body::after{
   width:100%;
   text-align:right;
 
-  right:-200px; /* 👈 🔥 ESTE ES EL TRUCO REAL */
+  right:-200px; 
+  max-width:520px;
   padding-right:10px;
 }
 
