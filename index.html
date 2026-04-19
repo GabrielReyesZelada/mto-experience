@@ -846,27 +846,22 @@ body::after{
   transition: opacity .6s ease, transform .8s ease;
 }
 
-/* estado inicial */
-.img-front{
-  opacity:1;
-  z-index:2;
-}
-
+.img-front,
 .img-back{
-  opacity:0;
-  z-index:1;
-  transform:scale(1.08);
-}
+  transform:scale(1); /* 🔥 misma base = no salto */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+} 
 
 /* cuando cambia */
 .sphere-transition .img-front{
   opacity:0;
-  transform:scale(1.15);
+  transform:scale(1.08); /* antes 1.15 */
 }
 
 .sphere-transition .img-back{
   opacity:1;
-  transform:scale(1);
+  transform:scale(1.02); /* 🔥 leve, no agresivo */
 }
 
 /* glow reactivo */
@@ -1246,8 +1241,13 @@ items.forEach(item => {
     sphere.classList.add("active");
 
     // swap real después de animación
-    setTimeout(() => {
+setTimeout(() => {
   front.style.backgroundImage = `url('${img}')`;
+
+  // 🔥 igualar estados antes de resetear
+  front.style.transform = "scale(1)";
+  back.style.transform = "scale(1)";
+
   sphere.classList.remove("sphere-transition");
 }, 420);
 
