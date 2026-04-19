@@ -278,25 +278,35 @@ h1{
       
     border-color: rgba(255,255,255,.30);
   }
-}
 
 .bubble:hover{
-  transform:scale(1.07);
-
-  border:3px solid #fff;
-
-  animation: none;
-
-  box-shadow:
-    0 0 0 2px #fff,
-    0 0 20px rgba(255,255,255,.7),
-    0 0 50px rgba(255,255,255,.4),
-    inset 0 0 12px rgba(255,255,255,.25);
+  transform:none;
+  box-shadow:inherit;
 }
 
 .bubble:hover::after{
-  transform:scale(1.35);
+  opacity:0;
 }
+
+
+.bubble.active-hover::after{
+  opacity:1;
+
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(255,255,255,1) 20%,
+    rgba(255,255,255,0.9) 40%,
+    transparent 60%
+  );
+
+  filter: blur(10px);
+  transform: scale(1.25);
+
+  animation: borderGlow 3s linear infinite;
+}
+
+
   
 /* CAPA DE DISTORSIÓN */
 .bubble::before{
@@ -340,8 +350,6 @@ h1{
     radial-gradient(farthest-side, transparent calc(100% - 3px), black 100%);
 }
 
-.bubble:hover::after{
-  opacity:1;
 
   background: conic-gradient(
     from 0deg,
@@ -503,13 +511,6 @@ h1{
   height:100%;
   transition:transform 0.85s cubic-bezier(.22,1,.36,1);
   will-change: transform; /* 🔥 AQUÍ sí va */
-}
-
-.bubble:active{
-  transform:scale(0.9);
-  box-shadow:
-    0 0 40px rgba(0,200,255,1),
-    inset 0 0 30px rgba(255,255,255,.4);
 }
 
 /* 🔥 FIX CAPAS (CLAVE DEL BUG) */
@@ -676,19 +677,26 @@ body::after{
 /* ESFERA DESTACADA */
 .area-sphere{
   position:absolute;
-  right: 30px; /* 👈 AJUSTA fino según gusto */
+  right: 30px;
   top:50%;
-  transform:translateY(-50%);
-  z-index:5; /* encima de líneas */
+  transform:translate3d(0,-50%,0); /* 🔥 FIX GPU + estabilidad */
+  will-change: transform;
 }
 
 .area-sphere .bubble{
   width:340px;
   height:340px;
 
+  /* 🔥 SIEMPRE ACTIVA */
+  border:3px solid #fff;
+
+  animation: none;
+
   box-shadow:
-    0 0 60px rgba(0,200,255,.25),
-    0 20px 60px rgba(0,0,0,.6);
+    0 0 0 2px #fff,
+    0 0 20px rgba(255,255,255,.4),
+    0 0 50px rgba(255,255,255,.25),
+    inset 0 0 12px rgba(255,255,255,.2);
 }
 
 .area-list-item::before{
@@ -876,6 +884,9 @@ body::after{
   position:absolute;
   inset:-20%;
   border-radius:50%;
+  opacity:1;
+  transform:scale(1.2);
+  
 
   background:
     radial-gradient(circle at 50% 50%,
@@ -887,16 +898,39 @@ body::after{
   transition: opacity .4s ease, transform .6s ease;
 }
 
+#mainSphere::after{
+  opacity:1;
+}
+
 /* activación */
 #mainSphere.light-active::before{
   opacity:1;
   transform:scale(1.2);
 }
 
+/* estado base */
+#mainSphere{
+  transform: scale(1.06);
+  transition: transform .35s ease;
+  will-change: transform;
+}
+
+/* estado hover */
+#mainSphere.hovered{
+  transform: scale(1.06);
+}
+
 </style>
 </head>
 
 <body>
+
+<svg width="0" height="0" style="position:absolute">
+  <filter id="liquidDistortion">
+    <feTurbulence type="turbulence" baseFrequency="0.01" numOctaves="2" result="turb"/>
+    <feDisplacementMap in="SourceGraphic" in2="turb" scale="15"/>
+  </filter>
+</svg>
 
 <div class="mto-flip" id="flip">
 
@@ -1196,7 +1230,9 @@ function animate(){
 
   document.querySelectorAll(".bubble").forEach((b,i)=>{
 
-  const img = b.querySelector(".bubble-img"); // 👈 clave
+  if(b.id === "mainSphere") return; // 🔥 CLAVE: excluye la esfera principal
+
+  const imgs = b.querySelectorAll(".bubble-img");
 
   const seed = i * 1.37;
   const time = performance.now() * 0.0003;
@@ -1207,10 +1243,12 @@ function animate(){
   const brightness = (1 + influence*0.15);
 
   // ✅ distorsión SOLO en la imagen interna
+  imgs.forEach(img=>{
   img.style.filter = `
     url(#liquidDistortion)
     brightness(${brightness})
   `;
+});
 
   // ✅ escala suave del contenedor (no rompe forma)
   b.style.scale = 1 + wave * 0.015;
@@ -1223,32 +1261,21 @@ animate();
   
 /* ===== PANEL ===== */
 
-document.querySelectorAll(".bubble").forEach(b=>{
-  b.onclick=()=>{
-    document.getElementById("panel").classList.add("active");
-    document.querySelector(".panel-img").style.backgroundImage=b.style.backgroundImage;
-    document.getElementById("pTitle").innerText=b.dataset.name;
-  }
-});
+
 
 function closePanel(){
   document.getElementById("panel").classList.remove("active");
 }
 
 /* ===== INTERACCION LISTA -> ESFERA ===== */
-const front = document.getElementById("sphereImgFront");
-const back = document.getElementById("sphereImgBack");
 const items = document.querySelectorAll(".area-list-item");
+
 const sphere = document.getElementById("mainSphere");
+const frontLayer = document.getElementById("sphereImgFront");
+const backLayer = document.getElementById("sphereImgBack");
 
-let currentLayer = front; // capa activa
-let nextLayer = back;     // capa que entra
-
-// estado inicial
-if(items.length > 0){
-  currentLayer.style.backgroundImage = `url('${items[0].dataset.img}')`;
-  currentLayer.classList.add("active");
-}
+let currentLayer = frontLayer;
+let nextLayer = backLayer;
 
 items.forEach(item => {
 
@@ -1256,30 +1283,21 @@ items.forEach(item => {
 
     const img = item.dataset.img;
 
-    // cargar nueva imagen en capa oculta
+    // 🔥 cambio de imagen fluido
     nextLayer.style.backgroundImage = `url('${img}')`;
-
-    // activar luz interna
-    sphere.classList.add("light-active");
-
-    // preparar entrada
     nextLayer.classList.add("active");
 
-    // salida elegante de la actual
     currentLayer.classList.add("img-exit");
 
-    // swap real después de animación
     setTimeout(() => {
 
       currentLayer.classList.remove("active","img-exit");
       nextLayer.classList.remove("img-exit");
 
-      // intercambio de referencias
       let temp = currentLayer;
       currentLayer = nextLayer;
       nextLayer = temp;
 
-      // limpiar capa oculta
       nextLayer.classList.remove("active");
 
     }, 500);
@@ -1287,7 +1305,7 @@ items.forEach(item => {
   });
 
   item.addEventListener("mouseleave", () => {
-    sphere.classList.remove("light-active");
+
   });
 
 });
