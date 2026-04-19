@@ -843,33 +843,54 @@ body::after{
   background-size:cover;
   background-position:center;
 
-  transition: opacity .6s ease, transform .8s ease;
-}
-
-.img-front,
-.img-back{
-  transform:scale(1); /* 🔥 misma base = no salto */
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-} 
-
-/* cuando cambia */
-.sphere-transition .img-front{
   opacity:0;
-  transform:scale(1.08); /* antes 1.15 */
+  transform:scale(1.02);
+  filter:blur(8px) brightness(0.7);
+
+  transition:
+    opacity .55s ease,
+    transform .9s cubic-bezier(.22,1,.36,1),
+    filter .6s ease;
+
+  will-change: transform, opacity, filter;
+  backface-visibility:hidden;
 }
 
-.sphere-transition .img-back{
+/* estado visible */
+.img-front.active,
+.img-back.active{
   opacity:1;
-  transform:scale(1.02); /* 🔥 leve, no agresivo */
+  transform:scale(1);
+  filter:blur(0px) brightness(1);
 }
 
-/* glow reactivo */
-#mainSphere.active{
-  box-shadow:
-    0 0 40px rgba(0,200,255,.6),
-    0 0 80px rgba(0,200,255,.4),
-    0 0 120px rgba(0,200,255,.2);
+/* imagen saliendo */
+.img-exit{
+  opacity:0;
+  transform:scale(1.08);
+  filter:blur(10px) brightness(1.2);
+}
+
+#mainSphere::before{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  border-radius:50%;
+
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(0,200,255,.35),
+      transparent 60%);
+
+  opacity:0;
+  filter:blur(25px);
+  transition: opacity .4s ease, transform .6s ease;
+}
+
+/* activación */
+#mainSphere.light-active::before{
+  opacity:1;
+  transform:scale(1.2);
 }
 
 </style>
@@ -1216,15 +1237,13 @@ function closePanel(){
 
 /* ===== INTERACCION LISTA -> ESFERA ===== */
 
-const items = document.querySelectorAll(".area-list-item");
-
-const sphere = document.getElementById("mainSphere");
-const front = document.getElementById("sphereImgFront");
-const back = document.getElementById("sphereImgBack");
+let currentLayer = front; // capa activa
+let nextLayer = back;     // capa que entra
 
 // estado inicial
 if(items.length > 0){
-  front.style.backgroundImage = `url('${items[0].dataset.img}')`;
+  currentLayer.style.backgroundImage = `url('${items[0].dataset.img}')`;
+  currentLayer.classList.add("active");
 }
 
 items.forEach(item => {
@@ -1233,35 +1252,38 @@ items.forEach(item => {
 
     const img = item.dataset.img;
 
-    // cargar nueva imagen atrás
-    back.style.backgroundImage = `url('${img}')`;
+    // cargar nueva imagen en capa oculta
+    nextLayer.style.backgroundImage = `url('${img}')`;
 
-    // activar transición
-    sphere.classList.add("sphere-transition");
-    sphere.classList.add("active");
+    // activar luz interna
+    sphere.classList.add("light-active");
+
+    // preparar entrada
+    nextLayer.classList.add("active");
+
+    // salida elegante de la actual
+    currentLayer.classList.add("img-exit");
 
     // swap real después de animación
-setTimeout(() => {
-  front.style.backgroundImage = `url('${img}')`;
+    setTimeout(() => {
 
-  // 🔥 igualar estados antes de resetear
-  front.style.transform = "scale(1)";
-  back.style.transform = "scale(1)";
+      currentLayer.classList.remove("active","img-exit");
+      nextLayer.classList.remove("img-exit");
 
-  sphere.classList.remove("sphere-transition");
-}, 420);
+      // intercambio de referencias
+      let temp = currentLayer;
+      currentLayer = nextLayer;
+      nextLayer = temp;
+
+      // limpiar capa oculta
+      nextLayer.classList.remove("active");
+
+    }, 500);
 
   });
 
   item.addEventListener("mouseleave", () => {
-    sphere.classList.remove("active");
-  });
-
-  // click mantiene comportamiento actual
-  item.addEventListener("click", () => {
-    const panel = document.getElementById("panel");
-const panelImg = document.querySelector(".panel-img");
-const panelTitle = document.getElementById("pTitle");
+    sphere.classList.remove("light-active");
   });
 
 });
