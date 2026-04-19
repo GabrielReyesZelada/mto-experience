@@ -1236,6 +1236,10 @@ function closePanel(){
 }
 
 /* ===== INTERACCION LISTA -> ESFERA ===== */
+const front = document.getElementById("sphereImgFront");
+const back = document.getElementById("sphereImgBack");
+const items = document.querySelectorAll(".area-list-item");
+const sphere = document.getElementById("mainSphere");
 
 let currentLayer = front; // capa activa
 let nextLayer = back;     // capa que entra
