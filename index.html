@@ -259,7 +259,6 @@ h1{
     box-shadow:
       0 8px 20px rgba(0,0,0,.35),
       0 0 10px rgba(255,255,255,.06);
-      
     border-color: rgba(255,255,255,.30);
   }
 
@@ -267,7 +266,6 @@ h1{
     box-shadow:
       0 10px 25px rgba(0,0,0,.4),
       0 0 18px rgba(255,255,255,.18);
-      
     border-color: rgba(255,255,255,.55);
   }
 
@@ -275,9 +273,9 @@ h1{
     box-shadow:
       0 8px 20px rgba(0,0,0,.35),
       0 0 10px rgba(255,255,255,.06);
-      
     border-color: rgba(255,255,255,.30);
   }
+} /* ← ESTE cierre faltaba */
 
 .bubble:hover{
   transform:none;
@@ -348,21 +346,6 @@ h1{
     radial-gradient(farthest-side, transparent calc(100% - 3px), black 100%);
   mask:
     radial-gradient(farthest-side, transparent calc(100% - 3px), black 100%);
-}
-
-
-  background: conic-gradient(
-    from 0deg,
-    transparent 0%,
-    rgba(255,255,255,1) 20%,
-    rgba(255,255,255,0.9) 40%,
-    transparent 60%
-  );
-
-  filter: blur(10px);
-  transform: scale(1.25);
-
-  animation: borderGlow 3s linear infinite;
 }
 
 .bubble-img{
@@ -850,6 +833,8 @@ body::after{
   border-radius:50%;
   background-size:cover;
   background-position:center;
+  background-size: 110%;
+  animation: sphereDrift 18s ease-in-out infinite;
 
   opacity:0;
   transform:scale(1.02);
@@ -862,6 +847,14 @@ body::after{
 
   will-change: transform, opacity, filter;
   backface-visibility:hidden;
+}
+
+@keyframes sphereDrift{
+  0%   { background-position: 50% 50%; }
+  25%  { background-position: 48% 52%; }
+  50%  { background-position: 52% 48%; }
+  75%  { background-position: 49% 51%; }
+  100% { background-position: 50% 50%; }
 }
 
 /* estado visible */
@@ -899,7 +892,18 @@ body::after{
 }
 
 #mainSphere::after{
-  opacity:1;
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+
+  background:
+    radial-gradient(circle at 30% 30%,
+      rgba(255,255,255,.35),
+      transparent 60%);
+
+  mix-blend-mode: overlay;
+  pointer-events:none;
 }
 
 /* activación */
@@ -915,6 +919,16 @@ body::after{
   will-change: transform;
 }
 
+#mainSphere{
+  animation: sphereBreath 6s ease-in-out infinite;
+}
+
+@keyframes sphereBreath{
+  0%   { transform: scale(1.06); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1.06); }
+}
+
 /* estado hover */
 #mainSphere.hovered{
   transform: scale(1.06);
@@ -927,8 +941,17 @@ body::after{
 
 <svg width="0" height="0" style="position:absolute">
   <filter id="liquidDistortion">
-    <feTurbulence type="turbulence" baseFrequency="0.01" numOctaves="2" result="turb"/>
-    <feDisplacementMap in="SourceGraphic" in2="turb" scale="15"/>
+    <feTurbulence 
+  type="turbulence" 
+  baseFrequency="0.012 0.018" 
+  numOctaves="3" 
+  seed="2"
+  result="turb"/>
+  
+<feDisplacementMap 
+  in="SourceGraphic" 
+  in2="turb" 
+  scale="22"/>
   </filter>
 </svg>
 
@@ -1283,7 +1306,6 @@ items.forEach(item => {
 
     const img = item.dataset.img;
 
-    // 🔥 cambio de imagen fluido
     nextLayer.style.backgroundImage = `url('${img}')`;
     nextLayer.classList.add("active");
 
@@ -1304,9 +1326,38 @@ items.forEach(item => {
 
   });
 
-  item.addEventListener("mouseleave", () => {
+});
 
-  });
+/* ===== PARALLAX ESFERA (PRO) ===== */
+
+const sphereEl = document.getElementById("mainSphere");
+
+document.addEventListener("mousemove", (e)=>{
+
+  const rect = sphereEl.getBoundingClientRect();
+
+  const x = (e.clientX - rect.left) / rect.width - 0.5;
+  const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+  const moveX = x * 12;
+  const moveY = y * 12;
+
+  frontLayer.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+  backLayer.style.transform  = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+
+const depth = Math.sqrt(x*x + y*y);
+
+const scale = 1.05 + depth * 0.08;
+
+frontLayer.style.transform = `
+  translate(${moveX}px, ${moveY}px)
+  scale(${scale})
+`;
+
+backLayer.style.transform = `
+  translate(${moveX}px, ${moveY}px)
+  scale(${scale})
+`;
 
 });
 
