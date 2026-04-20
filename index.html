@@ -647,19 +647,14 @@ body::after{
   position:relative;
 }
 
-/* CENTRO (TÍTULO) */
-.area-title{
-  text-align:center;
-}
-
 /* ESFERA DESTACADA */
 .area-sphere{
   position:absolute;
   right: 650px;
   top:50%;
-  transform:translate3d(0,-50%,0); /* 🔥 FIX GPU + estabilidad */
+  transform:translate3d(0,-50%,0);
   will-change: transform;
-  z-index:50;
+  z-index:2; /* 🔥 BAJAMOS la esfera */
 }
 
 .area-sphere .bubble{
@@ -744,10 +739,6 @@ body::after{
   height:110px;
 }
 
-.area-title{
-  text-align:left;
-}
-
 .area-title h1{
   font-size:3.8rem;
 }
@@ -827,11 +818,6 @@ body::after{
   );
 
   opacity:.5;
-}
-
-.area-title{
-  text-align:start;
-  margin-left:60px; /* 👈 corre el título hacia el centro */
 }
 
 .area-title h1{
@@ -963,8 +949,13 @@ body::after{
 
   /* título centrado */
   .area-title{
+    position:relative;
     margin-left:0;
     text-align:center;
+    text-align:left;
+    text-align:start;
+    margin-left:60px; /* 👈 corre el título hacia el centro */
+    z-index:10;
   }
 
   .area-title h1{
