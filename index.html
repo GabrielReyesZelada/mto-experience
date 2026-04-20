@@ -1030,6 +1030,12 @@ body::after{
   transform: translateZ(2px);
 }
 
+.panel-content p{
+  font-size:1.1rem;
+  line-height:1.6;
+  max-width:500px;
+}
+
 </style>
 </head>
 
@@ -1174,6 +1180,7 @@ body::after{
 <div class="panel-content">
 <div class="close" onclick="closePanel()">✕</div>
 <h1 id="pTitle"></h1>
+<p id="pDesc" style="opacity:.7; margin-top:15px;"></p>
 </div>
 </div>
 
@@ -1452,11 +1459,29 @@ items.forEach(item => {
 
   };
 
-  // 🖱 desktop
+  // 🖱 Hover
   item.addEventListener("mouseenter", activate);
 
-  // 📱 móvil
+  // 📱 Touch
   item.addEventListener("touchstart", activate);
+
+  // 🔥 CLICK → abre panel
+  item.addEventListener("click", () => {
+
+    const title = item.dataset.title;
+    const desc  = item.dataset.desc;
+    const img   = item.dataset.img;
+
+    const panel = document.getElementById("panel");
+
+    document.getElementById("pTitle").innerText = title;
+    document.getElementById("pDesc").innerText  = desc;
+
+    panel.querySelector(".panel-img").style.backgroundImage = `url('${img}')`;
+
+    panel.classList.add("active");
+
+  });
 
 });
 
