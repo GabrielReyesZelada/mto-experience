@@ -115,7 +115,7 @@ video{
   top:50%;
   transform:translate(100px, -50%);
 
-  z-index:2; /* ✅ visible pero detrás del contenido */
+  z-index:1;
   pointer-events:none;
 }
 
@@ -496,7 +496,8 @@ h1{
   width:100%;
   height:100%;
   transition:transform 0.85s cubic-bezier(.22,1,.36,1);
-  will-change: transform; /* 🔥 AQUÍ sí va */
+  will-change: transform;
+  z-index:2;
 }
 
 /* 🔥 FIX CAPAS (CLAVE DEL BUG) */
@@ -505,7 +506,7 @@ h1{
 }
 
 .mto-back{
-  z-index:3;
+  z-index:2;
   pointer-events:none;
 }
 
@@ -658,7 +659,7 @@ body::after{
   top:50%;
   transform:translate3d(0,-50%,0); /* 🔥 FIX GPU + estabilidad */
   will-change: transform;
-  z-index:50;
+  z-index:5;
 }
 
 .area-sphere .bubble{
