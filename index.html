@@ -14,7 +14,7 @@ body,html{
   font-family:Arial, sans-serif;
   background:black;
 }
- 
+
 /* ===== FLIP ===== */
 .mto-flip{
   width:100%;
@@ -107,14 +107,15 @@ video{
 /* ===== ENGRANAJE ===== */
 #gearWrap{
   position:fixed;
-  width:520px;
-  height:520px;
-  left:10px;
+  width:700px;
+  height:700px;
+
+  left:0;
   top:50%;
-  transform:translateY(-50%);
-  z-index:50;
-  pointer-events: none;
+  transform:translate(100px, -50%); /* ← lo empuja a la derecha */
+
   z-index:200;
+  pointer-events:none;
 }
 
 #gear{
