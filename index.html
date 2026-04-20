@@ -664,6 +664,7 @@ body::after{
   top:50%;
   transform:translate3d(0,-50%,0); /* 🔥 FIX GPU + estabilidad */
   will-change: transform;
+  z-index:5;
 }
 
 .area-sphere .bubble{
@@ -703,6 +704,8 @@ body::after{
   right:-280px; 
   max-width:520px;
   padding-right:10px;
+
+  z-index:1;
 }
 
 .area-list-item{
@@ -718,10 +721,26 @@ body::after{
 
   padding:14px 0;
   width:320px;              /* 👈 más presencia */
-
-  border-bottom:1px solid rgba(255,255,255,.12);
-
   transition:.3s;
+}
+
+.area-list-item::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height:1px;
+
+  background:linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,.25),
+    transparent
+  );
+
+  opacity:.5;
+  z-index:0; /* 👈 línea por debajo */
 }
 
 /* tamaño más compacto lista */
