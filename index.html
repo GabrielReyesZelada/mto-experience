@@ -659,18 +659,12 @@ body::after{
 /* ESFERA DESTACADA */
 .area-sphere{
   position:absolute;
-  right: 30px;
+  right: 800px;
   top:50%;
   transform:translate3d(0,-50%,0); /* 🔥 FIX GPU + estabilidad */
   will-change: transform;
   z-index:20;
 }
-
-#mainSphere{
-  position:relative;
-  z-index:1;
-}
-
 
 .area-sphere .bubble{
   width:340px;
@@ -706,7 +700,7 @@ body::after{
   width:100%;
   text-align:right;
 
-  right:-280px; 
+  right:-130px; 
   max-width:520px;
   padding-right:10px;
 
@@ -938,14 +932,14 @@ body::after{
 
 /* estado base */
 #mainSphere{
+  position:relative;
   transform: scale(1.06);
   transition: transform .35s ease;
   will-change: transform;
+  animation: sphereBreath 6s ease-in-out infinite;
+  z-index:1;
 }
 
-#mainSphere{
-  animation: sphereBreath 6s ease-in-out infinite;
-}
 
 @keyframes sphereBreath{
   0%   { transform: scale(1.06); }
@@ -1108,11 +1102,7 @@ body::after{
 
 
 <section class="slide">
-<div class="area-layout">
 
-  <div class="area-title">
-    <h1>ESTUDIOS</h1>
-  </div>
 
   <!-- TITULO -->
   <div class="area-sphere">
