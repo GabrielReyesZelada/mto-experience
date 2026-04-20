@@ -496,8 +496,8 @@ h1{
   width:100%;
   height:100%;
   transition:transform 0.85s cubic-bezier(.22,1,.36,1);
-  will-change: transform;
-  z-index:2;
+  will-change: transform; /* 🔥 AQUÍ sí va */
+  
 }
 
 /* 🔥 FIX CAPAS (CLAVE DEL BUG) */
@@ -506,7 +506,7 @@ h1{
 }
 
 .mto-back{
-  z-index:2;
+  z-index:3;
   pointer-events:none;
 }
 
@@ -659,7 +659,7 @@ body::after{
   top:50%;
   transform:translate3d(0,-50%,0); /* 🔥 FIX GPU + estabilidad */
   will-change: transform;
-  z-index:5;
+  z-index:50;
 }
 
 .area-sphere .bubble{
