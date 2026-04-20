@@ -663,8 +663,14 @@ body::after{
   top:50%;
   transform:translate3d(0,-50%,0); /* 🔥 FIX GPU + estabilidad */
   will-change: transform;
-  z-index:5;
+  z-index:20;
 }
+
+#mainSphere{
+  position:relative;
+  z-index:1;
+}
+
 
 .area-sphere .bubble{
   width:340px;
@@ -1003,6 +1009,33 @@ body::after{
 
 }
 
+.sphere-label{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:white;
+  font-size:2rem;
+  font-weight:600;
+  letter-spacing:2px;
+
+  text-align:center;
+
+  pointer-events:none;
+
+  z-index:30;
+
+  text-shadow:
+    0 0 20px rgba(0,200,255,.6),
+    0 0 40px rgba(0,200,255,.3);
+
+  transition:.4s ease;
+  transform: translateZ(2px);
+}
+
 </style>
 </head>
 
@@ -1066,12 +1099,15 @@ body::after{
 
 
 <section class="slide">
-<h1>NUESTRAS ÁREAS</h1>
+  <div class="area-layout">
+    <div class="area-title">
+      <h1>NUESTRAS ÁREAS</h1>
+    </div>
+  </div>
 </section>
 
+
 <section class="slide">
-
-
 <div class="area-layout">
 
   <div class="area-title">
@@ -1085,7 +1121,9 @@ body::after{
   <div class="bubble-img img-back" id="sphereImgBack"></div>
   <div class="bubble-img img-front" id="sphereImgFront"></div>
 </div>
-
+<div class="sphere-label" id="sphereLabel">
+  ESTUDIOS
+</div>
 </div>
 
 <div class="area-list">
@@ -1402,6 +1440,7 @@ items.forEach(item => {
   const activate = () => {
 
     const img = item.dataset.img;
+    document.getElementById("sphereLabel").style.opacity = 0;
 
     nextLayer.style.backgroundImage = `url('${img}')`;
     nextLayer.classList.add("active");
@@ -1430,6 +1469,21 @@ items.forEach(item => {
   item.addEventListener("touchstart", activate);
 
 });
+
+items.forEach(item => {
+
+  item.addEventListener("mouseleave", ()=>{
+    document.getElementById("sphereLabel").style.opacity = 1;
+  });
+
+  item.addEventListener("touchend", ()=>{
+    setTimeout(()=>{
+      document.getElementById("sphereLabel").style.opacity = 1;
+    }, 800);
+  });
+
+});
+
 
 /* ===== PARALLAX ESFERA (PRO) ===== */
 
