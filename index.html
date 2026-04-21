@@ -1275,6 +1275,8 @@ function applyAreaChange(){
 
   const area = areas[currentAreaIndex];
 
+resetSphereToArea();
+
   // 🔹 ESFERA (TEXTO)
   const label = document.getElementById("sphereLabel");
   label.style.opacity = 0;
@@ -1288,15 +1290,6 @@ function applyAreaChange(){
   // 🔹 LISTA
   const list = document.querySelector(".area-list");
 
-  list.addEventListener("mouseleave", () => {
-
-  const front = document.getElementById("sphereImgFront");
-
-  // 🔹 seguridad extra: si sales de la lista completa
-  front.style.backgroundImage = "";
-  front.classList.remove("active");
-
-});
 
   list.style.opacity = 0;
 
@@ -1325,6 +1318,11 @@ function applyAreaChange(){
     list.appendChild(div);
 
   });
+
+  // 🔥 FIX: reactivar evento correctamente
+list.addEventListener("mouseleave", () => {
+  resetSphereToArea();
+});
 
   list.style.opacity = 1;
 
@@ -1665,29 +1663,58 @@ function closePanel(){
   document.getElementById("panel").classList.remove("active");
 }
 
+function resetSphereToArea(){
+
+  const area = areas[currentAreaIndex];
+
+  const label = document.getElementById("sphereLabel");
+  const back  = document.getElementById("sphereImgBack");
+
+  // limpiar capas (IMÁGENES)
+  front.classList.remove("active","img-exit");
+  back.classList.remove("active","img-exit");
+
+  back.style.backgroundImage = "";
+
+  // restaurar texto del área
+  label.innerText = area.name;
+  label.style.opacity = 1;
+
+}
+
 /* ===== INTERACCION LISTA -> ESFERA ===== */
 
 let frontLayer = document.getElementById("sphereImgFront");
 let backLayer  = document.getElementById("sphereImgBack");
 
+
+
 let currentLayer = frontLayer;
 let nextLayer = backLayer;
+
+let sphereTimeout = null;
 
 function activateSphere(el){
 
   const img = el.dataset.img || areas[currentAreaIndex].image;
 
   const label = document.getElementById("sphereLabel");
+
+  // cancelar animaciones anteriores
+  if(sphereTimeout){
+    clearTimeout(sphereTimeout);
+  }
+
   label.style.opacity = 0;
 
-  // preparar siguiente capa
+  // nueva imagen entra
   nextLayer.style.backgroundImage = `url('${img}')`;
   nextLayer.classList.add("active");
 
-  // animar salida de actual
+  // imagen actual sale
   currentLayer.classList.add("img-exit");
 
-  setTimeout(() => {
+  sphereTimeout = setTimeout(() => {
 
     currentLayer.classList.remove("active","img-exit");
     nextLayer.classList.remove("img-exit");
