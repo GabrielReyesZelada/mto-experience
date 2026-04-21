@@ -1437,7 +1437,7 @@ window.addEventListener("wheel", e=>{
 
   // 🔥 SI el mouse está sobre el engranaje
   if(isHoveringGear){
-    velocity += e.deltaY * 0.05; // más sensibilidad para rotación
+    velocity += e.deltaY * 0.035;
     return; // ⛔ bloquea cambio de sección
   }
 
@@ -1537,7 +1537,23 @@ function animate(){
   };
   
   rotation += velocity * behavior.speed;
-  velocity *= 0.975;
+ // 🔥 SNAP INTELIGENTE CUANDO CASI SE DETIENE
+if(isHoveringGear && Math.abs(velocity) < 0.15){
+
+  const total = areas.length;
+  const segment = 360 / total;
+
+  // ángulo actual normalizado
+  let normalized = ((rotation % 360) + 360) % 360;
+
+  // snap al segmento más cercano
+  let snapped = Math.round(normalized / segment) * segment;
+
+  // reconstruir rotación manteniendo continuidad
+  rotation = Math.floor(rotation / 360) * 360 + snapped;
+
+  velocity = 0; // detener completamente
+}
 
   // 🌊 Movimiento orgánico de la esfera (sin mouse)
 const time = performance.now() * 0.001;
