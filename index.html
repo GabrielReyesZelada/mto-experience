@@ -1258,11 +1258,15 @@ function applyAreaChange(){
 
       div.innerHTML = `<span class="item-text">${sub.name}</span>`;
 
-      div.onclick = ()=>{
-        document.getElementById("pTitle").innerText = sub.name;
-        document.getElementById("pDesc").innerText = sub.desc;
-        document.getElementById("panel").classList.add("active");
-      };
+      div.addEventListener("mouseenter", () => activateSphere(div));
+div.addEventListener("touchstart", () => activateSphere(div));
+div.addEventListener("touchstart", () => activateSphere(sub));
+
+div.addEventListener("click", () => {
+  document.getElementById("pTitle").innerText = sub.name;
+  document.getElementById("pDesc").innerText = sub.desc;
+  document.getElementById("panel").classList.add("active");
+});
 
       list.appendChild(div);
 
@@ -1513,81 +1517,41 @@ function closePanel(){
 }
 
 /* ===== INTERACCION LISTA -> ESFERA ===== */
-const items = document.querySelectorAll(".area-list-item");
 
-const sphere = document.getElementById("mainSphere");
-const frontLayer = document.getElementById("sphereImgFront");
-const backLayer = document.getElementById("sphereImgBack");
+let frontLayer = document.getElementById("sphereImgFront");
+let backLayer  = document.getElementById("sphereImgBack");
 
 let currentLayer = frontLayer;
 let nextLayer = backLayer;
 
-items.forEach(item => {
+function activateSphere(el){
 
-  const activate = () => {
+  const img = el.dataset.img || areas[currentAreaIndex].image;
 
-    const img = item.dataset.img;
-    document.getElementById("sphereLabel").style.opacity = 0;
+  const label = document.getElementById("sphereLabel");
+  label.style.opacity = 0;
 
-    nextLayer.style.backgroundImage = `url('${img}')`;
-    nextLayer.classList.add("active");
+  // preparar siguiente capa
+  nextLayer.style.backgroundImage = `url('${img}')`;
+  nextLayer.classList.add("active");
 
-    currentLayer.classList.add("img-exit");
+  // animar salida de actual
+  currentLayer.classList.add("img-exit");
 
-    setTimeout(() => {
+  setTimeout(() => {
 
-      currentLayer.classList.remove("active","img-exit");
-      nextLayer.classList.remove("img-exit");
+    currentLayer.classList.remove("active","img-exit");
+    nextLayer.classList.remove("img-exit");
 
-      let temp = currentLayer;
-      currentLayer = nextLayer;
-      nextLayer = temp;
+    // swap capas
+    let temp = currentLayer;
+    currentLayer = nextLayer;
+    nextLayer = temp;
 
-      nextLayer.classList.remove("active");
+    nextLayer.classList.remove("active");
 
-    }, 500);
-
-  };
-
-  // 🖱 Hover
-  item.addEventListener("mouseenter", activate);
-
-  // 📱 Touch
-  item.addEventListener("touchstart", activate);
-
-  // 🔥 CLICK → abre panel
-  item.addEventListener("click", () => {
-
-    const title = item.dataset.title;
-    const desc  = item.dataset.desc;
-    const img   = item.dataset.img;
-
-    const panel = document.getElementById("panel");
-
-    document.getElementById("pTitle").innerText = title;
-    document.getElementById("pDesc").innerText  = desc;
-
-    panel.querySelector(".panel-img").style.backgroundImage = `url('${img}')`;
-
-    panel.classList.add("active");
-
-  });
-
-});
-
-items.forEach(item => {
-
-  item.addEventListener("mouseleave", ()=>{
-    document.getElementById("sphereLabel").style.opacity = 1;
-  });
-
-  item.addEventListener("touchend", ()=>{
-    setTimeout(()=>{
-      document.getElementById("sphereLabel").style.opacity = 1;
-    }, 800);
-  });
-
-});
+  }, 500);
+}
 
 
 /* ===== PARALLAX ESFERA (PRO) ===== */
