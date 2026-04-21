@@ -1435,15 +1435,21 @@ function update(){
 
 window.addEventListener("wheel", e=>{
 
+  const intensity = Math.abs(e.deltaY);
+
+  // 🔥 histéresis (transición suave)
+  freeMode = freeMode ? intensity > 10 : intensity > 40;
+
   // 🔥 SI el mouse está sobre el engranaje
   if(isHoveringGear){
-    velocity += e.deltaY * 0.18;
-    if(Math.abs(e.deltaY) < 10) return;
-    return; // ⛔ bloquea cambio de sección
+
+    velocity += e.deltaY * (freeMode ? 0.03 : 0.018);
+    return; // ⛔ evita cambiar slides
+
   }
 
-  // 🔽 comportamiento normal (slides)
-  velocity += e.deltaY * 0.02;
+  // 🔽 navegación vertical (fuera del engranaje)
+  velocity += e.deltaY * 0.018;
 
   if(e.deltaY > 0){
     target += 1;
@@ -1507,6 +1513,7 @@ window.addEventListener("touchend", e=>{
   
 let velocity = 0;
 let rotation = 0;
+let freeMode = false;
 
 let isHoveringGear = false;
 
@@ -1538,10 +1545,16 @@ function animate(){
   };
   
   rotation += velocity * behavior.speed;
+
+  // 🔥 FRICCIÓN DINÁMICA
+velocity *= freeMode ? 0.97 : 0.90;
+
+// micro corte para evitar vibración infinita
+if(Math.abs(velocity) < 0.001) velocity = 0;
+
   // 🔥 FRICCIÓN GLOBAL (CLAVE ABSOLUTA)
 velocity *= 0.92;
- // 🔥 SNAP INTELIGENTE CUANDO CASI SE DETIENE
-if(isHoveringGear){
+if(isHoveringGear && !freeMode){
 
   const total = areas.length;
   const segment = 360 / total;
@@ -1549,26 +1562,17 @@ if(isHoveringGear){
   let normalized = ((rotation % 360) + 360) % 360;
   let targetAngle = Math.round(normalized / segment) * segment;
 
-  // 🔥 distancia al centro del segmento
   let diff = targetAngle - normalized;
 
-  // normalizar diff (-180 a 180)
   if(diff > 180) diff -= 360;
   if(diff < -180) diff += 360;
 
-  // 🔥 fuerza magnética (clave)
-  velocity += diff * 0.08;
+  velocity += diff * 0.06;
 
-  // 🔥 freno más agresivo cuando estás cerca
   if(Math.abs(diff) < segment * 0.25){
     velocity *= 0.6;
   }
 
-  // evita vibración infinita
-   if(Math.abs(velocity) < 0.001) velocity = 0;
-
-
-  // 🔥 bloqueo final
   if(Math.abs(diff) < 0.5 && Math.abs(velocity) < 0.2){
     rotation = Math.floor(rotation / 360) * 360 + targetAngle;
     velocity = 0;
