@@ -110,6 +110,7 @@ video{
   position:fixed;
   width:700px;
   height:700px;
+  
 
   left:0;
   top:50%;
@@ -655,6 +656,7 @@ body::after{
   transform:translate3d(0,-50%,0);
   will-change: transform;
   z-index:50; /* 🔥 BAJAMOS la esfera */
+  filter: drop-shadow(0 0 40px rgba(0,200,255,.4));
 }
 
 .area-sphere .bubble{
@@ -960,14 +962,6 @@ body::after{
 
   .area-title h1{
     font-size:2.4rem;
-  }
-
-  /* esfera más chica y arriba */
-  .area-sphere{
-    position:relative;
-    right:auto;
-    top:auto;
-    transform:none;
   }
 
   .area-sphere .bubble{
