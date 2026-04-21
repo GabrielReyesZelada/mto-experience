@@ -925,7 +925,7 @@ body::after{
   transform: scale(1.06);
   transition: transform .35s ease;
   will-change: transform;
-  animation: sphereBreath 6s ease-in-out infinite;
+  animation: none;
   z-index:1;
 }
 
@@ -1490,6 +1490,28 @@ function animate(){
   rotation += velocity * behavior.speed;
   velocity *= 0.975;
 
+  // 🌊 Movimiento orgánico de la esfera (sin mouse)
+const time = performance.now() * 0.001;
+
+const floatX = Math.sin(time * 0.6) * 6;
+const floatY = Math.cos(time * 0.4) * 4;
+const scale = 1.05 + Math.sin(time * 0.8) * 0.015;
+
+const frontLayer = document.getElementById("sphereImgFront");
+const backLayer  = document.getElementById("sphereImgBack");
+
+if(frontLayer && backLayer){
+  frontLayer.style.transform = `
+    translate(${floatX}px, ${floatY}px)
+    scale(${scale})
+  `;
+
+  backLayer.style.transform = `
+    translate(${floatX * 0.6}px, ${floatY * 0.6}px)
+    scale(${scale})
+  `;
+}
+
   if(gear){
     gear.style.transform = `rotate(${rotation}deg)`;
     gear.style.filter = `brightness(${1 + Math.abs(velocity)*0.05 * behavior.gearBoost})`;
@@ -1575,39 +1597,6 @@ function activateSphere(el){
   }, 500);
 }
 
-
-/* ===== PARALLAX ESFERA (PRO) ===== */
-
-const sphereEl = document.getElementById("mainSphere");
-
-document.addEventListener("mousemove", (e)=>{
-
-  const rect = sphereEl.getBoundingClientRect();
-
-  const x = (e.clientX - rect.left) / rect.width - 0.5;
-  const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-  const moveX = x * 12;
-  const moveY = y * 12;
-
-  frontLayer.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
-  backLayer.style.transform  = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
-
-const depth = Math.sqrt(x*x + y*y);
-
-const scale = 1.05 + depth * 0.08;
-
-frontLayer.style.transform = `
-  translate(${moveX}px, ${moveY}px)
-  scale(${scale})
-`;
-
-backLayer.style.transform = `
-  translate(${moveX}px, ${moveY}px)
-  scale(${scale})
-`;
-
-});
 
 </script>
   
