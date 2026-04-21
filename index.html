@@ -1175,20 +1175,34 @@ const areas = [
     name: "ESTUDIOS & OUTDOOR",
     image: "AQUILINK",
     subareas: [
-      { name:"Iluminación", desc:"Diseño y control de luz." },
-      { name:"Cámara", desc:"Captura y operación de imagen." },
-      { name:"Look", desc:"Dirección estética visual." },
-      { name:"Utilería", desc:"Gestión de elementos escénicos." },
-      { name:"Móviles", desc:"Unidades móviles de producción." },
-      { name:"Audio", desc:"Captura y mezcla de sonido." }
+      { 
+        name:"Iluminación",
+        desc:"Diseño y control de luz.",
+        img:"https://cdn-icons-png.flaticon.com/512/1048/1048941.png"
+      },
+      { 
+        name:"Cámara",
+        desc:"Captura y operación de imagen.",
+        img:"https://cdn-icons-png.flaticon.com/512/2922/2922506.png"
+      },
+      { 
+        name:"Audio",
+        desc:"Captura y mezcla de sonido.",
+        img:"https://cdn-icons-png.flaticon.com/512/727/727245.png"
+      }
     ]
-  },
+  }, // ✅ ← ESTA COMA ES CLAVE
+
   {
     name: "MOC",
     image: "AQUILINK",
     subareas: [
-      { name:"Ingesta", desc:"Ingreso de contenido." },
-      { name:"Archivo", desc:"Gestión de almacenamiento." },
+      { name:"Ingesta", desc:"Ingreso de contenido." }, 
+      { 
+        name:"Archivo",
+        desc:"Gestión de almacenamiento.",
+        img:"https://cdn-icons-png.flaticon.com/512/2991/2991108.png"
+      },
       { name:"Post Prod Audio", desc:"Edición de audio." },
       { name:"VTR Replay", desc:"Repeticiones y reproducción." },
       { name:"Post Prod Video", desc:"Edición de video." }
@@ -1256,53 +1270,53 @@ function applyAreaChange(){
     label.style.opacity = 1;
   },200);
 
-  // 🔹 ESFERA (IMAGEN)
-  const front = document.getElementById("sphereImgFront");
-
-// 🔥 SOLO aplica imagen si existe (futuro)
-if(area.image){
-  front.style.backgroundImage = `url('${area.image}')`;
-  front.classList.add("active");
-}else{
-  front.style.backgroundImage = "";
-  front.classList.remove("active");
-}
 
   // 🔹 LISTA
   const list = document.querySelector(".area-list");
+
+  list.addEventListener("mouseleave", () => {
+
+  const front = document.getElementById("sphereImgFront");
+
+  // 🔹 seguridad extra: si sales de la lista completa
+  front.style.backgroundImage = "";
+  front.classList.remove("active");
+
+});
 
   list.style.opacity = 0;
 
   setTimeout(()=>{
 
-    list.innerHTML = "";
+  list.innerHTML = "";
 
-    area.subareas.forEach(sub => {
+  area.subareas.forEach(sub => {
 
-      const div = document.createElement("div");
-      div.className = "area-list-item";
+    const div = document.createElement("div");
+    div.className = "area-list-item";
 
-      div.innerHTML = `<span class="item-text">${sub.name}</span>`;
+    div.dataset.img = sub.img || "";
 
-      div.addEventListener("mouseenter", () => activateSphere(div));
-div.addEventListener("touchstart", () => activateSphere(div));
-div.addEventListener("touchstart", () => activateSphere(sub));
+    div.innerHTML = `<span class="item-text">${sub.name}</span>`;
 
-div.addEventListener("click", () => {
-  document.getElementById("pTitle").innerText = sub.name;
-  document.getElementById("pDesc").innerText = sub.desc;
-  document.getElementById("panel").classList.add("active");
-});
+    div.addEventListener("mouseenter", () => activateSphere(div));
+    div.addEventListener("touchstart", () => activateSphere(div));
 
-      list.appendChild(div);
-
+    div.addEventListener("click", () => {
+      document.getElementById("pTitle").innerText = sub.name;
+      document.getElementById("pDesc").innerText = sub.desc;
+      document.getElementById("panel").classList.add("active");
     });
 
-    list.style.opacity = 1;
+    list.appendChild(div);
 
-  },200);
+  });
+
+  list.style.opacity = 1;
+
+},200);
+
 }
-
 
 /* ===== FLIP ===== */
 function enter(){
