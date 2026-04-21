@@ -865,8 +865,6 @@ body::after{
 .img-front.active,
 .img-back.active{
   opacity:1;
-  transform:scale(1);
-  filter:blur(0px) brightness(1);
 }
 
 /* imagen saliendo */
@@ -883,6 +881,7 @@ body::after{
   border-radius:50%;
   opacity:1;
   transform:scale(1.2);
+  
   
 
   background:
@@ -924,6 +923,7 @@ body::after{
   will-change: transform;
   animation: none;
   z-index:1;
+  background: radial-gradient(circle, #111, #000);
 }
 
 
@@ -1173,7 +1173,7 @@ body::after{
 const areas = [
   {
     name: "ESTUDIOS & OUTDOOR",
-    image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD",
+    image: "AQUILINK",
     subareas: [
       { name:"Iluminación", desc:"Diseño y control de luz." },
       { name:"Cámara", desc:"Captura y operación de imagen." },
@@ -1185,7 +1185,7 @@ const areas = [
   },
   {
     name: "MOC",
-    image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/fresnel.png?csf=1&web=1&e=JfFw91",
+    image: "AQUILINK",
     subareas: [
       { name:"Ingesta", desc:"Ingreso de contenido." },
       { name:"Archivo", desc:"Gestión de almacenamiento." },
@@ -1196,14 +1196,14 @@ const areas = [
   },
   {
     name: "BOC",
-    image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD",
+    image: "AQUILINK",
     subareas: [
       { name:"Broadcast Operation Center", desc:"Operación central de transmisión." }
     ]
   },
   {
     name: "GESTIÓN",
-    image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/fresnel.png?csf=1&web=1&e=JfFw91",
+    image: "AQUILINK",
     subareas: [
       { name:"Gestión", desc:"Coordinación operativa." },
       { name:"Pañol", desc:"Administración de equipamiento." }
@@ -1211,7 +1211,7 @@ const areas = [
   },
   {
     name: "GFX",
-    image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD",
+    image: "AQUILINK",
     subareas: [
       { name:"Gráfica", desc:"Diseño gráfico broadcast." }
     ]
@@ -1258,8 +1258,15 @@ function applyAreaChange(){
 
   // 🔹 ESFERA (IMAGEN)
   const front = document.getElementById("sphereImgFront");
+
+// 🔥 SOLO aplica imagen si existe (futuro)
+if(area.image){
   front.style.backgroundImage = `url('${area.image}')`;
   front.classList.add("active");
+}else{
+  front.style.backgroundImage = "";
+  front.classList.remove("active");
+}
 
   // 🔹 LISTA
   const list = document.querySelector(".area-list");
