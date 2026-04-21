@@ -1437,7 +1437,8 @@ window.addEventListener("wheel", e=>{
 
   // 🔥 SI el mouse está sobre el engranaje
   if(isHoveringGear){
-    velocity += e.deltaY * 0.035;
+    velocity += e.deltaY * 0.18;
+    if(Math.abs(e.deltaY) < 10) return;
     return; // ⛔ bloquea cambio de sección
   }
 
@@ -1537,22 +1538,41 @@ function animate(){
   };
   
   rotation += velocity * behavior.speed;
+  // 🔥 FRICCIÓN GLOBAL (CLAVE ABSOLUTA)
+velocity *= 0.92;
  // 🔥 SNAP INTELIGENTE CUANDO CASI SE DETIENE
-if(isHoveringGear && Math.abs(velocity) < 0.15){
+if(isHoveringGear){
 
   const total = areas.length;
   const segment = 360 / total;
 
-  // ángulo actual normalizado
   let normalized = ((rotation % 360) + 360) % 360;
+  let targetAngle = Math.round(normalized / segment) * segment;
 
-  // snap al segmento más cercano
-  let snapped = Math.round(normalized / segment) * segment;
+  // 🔥 distancia al centro del segmento
+  let diff = targetAngle - normalized;
 
-  // reconstruir rotación manteniendo continuidad
-  rotation = Math.floor(rotation / 360) * 360 + snapped;
+  // normalizar diff (-180 a 180)
+  if(diff > 180) diff -= 360;
+  if(diff < -180) diff += 360;
 
-  velocity = 0; // detener completamente
+  // 🔥 fuerza magnética (clave)
+  velocity += diff * 0.08;
+
+  // 🔥 freno más agresivo cuando estás cerca
+  if(Math.abs(diff) < segment * 0.25){
+    velocity *= 0.6;
+  }
+
+  // evita vibración infinita
+   if(Math.abs(velocity) < 0.001) velocity = 0;
+
+
+  // 🔥 bloqueo final
+  if(Math.abs(diff) < 0.5 && Math.abs(velocity) < 0.2){
+    rotation = Math.floor(rotation / 360) * 360 + targetAngle;
+    velocity = 0;
+  }
 }
 
   // 🌊 Movimiento orgánico de la esfera (sin mouse)
