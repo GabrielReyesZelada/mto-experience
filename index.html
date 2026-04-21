@@ -116,7 +116,7 @@ video{
   transform:translate(100px, -50%);
 
   z-index:1;
-  pointer-events:none;
+  pointer-events:auto;
   opacity:1;
 }
 
@@ -1418,19 +1418,24 @@ function update(){
     position = target;
   }
 }
+
 window.addEventListener("wheel", e=>{
 
-  // 1. energía al sistema (engrana​je)
+  // 🔥 SI el mouse está sobre el engranaje
+  if(isHoveringGear){
+    velocity += e.deltaY * 0.05; // más sensibilidad para rotación
+    return; // ⛔ bloquea cambio de sección
+  }
+
+  // 🔽 comportamiento normal (slides)
   velocity += e.deltaY * 0.02;
 
-  // 2. mover destino (NO el current)
   if(e.deltaY > 0){
     target += 1;
   } else {
     target -= 1;
   }
 
-  // 3. límites
   target = Math.max(0, Math.min(target, slides.length - 1));
 
 },{ passive:true });
@@ -1488,7 +1493,19 @@ window.addEventListener("touchend", e=>{
 let velocity = 0;
 let rotation = 0;
 
+let isHoveringGear = false;
+
 const gear = document.getElementById("gear"); // 🔥 ESTA LÍNEA FALTABA
+
+const gearWrap = document.getElementById("gearWrap");
+
+gearWrap.addEventListener("mouseenter", () => {
+  isHoveringGear = true;
+});
+
+gearWrap.addEventListener("mouseleave", () => {
+  isHoveringGear = false;
+});
 
 function animate(){
 
