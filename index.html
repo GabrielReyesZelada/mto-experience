@@ -1531,6 +1531,8 @@ gearWrap.addEventListener("mouseleave", () => {
 
 function animate(){
 
+  /* ===== 1. INTERPOLACIÓN ENTRE SECCIONES ===== */
+
   const baseIndex = Math.floor(position);
   const nextIndex = Math.min(baseIndex + 1, slides.length - 1);
   const t = position - baseIndex;
@@ -1543,100 +1545,114 @@ function animate(){
     brightness: base.brightness + (next.brightness - base.brightness) * t,
     gearBoost: base.gearBoost + (next.gearBoost - base.gearBoost) * t
   };
-  
+
+  /* ===== 2. ROTACIÓN BASE ===== */
+
   rotation += velocity * behavior.speed;
 
-  // 🔥 FRICCIÓN DINÁMICA
-velocity *= freeMode ? 0.97 : 0.90;
+  /* ===== 3. FRICCIÓN DINÁMICA ===== */
 
-// micro corte para evitar vibración infinita
-if(Math.abs(velocity) < 0.001) velocity = 0;
+  velocity *= freeMode ? 0.97 : 0.90;
 
-  // 🔥 FRICCIÓN GLOBAL (CLAVE ABSOLUTA)
-velocity *= 0.92;
-if(isHoveringGear && !freeMode){
-
-  const total = areas.length;
-  const segment = 360 / total;
-
-  let normalized = ((rotation % 360) + 360) % 360;
-  let targetAngle = Math.round(normalized / segment) * segment;
-
-  let diff = targetAngle - normalized;
-
-  if(diff > 180) diff -= 360;
-  if(diff < -180) diff += 360;
-
-  velocity += diff * 0.06;
-
-  if(Math.abs(diff) < segment * 0.25){
-    velocity *= 0.6;
-  }
-
-  if(Math.abs(diff) < 0.5 && Math.abs(velocity) < 0.2){
-    rotation = Math.floor(rotation / 360) * 360 + targetAngle;
+  if(Math.abs(velocity) < 0.001){
     velocity = 0;
   }
-}
 
-  // 🌊 Movimiento orgánico de la esfera (sin mouse)
-const time = performance.now() * 0.001;
+  /* ===== 4. SNAP INTELIGENTE (SOLO MODO PRECISO) ===== */
 
-const floatX = Math.sin(time * 0.6) * 6;
-const floatY = Math.cos(time * 0.4) * 4;
-const scale = 1.05 + Math.sin(time * 0.8) * 0.015;
+  if(isHoveringGear && !freeMode){
 
-const frontLayer = document.getElementById("sphereImgFront");
-const backLayer  = document.getElementById("sphereImgBack");
+    const total = areas.length;
+    const segment = 360 / total;
 
-if(frontLayer && backLayer){
-  frontLayer.style.transform = `
-    translate(${floatX}px, ${floatY}px)
-    scale(${scale})
-  `;
+    let normalized = ((rotation % 360) + 360) % 360;
+    let targetAngle = Math.round(normalized / segment) * segment;
 
-  backLayer.style.transform = `
-    translate(${floatX * 0.6}px, ${floatY * 0.6}px)
-    scale(${scale})
-  `;
-}
+    let diff = targetAngle - normalized;
+
+    // normalizar diferencia (-180 a 180)
+    if(diff > 180) diff -= 360;
+    if(diff < -180) diff += 360;
+
+    // fuerza magnética suave
+    velocity += diff * 0.06;
+
+    // damping cerca del objetivo
+    if(Math.abs(diff) < segment * 0.25){
+      velocity *= 0.6;
+    }
+
+    // snap final limpio
+    if(Math.abs(diff) < 0.5 && Math.abs(velocity) < 0.2){
+      rotation = Math.floor(rotation / 360) * 360 + targetAngle;
+      velocity = 0;
+    }
+  }
+
+  /* ===== 5. MOVIMIENTO ORGÁNICO ESFERA ===== */
+
+  const time = performance.now() * 0.001;
+
+  const floatX = Math.sin(time * 0.6) * 6;
+  const floatY = Math.cos(time * 0.4) * 4;
+  const scale = 1.05 + Math.sin(time * 0.8) * 0.015;
+
+  const frontLayer = document.getElementById("sphereImgFront");
+  const backLayer  = document.getElementById("sphereImgBack");
+
+  if(frontLayer && backLayer){
+    frontLayer.style.transform = `
+      translate(${floatX}px, ${floatY}px)
+      scale(${scale})
+    `;
+
+    backLayer.style.transform = `
+      translate(${floatX * 0.6}px, ${floatY * 0.6}px)
+      scale(${scale})
+    `;
+  }
+
+  /* ===== 6. RENDER ENGRANAJE ===== */
 
   if(gear){
     gear.style.transform = `rotate(${rotation}deg)`;
-    gear.style.filter = `brightness(${1 + Math.abs(velocity)*0.05 * behavior.gearBoost})`;
+    gear.style.filter = `
+      brightness(${1 + Math.abs(velocity)*0.05 * behavior.gearBoost})
+    `;
   }
 
-  updateAreaFromRotation();
+  /* ===== 7. ACTUALIZACIONES DE ESTADO ===== */
 
+  updateAreaFromRotation();
   update();
+
+  /* ===== 8. BUBBLES SECUNDARIAS (OPTIMIZADAS) ===== */
 
   document.querySelectorAll(".bubble").forEach((b,i)=>{
 
-  if(b.id === "mainSphere") return; // 🔥 CLAVE: excluye la esfera principal
+    if(b.id === "mainSphere") return;
 
-  const imgs = b.querySelectorAll(".bubble-img");
+    const imgs = b.querySelectorAll(".bubble-img");
 
-  const seed = i * 1.37;
-  const time = performance.now() * 0.0003;
+    const seed = i * 1.37;
+    const t = performance.now() * 0.0003;
 
-  const wave = Math.sin(time * (0.8 + (i % 5)*0.15) + seed);
+    const wave = Math.sin(t * (0.8 + (i % 5)*0.15) + seed);
 
-  let influence = Math.min(Math.abs(velocity)*1.5, 3);
-  const brightness = (1 + influence*0.15);
+    const influence = Math.min(Math.abs(velocity)*1.5, 3);
+    const brightness = (1 + influence*0.15);
 
-  // ✅ distorsión SOLO en la imagen interna
-  imgs.forEach(img=>{
-  img.style.filter = `
-    url(#liquidDistortion)
-    brightness(${brightness})
-  `;
-});
+    imgs.forEach(img=>{
+      img.style.filter = `
+        url(#liquidDistortion)
+        brightness(${brightness})
+      `;
+    });
 
-  // ✅ escala suave del contenedor (no rompe forma)
-  b.style.scale = 1 + wave * 0.015;
-});
+    b.style.scale = 1 + wave * 0.015;
+  });
 
-  requestAnimationFrame(animate); // ✅ ESTA es la llamada correcta
+  requestAnimationFrame(animate);
 }
 
 animate();
