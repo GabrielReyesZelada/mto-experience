@@ -682,7 +682,7 @@ body::after{
   padding-right: 20px;
 
   max-height: 70vh;
-  overflow-y: auto;
+  overflow: hidden;
 
   z-index:2;
 }
@@ -1290,6 +1290,23 @@ resetSphereToArea();
   // 🔹 LISTA
   const list = document.querySelector(".area-list");
 
+/* 🔥 FIX SCROLL */
+list.addEventListener("wheel", (e) => {
+
+  const atTop = list.scrollTop === 0;
+  const atBottom = list.scrollHeight - list.scrollTop === list.clientHeight;
+
+  if (
+    (e.deltaY < 0 && atTop) ||
+    (e.deltaY > 0 && atBottom)
+  ){
+    return;
+  }
+
+  e.stopPropagation();
+
+}, { passive: true });
+
 
   list.style.opacity = 0;
 
@@ -1390,10 +1407,12 @@ function volver(){
 
 let current = 0;
 const slides = document.querySelectorAll(".slide");
+const menuItems = document.querySelectorAll(".menu-item");
 let scrollAccumulator = 0;
 const SCROLL_THRESHOLD = 80;
 let position = 0;  // posición real continua (decimales)
 let target = 0;    // índice destino (slide objetivo)
+let isScrolling = false;
 
 const sectionBehavior = {
   0: { speed: 1, brightness: 1, gearBoost: 1 },
@@ -1431,24 +1450,32 @@ function update(){
   }
 }
 
-window.addEventListener("wheel", e=>{
+window.addEventListener("wheel", e => {
+
+  if (isScrolling) return; // 🔥 bloquea spam de scroll
 
   const intensity = Math.abs(e.deltaY);
 
-  // 🔥 histéresis (transición suave)
   freeMode = freeMode ? intensity > 10 : intensity > 40;
 
-  // 🔥 SI el mouse está sobre el engranaje
-  if(isHoveringGear){
-
-    velocity += e.deltaY * (freeMode ? 0.03 : 0.018);
-    return; // ⛔ evita cambiar slides
-
+  // 🔧 PRIORIDAD: si estás en el slide 1 (NUESTRAS ÁREAS),
+  // permitir salir sí o sí
+  if(current === 0){
+    if(e.deltaY > 0){
+      target = 1;
+    }
+    isScrolling = true;
+    setTimeout(()=> isScrolling = false, 700);
+    return;
   }
 
-  // 🔽 navegación vertical (fuera del engranaje)
-  velocity += e.deltaY * 0.018;
+  // 🔥 engranaje
+  if(isHoveringGear){
+    velocity += e.deltaY * (freeMode ? 0.03 : 0.018);
+    return;
+  }
 
+  // 🔽 navegación normal
   if(e.deltaY > 0){
     target += 1;
   } else {
@@ -1457,9 +1484,12 @@ window.addEventListener("wheel", e=>{
 
   target = Math.max(0, Math.min(target, slides.length - 1));
 
-},{ passive:true });
+  velocity += e.deltaY * 0.018;
 
-const menuItems = document.querySelectorAll(".menu-item");
+  isScrolling = true;
+  setTimeout(()=> isScrolling = false, 700);
+
+}, { passive: true });
 
 
 menuItems.forEach(item=>{
@@ -1665,6 +1695,7 @@ function closePanel(){
 
 function resetSphereToArea(){
 
+  const front = document.getElementById("sphereImgFront");
   const area = areas[currentAreaIndex];
 
   const label = document.getElementById("sphereLabel");
