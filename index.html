@@ -697,7 +697,10 @@ body::after{
 
   right:-130px; 
   max-width:520px;
-  padding-right:10px;
+  padding-right: 20px;
+
+  max-height: 70vh;
+  overflow-y: auto;
 
   z-index:2;
 }
@@ -1064,7 +1067,7 @@ body::after{
 
 <div id="topMenu">
   <div class="menu-item" data-index="0">Inicio</div>
-  <div class="menu-item" data-index="1">Estudios</div>
+  <div class="menu-item" data-index="1">Estudios & Outdoor</div>
   <div class="menu-item" data-index="2">MOC</div>
   <div class="menu-item" data-index="3">BOC</div>
   <div class="menu-item" data-index="4">Gestión</div>
@@ -1172,29 +1175,48 @@ body::after{
 
 const areas = [
   {
-    name: "ESTUDIOS",
+    name: "ESTUDIOS & OUTDOOR",
     image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD",
     subareas: [
-      { name:"Cámara", desc:"Captura y operación de imagen profesional." },
       { name:"Iluminación", desc:"Diseño y control de luz." },
-      { name:"Audio", desc:"Captura y mezcla." },
-      { name:"Switching", desc:"Dirección técnica." },
-      { name:"Producción en terreno", desc:"Operación completa." }
+      { name:"Cámara", desc:"Captura y operación de imagen." },
+      { name:"Look", desc:"Dirección estética visual." },
+      { name:"Utilería", desc:"Gestión de elementos escénicos." },
+      { name:"Móviles", desc:"Unidades móviles de producción." },
+      { name:"Audio", desc:"Captura y mezcla de sonido." }
     ]
   },
   {
     name: "MOC",
     image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/fresnel.png?csf=1&web=1&e=JfFw91",
     subareas: [
-      { name:"Monitoreo", desc:"Supervisión de señales." },
-      { name:"Alertas", desc:"Gestión de incidencias." }
+      { name:"Ingesta", desc:"Ingreso de contenido." },
+      { name:"Archivo", desc:"Gestión de almacenamiento." },
+      { name:"Post Prod Audio", desc:"Edición de audio." },
+      { name:"VTR Replay", desc:"Repeticiones y reproducción." },
+      { name:"Post Prod Video", desc:"Edición de video." }
     ]
   },
   {
     name: "BOC",
     image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD",
     subareas: [
-      { name:"Broadcast", desc:"Salida al aire." }
+      { name:"Broadcast Operation Center", desc:"Operación central de transmisión." }
+    ]
+  },
+  {
+    name: "GESTIÓN",
+    image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/fresnel.png?csf=1&web=1&e=JfFw91",
+    subareas: [
+      { name:"Gestión", desc:"Coordinación operativa." },
+      { name:"Pañol", desc:"Administración de equipamiento." }
+    ]
+  },
+  {
+    name: "GFX",
+    image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD",
+    subareas: [
+      { name:"Gráfica", desc:"Diseño gráfico broadcast." }
     ]
   }
 ];
