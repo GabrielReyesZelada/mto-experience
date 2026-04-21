@@ -107,17 +107,17 @@ video{
 
 /* ===== ENGRANAJE ===== */
 #gearWrap{
-  position:fixed;
+  position:absolute;
   width:700px;
   height:700px;
-  
 
   left:0;
   top:50%;
   transform:translate(100px, -50%);
 
-  z-index:5;
+  z-index:1;
   pointer-events:none;
+  opacity:1;
 }
 
 #gear{
@@ -520,6 +520,9 @@ h1{
   z-index:3;
 }
 
+.mto-flip.flipped ~ #gearWrap{
+  opacity:1;
+}
 
 /* 🔥 HINT MEJORADO */
 .gear-hint{
@@ -655,8 +658,7 @@ body::after{
   top:50%;
   transform:translate3d(0,-50%,0);
   will-change: transform;
-  z-index:50; /* 🔥 BAJAMOS la esfera */
-  filter: drop-shadow(0 0 40px rgba(0,200,255,.4));
+  z-index:3; /* 🔥 BAJAMOS la esfera */
 }
 
 .area-sphere .bubble{
@@ -697,7 +699,7 @@ body::after{
   max-width:520px;
   padding-right:10px;
 
-  z-index:1;
+  z-index:2;
 }
 
 .area-list-item{
@@ -1070,13 +1072,6 @@ body::after{
 </div>
   
 
-<div id="gearWrap">
-  <div id="gear"></div>
-  <div class="gear-core"></div>
-  <div class="gear-logo"></div>
-  <div class="gear-hint">Usa la rueda del mouse</div>
-</div>
-
 <div id="slides">
 
 
@@ -1090,6 +1085,13 @@ body::after{
 
 
 <section class="slide">
+
+<div id="gearWrap">
+  <div id="gear"></div>
+  <div class="gear-core"></div>
+  <div class="gear-logo"></div>
+  <div class="gear-hint">Usa la rueda del mouse</div>
+</div>
 
 
   <!-- TITULO -->
