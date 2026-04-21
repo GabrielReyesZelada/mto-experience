@@ -1170,6 +1170,110 @@ body::after{
 
 <script>
 
+const areas = [
+  {
+    name: "ESTUDIOS",
+    image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD",
+    subareas: [
+      { name:"Cámara", desc:"Captura y operación de imagen profesional." },
+      { name:"Iluminación", desc:"Diseño y control de luz." },
+      { name:"Audio", desc:"Captura y mezcla." },
+      { name:"Switching", desc:"Dirección técnica." },
+      { name:"Producción en terreno", desc:"Operación completa." }
+    ]
+  },
+  {
+    name: "MOC",
+    image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/fresnel.png?csf=1&web=1&e=JfFw91",
+    subareas: [
+      { name:"Monitoreo", desc:"Supervisión de señales." },
+      { name:"Alertas", desc:"Gestión de incidencias." }
+    ]
+  },
+  {
+    name: "BOC",
+    image: "https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD",
+    subareas: [
+      { name:"Broadcast", desc:"Salida al aire." }
+    ]
+  }
+];
+
+let currentAreaIndex = 0;
+
+function updateAreaFromRotation(){
+
+  const total = areas.length;
+
+  // normaliza rotación (0 → 360)
+  let normalized = ((rotation % 360) + 360) % 360;
+
+  const segment = 360 / total;
+
+  const newIndex = Math.floor(normalized / segment);
+
+  if(newIndex !== currentAreaIndex){
+    currentAreaIndex = newIndex;
+    applyAreaChange();
+
+document.getElementById("mainSphere").classList.add("light-active");
+
+setTimeout(()=>{
+  document.getElementById("mainSphere").classList.remove("light-active");
+},400);
+  }
+}
+
+function applyAreaChange(){
+
+  const area = areas[currentAreaIndex];
+
+  // 🔹 ESFERA (TEXTO)
+  const label = document.getElementById("sphereLabel");
+  label.style.opacity = 0;
+
+  setTimeout(()=>{
+    label.innerText = area.name;
+    label.style.opacity = 1;
+  },200);
+
+  // 🔹 ESFERA (IMAGEN)
+  const front = document.getElementById("sphereImgFront");
+  front.style.backgroundImage = `url('${area.image}')`;
+  front.classList.add("active");
+
+  // 🔹 LISTA
+  const list = document.querySelector(".area-list");
+
+  list.style.opacity = 0;
+
+  setTimeout(()=>{
+
+    list.innerHTML = "";
+
+    area.subareas.forEach(sub => {
+
+      const div = document.createElement("div");
+      div.className = "area-list-item";
+
+      div.innerHTML = `<span class="item-text">${sub.name}</span>`;
+
+      div.onclick = ()=>{
+        document.getElementById("pTitle").innerText = sub.name;
+        document.getElementById("pDesc").innerText = sub.desc;
+        document.getElementById("panel").classList.add("active");
+      };
+
+      list.appendChild(div);
+
+    });
+
+    list.style.opacity = 1;
+
+  },200);
+}
+
+
 /* ===== FLIP ===== */
 function enter(){
 
@@ -1364,6 +1468,8 @@ function animate(){
     gear.style.transform = `rotate(${rotation}deg)`;
     gear.style.filter = `brightness(${1 + Math.abs(velocity)*0.05 * behavior.gearBoost})`;
   }
+
+  updateAreaFromRotation();
 
   update();
 
