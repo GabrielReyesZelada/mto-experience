@@ -1535,6 +1535,30 @@ window.addEventListener("wheel", e => {
 
   freeMode = freeMode ? intensity > 10 : intensity > 40;
 
+    const now = Date.now();
+
+  // 🔥 CONTROL DISCRETO DE ÁREA (1 TIC = 1 CAMBIO)
+  if (isHoveringGear && (now - lastScrollTime > SCROLL_COOLDOWN)) {
+
+    if (e.deltaY > 0) {
+      currentAreaIndex++;
+    } else {
+      currentAreaIndex--;
+    }
+
+    // límites
+    currentAreaIndex = Math.max(0, Math.min(currentAreaIndex, areas.length - 1));
+
+    applyAreaChange();
+
+    // impulso visual al engranaje (NO rompe la física)
+    velocity += e.deltaY > 0 ? 2.5 : -2.5;
+
+    lastScrollTime = now;
+
+    return; // 🔥 CLAVE: evita que siga ejecutando scroll normal
+  }
+
   // 🔧 PRIORIDAD: si estás en el slide 1 (NUESTRAS ÁREAS),
   // permitir salir sí o sí
   if(current === 0){
@@ -1619,6 +1643,9 @@ window.addEventListener("touchend", e=>{
 let velocity = 0;
 let rotation = 0;
 let freeMode = false;
+
+let lastScrollTime = 0;
+const SCROLL_COOLDOWN = 220; // controla 1 tic por cambio
 
 let isHoveringGear = false;
 
@@ -1732,7 +1759,7 @@ backLayer.style.transform = `
 
   /* ===== 7. ACTUALIZACIONES DE ESTADO ===== */
 
-  updateAreaFromRotation();
+  // updateAreaFromRotation();
   update();
 
   /* ===== 8. BUBBLES SECUNDARIAS (OPTIMIZADAS) ===== */
