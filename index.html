@@ -997,8 +997,23 @@ body::after{
     0 0 20px rgba(0,200,255,.6),
     0 0 40px rgba(0,200,255,.3);
 
-  transition:.4s ease;
-  transform: translateZ(2px);
+  transition:
+    opacity .35s ease,
+    transform .45s cubic-bezier(.22,1,.36,1);
+
+  transform: translateY(0);
+}
+
+/* salida */
+.sphere-label.exit{
+  opacity:0;
+  transform: translateY(12px);
+}
+
+/* entrada */
+.sphere-label.enter{
+  opacity:0;
+  transform: translateY(-12px);
 }
 
 .panel-content p{
@@ -1330,13 +1345,29 @@ if(area.image){
 resetSphereToArea();
 
   // 🔹 ESFERA (TEXTO)
-  const label = document.getElementById("sphereLabel");
-  label.style.opacity = 0;
+const label = document.getElementById("sphereLabel");
 
-  setTimeout(()=>{
-    label.innerText = area.name;
-    label.style.opacity = 1;
-  },200);
+// 1. salida
+label.classList.remove("enter");
+label.classList.add("exit");
+
+setTimeout(() => {
+
+  // 2. cambio de texto
+  label.innerText = area.name;
+
+  // 3. preparar entrada
+  label.classList.remove("exit");
+  label.classList.add("enter");
+
+  // 4. forzar reflow para activar animación
+  void label.offsetWidth;
+
+  // 5. animar entrada
+  label.style.opacity = 1;
+  label.style.transform = "translateY(0)";
+
+}, 180);
 
 
   // 🔹 LISTA
