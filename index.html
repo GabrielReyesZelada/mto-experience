@@ -687,6 +687,18 @@ body::after{
   
 
   z-index: 5;
+  transition: opacity .35s ease, transform .35s ease;
+}
+
+.area-list.fade-out{
+  opacity:0;
+  transform: translateY(12px) scale(0.98);
+filter: blur(6px);
+}
+
+.area-list.fade-in{
+  filter: blur(0);
+transform: translateY(0) scale(1);
 }
 
 
@@ -1056,6 +1068,20 @@ body::after{
   width:100%;
 }
 
+.area-transition-out{
+  opacity:0;
+  transform: scale(0.96) translateY(10px);
+  filter: blur(6px);
+  transition: all .45s cubic-bezier(.22,1,.36,1);
+}
+
+.area-transition-in{
+  opacity:1;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+  transition: all .55s cubic-bezier(.22,1,.36,1);
+}
+
 </style>
 </head>
 
@@ -1335,83 +1361,67 @@ setTimeout(()=>{
 function applyAreaChange(){
 
   const area = areas[currentAreaIndex];
-  const sphereVideo = document.getElementById("sphereVideo");
 
-if(area.image){
-  sphereVideo.src = area.image;
-  sphereVideo.play();
-}
-
-resetSphereToArea();
-
-  // 🔹 ESFERA (TEXTO)
-const label = document.getElementById("sphereLabel");
-
-// 1. salida
-label.classList.remove("enter");
-label.classList.add("exit");
-
-setTimeout(() => {
-
-  // 2. cambio de texto
-  label.innerText = area.name;
-
-  // 3. preparar entrada
-  label.classList.remove("exit");
-  label.classList.add("enter");
-
-  // 4. forzar reflow para activar animación
-  void label.offsetWidth;
-
-  // 5. animar entrada
-  label.style.opacity = 1;
-  label.style.transform = "translateY(0)";
-
-}, 180);
-
-
-  // 🔹 LISTA
+  const sphere = document.getElementById("mainSphere");
+  const label = document.getElementById("sphereLabel");
   const list = document.querySelector(".area-list");
 
-
-
-  list.style.opacity = 0;
+  // 🔥 SALIDA GLOBAL
+  sphere.classList.add("area-transition-out");
+  label.classList.add("exit");
+  list.classList.add("fade-out");
 
   setTimeout(()=>{
 
-  list.innerHTML = "";
+    /* ===== CAMBIO REAL ===== */
 
-  area.subareas.forEach(sub => {
+    // VIDEO / FONDO
+    const sphereVideo = document.getElementById("sphereVideo");
+    if(area.image){
+      sphereVideo.src = area.image;
+      sphereVideo.play();
+    }
 
-    const div = document.createElement("div");
-    div.className = "area-list-item";
+    resetSphereToArea();
 
-    div.dataset.img = sub.img || "";
+    // TEXTO ESFERA
+    label.innerText = area.name;
+    label.classList.remove("exit");
 
-    div.innerHTML = `<span class="item-text">${sub.name}</span>`;
+    // LISTA
+    list.innerHTML = "";
 
-    div.addEventListener("mouseenter", () => activateSphere(div));
-    div.addEventListener("touchstart", () => activateSphere(div));
+    area.subareas.forEach(sub => {
 
-    div.addEventListener("click", () => {
-      document.getElementById("pTitle").innerText = sub.name;
-      document.getElementById("pDesc").innerText = sub.desc;
-      document.getElementById("panel").classList.add("active");
+      const div = document.createElement("div");
+      div.className = "area-list-item";
+      div.dataset.img = sub.img || "";
+
+      div.innerHTML = `<span class="item-text">${sub.name}</span>`;
+
+      div.addEventListener("mouseenter", () => activateSphere(div));
+      div.addEventListener("touchstart", () => activateSphere(div));
+
+      div.addEventListener("click", () => {
+        document.getElementById("pTitle").innerText = sub.name;
+        document.getElementById("pDesc").innerText = sub.desc;
+        document.getElementById("panel").classList.add("active");
+      });
+
+      list.appendChild(div);
     });
 
-    list.appendChild(div);
+    void list.offsetWidth;
 
-  });
+    /* ===== ENTRADA GLOBAL ===== */
 
-  // 🔥 FIX: reactivar evento correctamente
-list.addEventListener("mouseleave", () => {
-  resetSphereToArea();
-});
+    sphere.classList.remove("area-transition-out");
+    sphere.classList.add("area-transition-in");
 
-  list.style.opacity = 1;
+    list.classList.remove("fade-out");
+    list.classList.add("fade-in");
 
-},200);
-
+  }, 260);
 }
 
 /* ===== FLIP ===== */
@@ -1560,38 +1570,40 @@ if(current !== 1){
 
 window.addEventListener("wheel", e => {
 
-  if (isScrolling) return; // 🔥 bloquea spam de scroll
+  const now = Date.now();
 
-  const intensity = Math.abs(e.deltaY);
+  // 🔥 BLOQUEO TOTAL SI ESTÁS SOBRE EL ENGRANAJE
+  if (isHoveringGear) {
 
-  freeMode = freeMode ? intensity > 10 : intensity > 40;
+    e.preventDefault(); // 💥 CLAVE
+    e.stopPropagation();
 
-    const now = Date.now();
+    // 🎯 CONTROL DISCRETO (1 tic = 1 cambio)
+    if (now - lastScrollTime > SCROLL_COOLDOWN) {
 
-  // 🔥 CONTROL DISCRETO DE ÁREA (1 TIC = 1 CAMBIO)
-  if (isHoveringGear && (now - lastScrollTime > SCROLL_COOLDOWN)) {
+      if (e.deltaY > 0) {
+        currentAreaIndex++;
+      } else {
+        currentAreaIndex--;
+      }
 
-    if (e.deltaY > 0) {
-      currentAreaIndex++;
-    } else {
-      currentAreaIndex--;
+      currentAreaIndex = Math.max(0, Math.min(currentAreaIndex, areas.length - 1));
+
+      velocity *= 0.6;
+      applyAreaChange();
+
+      velocity += e.deltaY > 0 ? 2.5 : -2.5;
+
+      lastScrollTime = now;
     }
 
-    // límites
-    currentAreaIndex = Math.max(0, Math.min(currentAreaIndex, areas.length - 1));
-
-    applyAreaChange();
-
-    // impulso visual al engranaje (NO rompe la física)
-    velocity += e.deltaY > 0 ? 2.5 : -2.5;
-
-    lastScrollTime = now;
-
-    return; // 🔥 CLAVE: evita que siga ejecutando scroll normal
+    return; // 🔥 ULTRA IMPORTANTE
   }
 
-  // 🔧 PRIORIDAD: si estás en el slide 1 (NUESTRAS ÁREAS),
-  // permitir salir sí o sí
+  // ===== SCROLL NORMAL (fuera del engranaje) =====
+
+  if (isScrolling) return;
+
   if(current === 0){
     if(e.deltaY > 0){
       target = 1;
@@ -1601,13 +1613,6 @@ window.addEventListener("wheel", e => {
     return;
   }
 
-  // 🔥 engranaje
-  if(isHoveringGear){
-    velocity += e.deltaY * (freeMode ? 0.03 : 0.018);
-    return;
-  }
-
-  // 🔽 navegación normal
   if(e.deltaY > 0){
     target += 1;
   } else {
@@ -1621,7 +1626,7 @@ window.addEventListener("wheel", e => {
   isScrolling = true;
   setTimeout(()=> isScrolling = false, 700);
 
-}, { passive: true });
+}, { passive: false }); // 🔥 ESTO ES OBLIGATORIO
 
 
 menuItems.forEach(item=>{
@@ -1790,7 +1795,7 @@ backLayer.style.transform = `
 
   /* ===== 7. ACTUALIZACIONES DE ESTADO ===== */
 
-  // updateAreaFromRotation();
+  updateAreaFromRotation();
   update();
 
   /* ===== 8. BUBBLES SECUNDARIAS (OPTIMIZADAS) ===== */
