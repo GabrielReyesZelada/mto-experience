@@ -996,6 +996,16 @@ body::after{
   max-width:500px;
 }
 
+#mainSphere video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+  z-index:0;
+  opacity:0.6; /* 🔥 ajusta intensidad */
+}
 
 </style>
 </head>
@@ -1075,9 +1085,16 @@ body::after{
   <div class="area-sphere">
 
   <div class="bubble" id="mainSphere">
+
+  <!-- VIDEO FONDO -->
+  <video id="sphereVideo" autoplay muted loop playsinline>
+    <source src="https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/Fondo%20sphere%20area.mp4?download=1" type="video/mp4">
+  </video>
+
   <div class="bubble-img img-back" id="sphereImgBack"></div>
   <div class="bubble-img img-front" id="sphereImgFront"></div>
 </div>
+
 <div class="sphere-label" id="sphereLabel">
   ESTUDIOS
 </div>
@@ -1150,7 +1167,7 @@ body::after{
 const areas = [
   {
     name: "ESTUDIOS & OUTDOOR",
-    image: "https://warnermedia.sharepoint.com/:v:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/Fondo%20sphere%20area.mp4?download=1",
+    image: "https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/Fondo%20sphere%20area.mp4?download=1"
     subareas: [
       { 
         name:"Iluminación",
@@ -1269,6 +1286,12 @@ setTimeout(()=>{
 function applyAreaChange(){
 
   const area = areas[currentAreaIndex];
+  const sphereVideo = document.getElementById("sphereVideo");
+
+if(area.image){
+  sphereVideo.src = area.image;
+  sphereVideo.play();
+}
 
 resetSphereToArea();
 
