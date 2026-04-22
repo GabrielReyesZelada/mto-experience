@@ -1572,13 +1572,12 @@ window.addEventListener("wheel", e => {
 
   const now = Date.now();
 
-  // 🔥 BLOQUEO TOTAL SI ESTÁS SOBRE EL ENGRANAJE
+  /* ===== 🎯 CASO 1: SOBRE ENGRANAJE ===== */
   if (isHoveringGear) {
 
-    e.preventDefault(); // 💥 CLAVE
+    e.preventDefault();
     e.stopPropagation();
 
-    // 🎯 CONTROL DISCRETO (1 tic = 1 cambio)
     if (now - lastScrollTime > SCROLL_COOLDOWN) {
 
       if (e.deltaY > 0) {
@@ -1597,10 +1596,16 @@ window.addEventListener("wheel", e => {
       lastScrollTime = now;
     }
 
-    return; // 🔥 ULTRA IMPORTANTE
+    return;
   }
 
-  // ===== SCROLL NORMAL (fuera del engranaje) =====
+  /* ===== 🚫 CASO 2: SOLO BLOQUEAR SI ESTÁS SOBRE EL ENGRANAJE ===== */
+if (current === 1 && isHoveringGear) {
+  e.preventDefault();
+  return;
+}
+
+  /* ===== 🌍 SCROLL NORMAL ===== */
 
   if (isScrolling) return;
 
@@ -1626,7 +1631,7 @@ window.addEventListener("wheel", e => {
   isScrolling = true;
   setTimeout(()=> isScrolling = false, 700);
 
-}, { passive: false }); // 🔥 ESTO ES OBLIGATORIO
+}, { passive: false });
 
 
 menuItems.forEach(item=>{
@@ -1681,7 +1686,7 @@ let rotation = 0;
 let freeMode = false;
 
 let lastScrollTime = 0;
-const SCROLL_COOLDOWN = 220; // controla 1 tic por cambio
+const SCROLL_COOLDOWN = 180;
 
 let isHoveringGear = false;
 
