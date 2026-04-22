@@ -1411,6 +1411,31 @@ function applyAreaChange(){
       list.appendChild(div);
     });
 
+    area.subareas.forEach(sub => {
+
+  const div = document.createElement("div");
+  div.className = "area-list-item";
+  div.dataset.img = sub.img || "";
+
+  div.innerHTML = `<span class="item-text">${sub.name}</span>`;
+
+  div.addEventListener("mouseenter", () => activateSphere(div));
+  div.addEventListener("touchstart", () => activateSphere(div));
+
+  div.addEventListener("click", () => {
+    document.getElementById("pTitle").innerText = sub.name;
+    document.getElementById("pDesc").innerText = sub.desc;
+    document.getElementById("panel").classList.add("active");
+  });
+
+  list.appendChild(div);
+});
+
+/* 🔥 👇 PONLO JUSTO AQUÍ 👇 */
+list.addEventListener("mouseleave", () => {
+  resetSphereToArea();
+});
+
     void list.offsetWidth;
 
     /* ===== ENTRADA GLOBAL ===== */
@@ -1575,29 +1600,25 @@ window.addEventListener("wheel", e => {
   /* ===== 🎯 CASO 1: SOBRE ENGRANAJE ===== */
   if (isHoveringGear) {
 
-    e.preventDefault();
-    e.stopPropagation();
+  e.preventDefault();
+  e.stopPropagation();
 
-    if (now - lastScrollTime > SCROLL_COOLDOWN) {
+  if (now - lastScrollTime > SCROLL_COOLDOWN) {
 
-      if (e.deltaY > 0) {
-        currentAreaIndex++;
-      } else {
-        currentAreaIndex--;
-      }
+    const direction = e.deltaY > 0 ? 1 : -1;
+    const segment = 360 / areas.length;
 
-      currentAreaIndex = Math.max(0, Math.min(currentAreaIndex, areas.length - 1));
+    // 🔥 empuja la rotación al siguiente "paso"
+    rotation += direction * segment;
 
-      velocity *= 0.6;
-      applyAreaChange();
+    // 🔥 impulso físico (clave para que siga girando)
+    velocity += direction * 2.2;
 
-      velocity += e.deltaY > 0 ? 2.5 : -2.5;
-
-      lastScrollTime = now;
-    }
-
-    return;
+    lastScrollTime = now;
   }
+
+  return;
+}
 
   /* ===== 🚫 CASO 2: SOLO BLOQUEAR SI ESTÁS SOBRE EL ENGRANAJE ===== */
 if (current === 1 && isHoveringGear) {
@@ -1729,8 +1750,8 @@ function animate(){
 
   velocity *= freeMode ? 0.985 : 0.965;
 
-  if(Math.abs(velocity) < 0.02){
-  velocity *= 1.02; // micro-vida
+if(Math.abs(velocity) < 0.05){
+  velocity += 0.03 * Math.sign(velocity || 1);
 }
 
 const sphere = document.getElementById("mainSphere");
