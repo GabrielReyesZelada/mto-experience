@@ -907,7 +907,7 @@ body::after{
   transition: transform .35s ease;
   will-change: transform;
 
-  animation: sphereBreath 6s ease-in-out infinite; /* 🔥 AQUÍ ESTÁ EL RESPIRO */
+  animation: none; /* 🔥 eliminamos conflicto */
 
   z-index:1;
   background: radial-gradient(circle, #111, #000);
@@ -1016,6 +1016,13 @@ body::after{
   opacity:0.6; /* 🔥 ajusta intensidad */
 
   transform: scale(1.3);
+  animation: videoBreath 8s ease-in-out infinite;
+}
+
+@keyframes videoBreath{
+  0%   { transform: scale(1.28); }
+  50%  { transform: scale(1.32); }
+  100% { transform: scale(1.28); }
 }
 
 /* 🔥 FIX CENTRADO "NUESTRAS ÁREAS" */
@@ -1487,8 +1494,15 @@ function update(){
 
   // 🔥 ACTIVACIÓN DEL GEAR AL ENTRAR A SU SECCIÓN
 if(current === 1 && !window.gearActivated){
-  velocity += 2.5; // impulso inicial
+  velocity += 6; // 🔥 más fuerza inicial
+  freeMode = true; // 🔥 entra en modo libre un momento
+  setTimeout(()=> freeMode = false, 600); // vuelve a control fino
   window.gearActivated = true;
+}
+
+// 🔥 SNAP más agresivo al entrar a slide 1
+if(current === 1 && Math.abs(target - position) < 0.05){
+  position = target;
 }
 
 if(current !== 1){
