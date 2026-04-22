@@ -640,7 +640,7 @@ body::after{
   top:50%;
   transform:translate3d(0,-50%,0);
   will-change: transform;
-  z-index:3; /* 🔥 BAJAMOS la esfera */
+  z-index: 2; /* 🔥 BAJAMOS la esfera */
 }
 
 .area-sphere .bubble{
@@ -677,15 +677,17 @@ body::after{
   width:100%;
   text-align:right;
 
-  right:-130px; 
+  right:-40px; 
   max-width:520px;
   padding-right: 20px;
 
   max-height: 70vh;
   overflow: hidden;
+  
 
-  z-index:2;
+  z-index: 5;
 }
+
 
 .area-list-item{
   position:relative;
@@ -699,8 +701,9 @@ body::after{
   cursor:pointer;
 
   padding:14px 0;
-  width:320px;              /* 👈 más presencia */
+  width:380px;              /* 👈 más presencia */
   transition:.3s;
+  max-width:100%;
 }
 
 .area-list-item::after{
@@ -951,14 +954,6 @@ body::after{
   .area-sphere .bubble{
     width:220px;
     height:220px;
-  }
-
-  /* lista centrada */
-  .area-list{
-    align-items:center;
-    text-align:center;
-    right:0;
-    max-width:100%;
   }
 
   .area-list-item{
