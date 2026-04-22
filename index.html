@@ -1167,7 +1167,7 @@ body::after{
 const areas = [
   {
     name: "ESTUDIOS & OUTDOOR",
-    image: "https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/Fondo%20sphere%20area.mp4?download=1"
+    image: "https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/Fondo%20sphere%20area.mp4?download=1",
     subareas: [
       { 
         name:"Iluminación",
@@ -1308,22 +1308,6 @@ resetSphereToArea();
   // 🔹 LISTA
   const list = document.querySelector(".area-list");
 
-/* 🔥 FIX SCROLL */
-list.addEventListener("wheel", (e) => {
-
-  const atTop = list.scrollTop === 0;
-  const atBottom = list.scrollHeight - list.scrollTop === list.clientHeight;
-
-  if (
-    (e.deltaY < 0 && atTop) ||
-    (e.deltaY > 0 && atBottom)
-  ){
-    return;
-  }
-
-  e.stopPropagation();
-
-}, { passive: true });
 
 
   list.style.opacity = 0;
@@ -1426,6 +1410,25 @@ function volver(){
 let current = 0;
 const slides = document.querySelectorAll(".slide");
 const menuItems = document.querySelectorAll(".menu-item");
+
+const list = document.querySelector(".area-list");
+
+list.addEventListener("wheel", (e) => {
+
+  const atTop = list.scrollTop === 0;
+  const atBottom = list.scrollHeight - list.scrollTop === list.clientHeight;
+
+  if (
+    (e.deltaY < 0 && atTop) ||
+    (e.deltaY > 0 && atBottom)
+  ){
+    return;
+  }
+
+  e.stopPropagation();
+
+}, { passive: true });
+
 let scrollAccumulator = 0;
 const SCROLL_THRESHOLD = 80;
 let position = 0;  // posición real continua (decimales)
