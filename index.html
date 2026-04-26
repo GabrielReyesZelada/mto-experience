@@ -166,12 +166,19 @@
   font-size:14px;
   letter-spacing:1px;
 
-  opacity:.85;
+  animation: hintFloat 3s ease-in-out infinite;
+
+  opacity:0;
+  transition: opacity .6s ease, transform .6s ease;
 
   z-index:10;
   pointer-events:none;
 
   text-shadow:0 0 10px rgba(0,200,255,.6);
+}
+
+.mto-flip.flipped .gear-hint{
+  opacity:.85;
 }
 
 .mini-gear{
@@ -1747,6 +1754,8 @@ if(current === 0){
 if(miniGear){
   miniGear.style.transform = `rotate(${-rotation}deg)`;
 }
+
+
 
     /* ===== 2. ROTACIÓN BASE ===== */
 
