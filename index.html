@@ -154,7 +154,9 @@
   position:absolute;
   top:50%;
   left:50%;
-  transform:translate(-50%, -50%) translateY(140px);
+
+  /* 🔥 ahora lo subimos sobre el centro */
+  transform:translate(-50%, -50%) translateY(-180px);
 
   display:flex;
   align-items:center;
@@ -166,8 +168,7 @@
 
   opacity:.85;
 
-  z-index:5;
-
+  z-index:10;
   pointer-events:none;
 
   text-shadow:0 0 10px rgba(0,200,255,.6);
@@ -535,24 +536,6 @@
     opacity:1;
   }
 
-  /* 🔥 HINT MEJORADO */
-  .gear-hint{
-    bottom:-35px;
-    opacity:.9;
-    font-size:14px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-
-  /* mini engranaje visual */
-  .gear-hint::before{
-    content:"";
-    width:16px;
-    height:16px;
-    background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
-    display:inline-block;
-  }
 
   /* ===== SISTEMA GLOBAL (coherencia visual) ===== */
 
