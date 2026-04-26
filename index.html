@@ -151,14 +151,42 @@
 
   /* ===== HINT ===== */
   .gear-hint{
-    position:absolute;
-    bottom:-60px;
-    left:50%;
-    transform:translateX(-50%);
-    color:white;
-    opacity:.7;
-    font-size:14px;
-  }
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%) translateY(140px);
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  color:white;
+  font-size:14px;
+  letter-spacing:1px;
+
+  opacity:.85;
+
+  z-index:5;
+
+  pointer-events:none;
+
+  text-shadow:0 0 10px rgba(0,200,255,.6);
+}
+
+.mini-gear{
+  width:18px;
+  height:18px;
+  opacity:.9;
+
+  background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
+
+  filter:brightness(1.2);
+
+  will-change: transform;
+  filter:
+    brightness(1.2)
+    drop-shadow(0 0 6px rgba(0,200,255,.6));
+}
 
   /* ===== SLIDES ===== */
 
@@ -173,10 +201,10 @@
 
   /* ===== FONDOS ===== */
   .slide:nth-child(1){
-    background:
-      radial-gradient(circle at center, #00c8ff33, #000 70%),
-      linear-gradient(to bottom, #020617, #000);
-  }
+  background:
+    radial-gradient(circle at center, #00c8ff22, transparent 60%),
+    linear-gradient(to bottom, #020617, #000);
+}
 
   .slide:nth-child(2){
     background:
@@ -578,52 +606,6 @@
     pointer-events:none;
   }
 
-  /* ===== MENÚ SUPERIOR ===== */
-  #topMenu{
-    position:fixed;
-    top:20px;
-    left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    gap:25px;
-    z-index:500;
-    backdrop-filter: blur(10px);
-    padding:10px 20px;
-    border-radius:30px;
-    background:rgba(0,0,0,.3);
-    border:1px solid rgba(255,255,255,.1);
-  }
-
-  .menu-item{
-    color:white;
-    font-size:14px;
-    cursor:pointer;
-    opacity:.6;
-    transition:.3s;
-    position:relative;
-  }
-
-  .menu-item:hover{
-    opacity:1;
-    text-shadow:0 0 10px rgba(0,200,255,.8);
-  }
-
-  /* activo */
-  .menu-item.active{
-    opacity:1;
-  }
-
-  .menu-item.active::after{
-    content:"";
-    position:absolute;
-    left:0;
-    bottom:-6px;
-    width:100%;
-    height:2px;
-    background:linear-gradient(to right, #00c8ff, #ff00c8);
-    box-shadow:0 0 10px rgba(0,200,255,.8);
-  }
-
   /* ===== NUEVO LAYOUT POR SECCIÓN ===== */
   .area-layout{
     display:grid;
@@ -746,7 +728,22 @@
 
   .area-title h1{
     font-size:3.8rem;
-  }
+    line-height:1.1;
+    color: #ffffff;
+  text-shadow:
+    0 0 25px rgba(255,255,255,.25),
+    0 0 60px rgba(0,200,255,.35);
+}
+
+  .area-intro{
+  opacity: .9;
+  color: rgba(255,255,255,.85);
+}
+
+.area-hint{
+  opacity: .8;
+  color: rgba(255,255,255,.7);
+}
 
   .item-text{
     display:inline-block;
@@ -825,10 +822,6 @@
     opacity:.5;
   }
 
-  .area-title h1{
-    font-size:3.8rem;
-    line-height:1.1;
-  }
 
   /* capas de imagen */
   .img-front,
@@ -962,17 +955,22 @@
       margin-left:0; /* 👈 corre el título hacia el centro */
       width:100%;
       z-index:10;
+
+      backdrop-filter: blur(6px);
+      padding: 40px 60px;
+      border-radius: 20px;
+
+      background: rgba(0,0,0,0.25);
+
+     box-shadow:
+     0 0 60px rgba(0,200,255,.08);
     }
 
     .slide:first-child .area-layout{
     display:flex !important;
     justify-content:center;
     align-items:center;
-  }
-
-    .area-title h1{
-      font-size:2.4rem;
-    }
+  } 
 
     .area-sphere .bubble{
       width:220px;
@@ -1091,6 +1089,39 @@
     transition: all .55s cubic-bezier(.22,1,.36,1);
   }
 
+  .area-intro{
+  margin-top:20px;
+  max-width:520px;
+  font-size:1.2rem;
+  opacity:.75;
+  line-height:1.6;
+}
+
+.area-hint{
+  animation: hintPulse 2s infinite;
+}
+
+@keyframes hintPulse{
+  0%,100%{ opacity:.4; transform:translateY(0); }
+  50%{ opacity:.9; transform:translateY(6px); }
+}
+
+/* animación entrada */
+.area-title{
+  animation: introFade 1.2s ease forwards;
+}
+
+@keyframes introFade{
+  from{
+    opacity:0;
+    transform: translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform: translateY(0);
+  }
+}
+
   </style>
   </head>
 
@@ -1133,25 +1164,27 @@
 
   <button class="back-btn" onclick="volver()">Volver</button>
 
-  <div id="topMenu">
-    <div class="menu-item" data-index="0">Inicio</div>
-    <div class="menu-item" data-index="1">Estudios & Outdoor</div>
-    <div class="menu-item" data-index="2">MOC</div>
-    <div class="menu-item" data-index="3">BOC</div>
-    <div class="menu-item" data-index="4">Gestión</div>
-    <div class="menu-item" data-index="5">GFX</div>
-  </div>
     
 
   <div id="slides">
 
-
+  <!-- SLIDE 0 -->
   <section class="slide">
+
     <div class="area-layout">
       <div class="area-title">
         <h1>NUESTRAS ÁREAS</h1>
+
+        <p class="area-intro">
+          Un ecosistema en movimiento, donde cada área conecta, transforma y da vida a la operación.
+        </p>
+
+        <p class="area-hint">
+          ↓ Usa el scroll para activar la experiencia
+        </p>
       </div>
     </div>
+
   </section>
 
 
@@ -1161,7 +1194,10 @@
     <div id="gear"></div>
     <div class="gear-core"></div>
     <div class="gear-logo"></div>
-    <div class="gear-hint">Usa la rueda del mouse</div>
+    <div class="gear-hint">
+  <div class="mini-gear"></div>
+  <span>Gira para explorar áreas</span>
+</div>
   </div>
 
 
@@ -1517,7 +1553,7 @@ area.subareas.forEach(sub => {
 
   let current = 0;
   const slides = document.querySelectorAll(".slide");
-  const menuItems = document.querySelectorAll(".menu-item");
+  
 
   const list = document.querySelector(".area-list");
 
@@ -1554,6 +1590,13 @@ area.subareas.forEach(sub => {
 
   function update(){
 
+    const intro = document.querySelector(".area-title");
+
+if(current === 0){
+  intro.style.opacity = 1 - Math.min(position * 1.2, 1);
+  intro.style.transform = `translateY(${position * 40}px)`;
+}
+
     // 1. interpolación (movimiento físico)
     position += (target - position) * 0.08;
 
@@ -1580,15 +1623,6 @@ area.subareas.forEach(sub => {
   if(current !== 1){
     window.gearActivated = false;
   }
-
-    // 4. actualizar menú
-    menuItems.forEach(item=>{
-      item.classList.remove("active");
-    });
-
-    if(menuItems[current]){
-      menuItems[current].classList.add("active");
-    }
 
     // 5. snap final (evita que quede entre slides)
     if(Math.abs(target - position) < 0.001){
@@ -1654,23 +1688,6 @@ area.subareas.forEach(sub => {
 
   }, { passive: false });
 
-
-  menuItems.forEach(item=>{
-    item.addEventListener("click", ()=>{
-
-      const targetIndex = parseInt(item.dataset.index);
-
-      // dirección del movimiento
-      const direction = targetIndex > current ? 1 : -1;
-      const steps = Math.abs(targetIndex - current);
-
-      // pequeño impulso al engranaje (coherencia física)
-      velocity += direction * (1.5 + steps * 0.5);
-
-      // transición directa (manteniendo sistema)
-      target = targetIndex;
-    });
-  });
 
   /* ===== TOUCH SCROLL ===== */
 
@@ -1741,6 +1758,12 @@ area.subareas.forEach(sub => {
       brightness: base.brightness + (next.brightness - base.brightness) * t,
       gearBoost: base.gearBoost + (next.gearBoost - base.gearBoost) * t
     };
+
+    const miniGear = document.querySelector(".mini-gear");
+
+if(miniGear){
+  miniGear.style.transform = `rotate(${-rotation}deg)`;
+}
 
     /* ===== 2. ROTACIÓN BASE ===== */
 
