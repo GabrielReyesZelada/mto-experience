@@ -95,7 +95,6 @@
     position:fixed;
     top:20px;
     right:20px;
-    z-index:100;
     padding:10px 20px;
     border-radius:20px;
     border:1px solid white;
@@ -187,8 +186,6 @@
   opacity:.9;
 
   background:url("https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/SitePages/Home%20ChileOps/Gear1.png?csf=1&web=1&e=uamKCV") center/contain no-repeat;
-
-  filter:brightness(1.2);
 
   will-change: transform;
   filter:
@@ -826,7 +823,6 @@
 
     opacity:0;
     transform: translateZ(0);
-    will-change: transform, opacity;
 
     transition:
     opacity .55s ease,
@@ -955,12 +951,6 @@
      box-shadow:
      0 0 60px rgba(0,200,255,.08);
     }
-
-    .slide:first-child .area-layout{
-    display:flex !important;
-    justify-content:center;
-    align-items:center;
-  } 
 
     .area-sphere .bubble{
       width:220px;
@@ -1210,46 +1200,7 @@
   </div>
   </div>
 
-  <div class="area-list">
-
-    <div class="area-list-item"
-        data-img="https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD"
-        data-title="Cámara"
-        data-desc="Captura y operación de imagen profesional.">
-        
-        <span class="item-text">Cámara</span>
-    </div>
-
-    <div class="area-list-item"
-        data-img="https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/fresnel.png?csf=1&web=1&e=JfFw91"
-        data-title="Iluminación"
-        data-desc="Diseño y control de luz en estudio y terreno.">
-        
-        <span class="item-text">Iluminación</span>
-    </div>
-
-    <div class="area-list-item"
-        data-img="https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD"
-        data-title="Audio"
-        data-desc="Captura, mezcla y control de sonido.">
-        
-        <span class="item-text">Audio</span>
-    </div>
-
-    <div class="area-list-item"
-        data-img="https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/fresnel.png?csf=1&web=1&e=JfFw91"
-        data-title="Switching"
-        data-desc="Dirección técnica y selección de señales.">
-        
-        <span class="item-text">Switching</span>
-    </div>
-
-    <div class="area-list-item"
-        data-img="https://warnermedia.sharepoint.com/:i:/r/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/camera%20lens.png?csf=1&web=1&e=rvIqyD"
-        data-title="Producción en terreno"
-        data-desc="Operación completa fuera de estudio.">
-        
-        <span class="item-text">Producción en terreno</span>
+  <div class="area-list"></div>
     </div>
 
   </div>
@@ -1437,7 +1388,6 @@ setTimeout(() => {
       // LISTA
       list.innerHTML = "";
 
-      list.innerHTML = "";
 
 area.subareas.forEach(sub => {
 
@@ -1461,9 +1411,11 @@ area.subareas.forEach(sub => {
 
 
 
+  if(list){
   list.onmouseleave = () => {
-  resetSphereToArea();
-};
+    resetSphereToArea();
+  };
+}
 
       void list.offsetWidth;
 
@@ -1533,6 +1485,10 @@ area.subareas.forEach(sub => {
       document.getElementById("flip").classList.add("flipped");
     },1400);
 
+    setTimeout(() => {
+  applyAreaChange();
+}, 1500);
+
   }
 
   function volver(){
@@ -1543,31 +1499,9 @@ area.subareas.forEach(sub => {
 
   let current = 0;
   const slides = document.querySelectorAll(".slide");
-  
-
-  const list = document.querySelector(".area-list");
-
-  list.addEventListener("wheel", (e) => {
-
-    const atTop = list.scrollTop === 0;
-    const atBottom = list.scrollHeight - list.scrollTop === list.clientHeight;
-
-    if (
-      (e.deltaY < 0 && atTop) ||
-      (e.deltaY > 0 && atBottom)
-    ){
-      return;
-    }
-
-    e.stopPropagation();
-
-  }, { passive: true });
-
-  let scrollAccumulator = 0;
-  const SCROLL_THRESHOLD = 80;
-  let position = 0;  // posición real continua (decimales)
-  let target = 0;    // índice destino (slide objetivo)
-  let isScrolling = false;
+let position = 0;
+let target = 0;
+let isScrolling = false;
 
   const sectionBehavior = {
     0: { speed: 1, brightness: 1, gearBoost: 1 },
@@ -1588,7 +1522,7 @@ if(current === 0){
 }
 
     // 1. interpolación (movimiento físico)
-    position += (target - position) * 0.08;
+    position += (target - position) * 0.12;
 
     // 2. aplicar movimiento visual
     document.getElementById("slides").style.transform =
@@ -1615,68 +1549,81 @@ if(current === 0){
   }
 
     // 5. snap final (evita que quede entre slides)
-    if(Math.abs(target - position) < 0.001){
-      position = target;
-    }
+    if(Math.abs(target - position) < 0.01){
+  position = target;
+}
   }
 
   window.addEventListener("wheel", e => {
+   if (!slides.length) return;
+  const list = slides[current]?.querySelector(".area-list");
 
-    const now = Date.now();
+  // 🔥 SOLO aplicar lógica de lista en el slide del gear
+  if(current === 1 && list){
 
-    /* ===== 🎯 CASO 1: SOBRE ENGRANAJE ===== */
-    if (isHoveringGear) {
+    const atTop = list.scrollTop === 0;
+    const atBottom = list.scrollHeight - list.scrollTop <= list.clientHeight + 1;
+
+    if (
+      (e.deltaY < 0 && !atTop) ||
+      (e.deltaY > 0 && !atBottom)
+    ){
+      return; // la lista consume el scroll
+    }
+  }
+
+  const now = Date.now();
+
+  /* ===== 🎯 CASO 1: SOBRE ENGRANAJE ===== */
+  if (isHoveringGear) {
 
     e.preventDefault();
-    e.stopPropagation();
 
     if (now - lastScrollTime > SCROLL_COOLDOWN) {
 
       const direction = e.deltaY > 0 ? 1 : -1;
       const segment = 360 / areas.length;
 
-      // 🔥 empuja la rotación al siguiente "paso"
       const targetStep = Math.round(rotation / segment) * segment + direction * segment;
 
       velocity += (targetStep - rotation) * 0.12;
+      lastScrollTime = now;
     }
 
     return;
   }
 
-    /* ===== 🚫 CASO 2: SOLO BLOQUEAR SI ESTÁS SOBRE EL ENGRANAJE ===== */
-  if (current === 1 && isHoveringGear) {
-    e.preventDefault();
-    return;
+  /* ===== SCROLL NORMAL ===== */
+
+  if (isScrolling) return;
+
+  if(current === 0){
+  if(e.deltaY > 0){
+    target = 1;
+  }
+  if(e.deltaY < 0){
+    target = 0;
   }
 
-    /* ===== 🌍 SCROLL NORMAL ===== */
+  isScrolling = true;
+  setTimeout(()=> isScrolling = false, 700);
+  return;
+}
 
-    if (isScrolling) return;
+  if(e.deltaY > 0){
+    target += 1;
+  } else {
+    target -= 1;
+  }
 
-    if(current === 0){
-      if(e.deltaY > 0){
-        target = 1;
-      }
-      isScrolling = true;
-      setTimeout(()=> isScrolling = false, 700);
-      return;
-    }
+  target = Math.max(0, Math.min(target, slides.length - 1));
 
-    if(e.deltaY > 0){
-      target += 1;
-    } else {
-      target -= 1;
-    }
+  velocity += e.deltaY * 0.018;
 
-    target = Math.max(0, Math.min(target, slides.length - 1));
+  isScrolling = true;
+  setTimeout(()=> isScrolling = false, 700);
 
-    velocity += e.deltaY * 0.018;
-
-    isScrolling = true;
-    setTimeout(()=> isScrolling = false, 700);
-
-  }, { passive: false });
+}, { passive: false });
 
 
   /* ===== TOUCH SCROLL ===== */
