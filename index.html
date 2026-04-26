@@ -1396,28 +1396,18 @@
 
 // pequeño pulso visual al cambiar área
 sphereVideo.style.transition = "filter .6s ease, transform 1s ease";
-
 sphereVideo.style.filter = "brightness(1.4) contrast(1.2)";
 sphereVideo.style.transform = "scale(1.25)";
+sphereVideo.playbackRate = 1.2;
 
-const sphereVideo = document.getElementById("sphereVideo");
-// reacción al hover de subárea
-sphereVideo.style.filter = "brightness(1.6) contrast(1.3) saturate(1.2)";
-sphereVideo.style.transform = "scale(1.3)";
-sphereVideo.playbackRate = 1.2; // 🔥 velocidad dinámica
-
-const sphereVideo = document.getElementById("sphereVideo");
-
-sphereVideo.style.filter = "brightness(1) contrast(1)";
-sphereVideo.style.transform = "scale(1.2)";
-sphereVideo.playbackRate = 1;
-
+// volver a estado normal
 setTimeout(() => {
   sphereVideo.style.filter = "brightness(1) contrast(1)";
   sphereVideo.style.transform = "scale(1.2)";
+  sphereVideo.playbackRate = 1;
 }, 300);
       
-      }
+      
 
       resetSphereToArea();
 
