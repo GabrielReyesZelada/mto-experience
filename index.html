@@ -439,13 +439,71 @@
   overflow:hidden;
 }
 
+.panel-nav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  
+  font-size:42px;
+  color:white;
+
+  cursor:pointer;
+  z-index:50;
+
+  opacity:.25;
+  transition:.3s;
+
+  user-select:none;
+}
+
+.panel-nav-left{ left:25px; }
+.panel-nav-right{ right:25px; }
+
+.panel-nav:hover{
+  opacity:1;
+  transform:translateY(-50%) scale(1.2);
+  text-shadow:0 0 20px rgba(0,200,255,.8);
+}
+
+/* 🔥 hint flotante */
+.panel-nav::after{
+  content:attr(data-label);
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  white-space:nowrap;
+
+  font-size:14px;
+  opacity:0;
+  transition:.3s;
+}
+
+.panel-nav-left::after{
+  right:-10px;
+  transform:translateY(-50%) translateX(-100%);
+}
+
+.panel-nav-right::after{
+  left:-10px;
+}
+
+.panel-nav:hover::after{
+  opacity:.7;
+}
+
 /* imagen */
 .panel-img{
   position:absolute;
   inset:0;
   background-size:cover;
   background-position:center;
-  transition: opacity .5s ease;
+
+  transform: scale(1.15); /* 🔥 arranca más cerca */
+  opacity:0;
+
+  transition:
+    opacity .6s ease,
+    transform 1.8s cubic-bezier(.22,1,.36,1);
 }
 
 /* video */
@@ -455,8 +513,83 @@
   width:100%;
   height:100%;
   object-fit:cover;
+
+  transform: scale(1.2); /* 🔥 cine */
   opacity:0;
-  transition: opacity .6s ease;
+
+  transition:
+    opacity .6s ease,
+    transform 2.2s cubic-bezier(.22,1,.36,1);
+}
+
+#panel.active .panel-img,
+#panel.active #panelVideo{
+  transform: scale(1); /* 🔥 zoom suave hacia atrás */
+  opacity:1;
+}
+
+.line{
+  opacity:0;
+  transform: translateY(20px);
+  filter: blur(6px);
+
+  transition:
+    opacity .6s ease,
+    transform .6s ease,
+    filter .6s ease;
+}
+
+.line.show{
+  opacity:1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.keyword{
+  color:#fff;
+  position:relative;
+  z-index:1;
+
+  text-shadow:
+    0 0 8px rgba(0,200,255,.8),
+    0 0 16px rgba(0,200,255,.6),
+    0 0 28px rgba(0,200,255,.4);
+
+  transition: all .3s ease;
+}
+
+/* pulso sutil */
+.keyword::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:4px;
+
+  background: radial-gradient(
+    circle,
+    rgba(0,200,255,.35),
+    transparent 70%
+  );
+
+  opacity:.6;
+  filter:blur(6px);
+
+  animation: keywordPulse 2.5s ease-in-out infinite;
+  z-index:-1;
+}
+
+@keyframes keywordPulse{
+  0%{ opacity:.3; transform:scale(1); }
+  50%{ opacity:.8; transform:scale(1.15); }
+  100%{ opacity:.3; transform:scale(1); }
+}
+
+/* hover opcional (muy pro) */
+.keyword:hover{
+  text-shadow:
+    0 0 12px rgba(0,200,255,1),
+    0 0 24px rgba(0,200,255,.9),
+    0 0 40px rgba(0,200,255,.7);
 }
 
 /* overlay cinematográfico */
@@ -1352,6 +1485,7 @@
 Más que un proceso técnico, somos un puente. Un equipo que conecta historias con quienes las transforman, asegurando que cada pieza llegue en el momento y formato correcto.
 
 Nuestro foco está en la fluidez: facilitar el camino para que cada área pueda concentrarse en lo que mejor sabe hacer: dar vida a contenidos que impactan a nuestra audiencia.`,
+  keywords:["Ingesta","fluidez","facilitar","contenidos","operación"," impactan a nuestra audiencia"],
   img:"https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&q=80&auto=format&fit=crop"
 }, 
         { 
@@ -1513,7 +1647,41 @@ area.subareas.forEach(sub => {
   const panelVideo = document.getElementById("panelVideo");
 
   document.getElementById("pTitle").innerText = sub.name;
-  document.getElementById("pDesc").innerText = sub.desc;
+  const descEl = document.getElementById("pDesc");
+
+// 🔥 limpiar
+descEl.innerHTML = "";
+
+// 🔥 palabras clave por subárea
+const keywords = sub.keywords || [];
+// dividir por saltos de línea
+const lines = sub.desc.split("\n");
+
+lines.forEach((line, i) => {
+
+  const div = document.createElement("div");
+  div.className = "line";
+  let processedLine = line;
+
+keywords.forEach(word => {
+
+  const regex = new RegExp(`(${word})`, "gi");
+
+  processedLine = processedLine.replace(
+    regex,
+    `<span class="keyword">$1</span>`
+  );
+});
+
+div.innerHTML = processedLine;
+
+  descEl.appendChild(div);
+
+  // animación progresiva
+  setTimeout(()=>{
+    div.classList.add("show");
+  }, i * 180); // 🔥 velocidad narrativa
+});
 
   // 🔥 reset
   panelImg.style.opacity = 0;
