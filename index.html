@@ -416,20 +416,28 @@
 
   /* ===== PANEL ===== */
   #panel{
-    position:fixed;
-    inset:0;
-    background:black;
-    display:flex;
-    opacity:0;
-    pointer-events:none;
-    transition:.4s;
-    z-index:999;
-  }
+  position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
 
-  #panel.active{
-    opacity:1;
-    pointer-events:auto;
-  }
+  opacity:0;
+  pointer-events:none;
+
+  transform: scale(1.02);
+
+  transition:
+    opacity .4s ease,
+    transform .4s ease;
+
+  z-index:20000; /* 🔥 subir capa */
+}
+
+#panel.active{
+  opacity:1;
+  pointer-events:auto;
+  transform: scale(1);
+}
 
   .panel-img{
     flex:1;
@@ -440,6 +448,7 @@
     flex:1;
     padding:60px;
     color:white;
+    position:relative;
   }
 
   .close{
@@ -447,7 +456,28 @@
     top:20px;
     right:20px;
     cursor:pointer;
+    z-index:99999;
+    font-size:22px;
+    transition:.3s;
+    pointer-events:auto;
   }
+
+  .close:hover{
+  transform:scale(1.2);
+  color:#00c8ff;
+  text-shadow:0 0 10px rgba(0,200,255,.8);
+}
+
+#panel.closing{
+  opacity:0;
+  transform: scale(0.97);
+  filter: blur(6px);
+
+  transition:
+    opacity .35s ease,
+    transform .4s cubic-bezier(.22,1,.36,1),
+    filter .35s ease;
+}
 
   /* ===== ENERGÍA BOTÓN ===== */
 
@@ -1015,10 +1045,19 @@
   }
 
   .panel-content p{
-    font-size:1.1rem;
-    line-height:1.6;
-    max-width:500px;
-  }
+  font-size:1.15rem;
+  line-height:1.8;
+  max-width:520px;
+  opacity:.85;
+  letter-spacing:.3px;
+}
+
+/* 🔥 separación de párrafos */
+.panel-content p br{
+  content:"";
+  display:block;
+  margin-top:12px;
+}
 
   #mainSphere video{
     position:absolute;
@@ -1259,11 +1298,15 @@
       name: "MOC",
       image: "https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/Fondo%20sphere%20area.mp4?download=1",
       subareas: [
-        { 
-          name:"Ingesta",
-          desc:"Tráfico y distribución de media.",
-          img:"https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&q=80&auto=format&fit=crop"
-        }, 
+        {
+  name:"Ingesta",
+  desc:`Ingesta es el punto de partida de todo lo que vemos en pantalla. Aquí comienza el recorrido del contenido: recibimos, validamos y preparamos cada material para que fluya de forma segura y ordenada hacia el resto de la operación.
+
+Más que un proceso técnico, somos un puente. Un equipo que conecta historias con quienes las transforman, asegurando que cada pieza llegue en el momento y formato correcto.
+
+Nuestro foco está en la fluidez: facilitar el camino para que cada área pueda concentrarse en lo que mejor sabe hacer: dar vida a contenidos que impactan a nuestra audiencia.`,
+  img:"https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&q=80&auto=format&fit=crop"
+}, 
         { 
           name:"Archivo",
           desc:"Gestión de almacenamiento.",
@@ -1417,10 +1460,16 @@ area.subareas.forEach(sub => {
   div.addEventListener("touchstart", () => activateSphere(div));
 
   div.addEventListener("click", () => {
-    document.getElementById("pTitle").innerText = sub.name;
-    document.getElementById("pDesc").innerText = sub.desc;
-    document.getElementById("panel").classList.add("active");
-  });
+
+  const panel = document.getElementById("panel");
+
+  document.getElementById("pTitle").innerText = sub.name;
+  document.getElementById("pDesc").innerText = sub.desc;
+
+  panel.classList.add("active");
+
+
+});
 
   list.appendChild(div);
 });
@@ -1769,9 +1818,13 @@ if(miniGear){
 
     /* ===== 5. MOVIMIENTO ORGÁNICO ESFERA ===== */
 
-  const floatX = Math.sin(time * 0.5) * 2; // solo leve drift lateral
-  const floatY = 0; // 🔥 eliminamos subida/bajada
-  const scale = 1.06; // 🔥 sin respiración
+  const floatX = Math.sin(time * 0.5) * 2;
+  const floatY = 0;
+
+// 🔥 respiración sutil
+  const breath = Math.sin(time * 1.2) * 0.015;
+
+const scale = 1.06 + breath;
 
     const frontLayer = document.getElementById("sphereImgFront");
     const backLayer  = document.getElementById("sphereImgBack");
@@ -1839,8 +1892,16 @@ if(miniGear){
 
 
   function closePanel(){
-    document.getElementById("panel").classList.remove("active");
-  }
+
+  const panel = document.getElementById("panel");
+
+  panel.classList.add("closing");
+
+  setTimeout(()=>{
+    panel.classList.remove("active");
+    panel.classList.remove("closing");
+  }, 350);
+}
 
   function resetSphereToArea(){
 
