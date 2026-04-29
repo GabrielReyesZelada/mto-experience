@@ -419,7 +419,8 @@
   position:fixed;
   inset:0;
   background:black;
-  display:flex;
+  display:grid;
+  grid-template-columns: 1.2fr 1fr;
 
   opacity:0;
   pointer-events:none;
@@ -431,6 +432,43 @@
     transform .4s ease;
 
   z-index:20000; /* 🔥 subir capa */
+}
+
+.panel-media{
+  position:relative;
+  overflow:hidden;
+}
+
+/* imagen */
+.panel-img{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  transition: opacity .5s ease;
+}
+
+/* video */
+#panelVideo{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition: opacity .6s ease;
+}
+
+/* overlay cinematográfico */
+.panel-media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to right,
+    rgba(0,0,0,0.1),
+    rgba(0,0,0,0.7)
+  );
 }
 
 #panel.active{
@@ -1261,7 +1299,16 @@
   </div>
 
   <div id="panel">
-  <div class="panel-img"></div>
+
+  <!-- IZQUIERDA: IMAGEN / VIDEO -->
+  <div class="panel-media">
+    <div class="panel-img"></div>
+
+    <!-- 🔥 soporte video -->
+    <video id="panelVideo" muted loop playsinline></video>
+  </div>
+
+  <!-- DERECHA: CONTENIDO -->
   <div class="panel-content">
   <div class="close" onclick="closePanel()">✕</div>
   <h1 id="pTitle"></h1>
@@ -1462,13 +1509,33 @@ area.subareas.forEach(sub => {
   div.addEventListener("click", () => {
 
   const panel = document.getElementById("panel");
+  const panelImg = document.querySelector(".panel-img");
+  const panelVideo = document.getElementById("panelVideo");
 
   document.getElementById("pTitle").innerText = sub.name;
   document.getElementById("pDesc").innerText = sub.desc;
 
+  // 🔥 reset
+  panelImg.style.opacity = 0;
+  panelVideo.style.opacity = 0;
+  panelVideo.pause();
+  panelVideo.src = "";
+
+  // 🎬 decidir si es video o imagen
+  if(sub.video){
+
+    panelVideo.src = sub.video;
+    panelVideo.play();
+    panelVideo.style.opacity = 1;
+
+  } else {
+
+    panelImg.style.backgroundImage = `url('${sub.img}')`;
+    panelImg.style.opacity = 1;
+
+  }
+
   panel.classList.add("active");
-
-
 });
 
   list.appendChild(div);
@@ -1894,8 +1961,13 @@ const scale = 1.06 + breath;
   function closePanel(){
 
   const panel = document.getElementById("panel");
+  const panelVideo = document.getElementById("panelVideo");
 
   panel.classList.add("closing");
+
+  // 🔥 detener video al cerrar
+  panelVideo.pause();
+  panelVideo.src = "";
 
   setTimeout(()=>{
     panel.classList.remove("active");
