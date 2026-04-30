@@ -445,10 +445,6 @@
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-
-  width:60px;
-  height:60px;
-  font-size:32px;
   
   font-size:42px;
   color:white;
@@ -518,18 +514,7 @@
     0 0 24px rgba(0,200,255,.8);
 }
 
-/* ===== PERFORMANCE MOBILE ===== */
 
-.bubble,
-.panel-nav,
-.sub-index{
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-}
-
-.bubble::before{
-  display:none;
-}
 
 /* imagen */
 .panel-img{
@@ -1280,34 +1265,6 @@
   /* ===== MOBILE BASE ===== */
   @media (max-width: 900px){
 
-    /* ===== FIX LAYOUT MOBILE REAL ===== */
-
-.area-layout{
-  display:flex !important;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:20px;
-}
-
-.area-sphere{
-  position:relative !important;
-  right:auto !important;
-  top:auto !important;
-  transform:none !important;
-}
-
-.area-list{
-  align-items:center !important;
-  text-align:center !important;
-  right:auto !important;
-}
-
-.area-list-item{
-  width:100% !important;
-  text-align:center;
-}
-
     /* layout pasa a vertical */
     .area-layout{
       display:flex;
@@ -1350,23 +1307,6 @@
       width:100%;
       font-size:1.1rem;
     }
-
-    /* ===== PANEL MOBILE ===== */
-
-#panel{
-  display:flex !important;
-  flex-direction:column;
-}
-
-.panel-media{
-  height:40vh;
-}
-
-.panel-content{
-  height:60vh;
-  overflow:auto;
-  padding:30px;
-}
 
   }
 
@@ -1516,25 +1456,6 @@
   }
 }
 
-body,html{
-  margin:0;
-  height:100dvh;
-  overflow:hidden;
-
-  @media (max-width: 900px){
-  body,html{
-    overflow:auto;
-  }
-}
-}
-
-/* 🔥 MOBILE FIX */
-@media (max-width: 900px){
-  body,html{
-    overflow:auto;
-  }
-}
-
   </style>
   </head>
 
@@ -1671,8 +1592,6 @@ body,html{
 
   <script>
 
-  const isMobile = window.innerWidth <= 900;
-
   const areas = [
     {
       name: "ESTUDIOS & OUTDOOR",
@@ -1701,36 +1620,56 @@ body,html{
       image: "https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/Fondo%20sphere%20area.mp4?download=1",
       subareas: [
         {
-  name:"Ingesta",
-  desc:`Ingesta es el punto de partida de todo lo que vemos en pantalla. Aquí comienza el recorrido del contenido: recibimos, validamos y preparamos cada material para que fluya de forma segura y ordenada hacia el resto de la operación.
-
-Más que un proceso técnico, somos un puente. Un equipo que conecta historias con quienes las transforman, asegurando que cada pieza llegue en el momento y formato correcto.
-
-Nuestro foco está en la fluidez: facilitar el camino para que cada área pueda concentrarse en lo que mejor sabe hacer: dar vida a contenidos que impactan a nuestra audiencia.`,
-  keywords:["Ingesta","fluidez","facilitar","contenidos","operación"," impactan a nuestra audiencia"],
-  img:"https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&q=80&auto=format&fit=crop"
+          name:"Ingesta",
+          desc:`Ingesta es el punto de partida de todo lo que vemos en pantalla. Aquí comienza el recorrido del contenido: recibimos, validamos y preparamos cada material para que fluya de forma segura y ordenada hacia el resto de la operación.
+            
+                Más que un proceso técnico, somos un puente. Un equipo que conecta historias con quienes las transforman, asegurando que cada pieza llegue en el momento y formato correcto.
+           
+                Nuestro foco está en la fluidez: facilitar el camino para que cada área pueda concentrarse en lo que mejor sabe hacer: dar vida a contenidos que impactan a nuestra audiencia.`,
+          keywords:["Ingesta","fluidez","facilitar","contenidos","operación"," impactan a nuestra audiencia"],
+          img:"https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&q=80&auto=format&fit=crop"
 }, 
         { 
           name:"Archivo",
-          desc:"Gestión de almacenamiento.",
+          desc:`En Archivo y Documentación resguardamos la memoria que da profundidad a todo lo que hacemos. Cada contenido que pasa por nuestras manos no solo se almacena: se ordena, se protege y se prepara para volver a cobrar vida cuando la operación lo necesita.
+           
+                Desde hace años construimos un puente entre el pasado y el presente, gestionando material que recorre décadas de historia del fútbol chileno. Este patrimonio no es estático; es una fuente activa que alimenta nuevas historias, revive momentos clave y aporta contexto a cada producción.
+                
+                Nuestro rol es asegurar que esa memoria esté siempre disponible, accesible y lista para integrarse en la creación de contenidos. Trabajamos junto a distintas áreas, facilitando el acceso a material confiable y preciso, permitiendo que cada pieza que sale al aire tenga respaldo, sentido y continuidad.`,
+          keywords:["Archivo y Documentación","construimos","gestionando","memoria","respaldo","historias"],
           img:"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80&auto=format&fit=crop"
         },
         
         { 
           name:"Postproducción de Video",
-          desc:"Edición y montaje cinematográfico",
+          desc:`En Postproducción de Video el contenido toma forma y encuentra su pulso. Cada imagen se transforma, cada secuencia se articula y cada historia comienza a respirar con intención.
+                Aquí el material evoluciona: se selecciona, se construye y se potencia para generar impacto. No solo editamos, interpretamos el contenido, definiendo el ritmo y la narrativa que conectará con la audiencia.
+                
+                Desde momentos clave hasta piezas completas, damos continuidad al flujo de la operación, integrando cada entrega dentro de un ecosistema vivo, dinámico y en constante movimiento.
+                Nuestro trabajo es llevar cada contenido a su mejor versión, asegurando que lo que llega a pantalla no solo informe, sino que también transmita energía, sentido y emoción.`,
+          keywords:["Postproducción","transforma","construye","narrativa","transmita","emoción"],
           img:"https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&q=80&auto=format&fit=crop"
         },
 
         { 
           name:"Postproducción de Audio",
-          desc:"Edición y diseño sonoro.",
+          desc:`En Postproducción de Audio el contenido completa su dimensión sensorial. Aquí el sonido se convierte en una señal y una emoción que acompaña la imagen, expandiendo la percepción y dando profundidad a cada historia.
+                Trabajamos el audio como un lenguaje vivo: cada capa se equilibra, se limpia y se articula para construir una experiencia clara, envolvente y coherente. Desde la voz hasta los ambientes, todo converge para sostener la narrativa y potenciar su impacto.
+                
+                El sonido no solo acompaña al video, convive con él. Juntos construyen momentos que trascienden la pantalla y se fijan en la memoria, dando continuidad a la experiencia y reforzando su significado.
+                Nuestro rol es integrar esa dimensión dentro del flujo de la operación, asegurando precisión, calidad y consistencia en cada entrega. Porque cuando el audio está en su lugar, la experiencia se completa y permanece.`,
+          keywords:["Postproducción de Audio","acompaña la imagen, expandiendo la percepción","fijan en la memoria","reforzando su significado."],
           img:"https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600&q=80&auto=format&fit=crop"
         },
 
         { 
           name:"VTR - Replay",
-          desc:"Operación de servidores de repetición",
+          desc:`En VTR Edit & Replay operamos en el instante donde todo sucede. Aquí el contenido se captura, se revisita y se proyecta nuevamente en el momento exacto, amplificando lo que ocurre en vivo.
+                Somos parte activa de la operación en directo, acompañando la palabra editorial y potenciando la comunicación en tiempo real. Cada repetición no solo muestra: refuerza, explica y amplifica el relato que llega a la audiencia.
+                
+                Trabajamos sobre la imagen con precisión y velocidad, seleccionando y reconstruyendo jugadas clave para darles contexto, claridad y emoción. Es un flujo vertiginoso, donde cada decisión ocurre en segundos y cada acción impacta directamente en la experiencia.
+                Nuestro rol es sostener ese equilibrio entre lo visual y lo comunicacional, asegurando que la narrativa del evento se mantenga fluida, dinámica y conectada. Así, transformamos instantes en momentos que no solo se ven, sino que se entienden y se recuerdan.`,
+          keywords:["VTR Edit & Replay","operación en directo","comunicación en tiempo real","equilibrio entre lo visual y lo comunicacional."],
           img:"https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=600&q=80&auto=format&fit=crop"
         },
       ]
@@ -1867,10 +1806,7 @@ area.subareas.forEach((sub, i) => {
 
   // Hover → cambia esfera
   div.addEventListener("mouseenter", () => activateSphere(div));
-  div.addEventListener("touchstart", (e) => {
-  e.stopPropagation(); // 🔥 evita conflictos con scroll
-  activateSphere(div);
-}, { passive: true });
+  div.addEventListener("touchstart", () => activateSphere(div));
 
   // Click → abre panel
   div.addEventListener("click", () => {
@@ -2147,21 +2083,6 @@ if(current === 0){
 
   const gearWrap = document.getElementById("gearWrap");
 
-  // ===== MOBILE SWIPE GEAR =====
-let touchStartX = 0;
-
-gearWrap.addEventListener("touchstart", e => {
-  touchStartX = e.touches[0].clientX;
-}, { passive: true });
-
-gearWrap.addEventListener("touchmove", e => {
-  const deltaX = e.touches[0].clientX - touchStartX;
-
-  velocity += deltaX * 0.02;
-
-  touchStartX = e.touches[0].clientX;
-}, { passive: true });
-
   gearWrap.addEventListener("mouseenter", () => {
     isHoveringGear = true;
   });
@@ -2169,16 +2090,6 @@ gearWrap.addEventListener("touchmove", e => {
   gearWrap.addEventListener("mouseleave", () => {
     isHoveringGear = false;
   });
-
-  gearWrap.addEventListener("touchstart", () => {
-  isHoveringGear = true;
-});
-
-gearWrap.addEventListener("touchend", () => {
-  isHoveringGear = false;
-});
-
-
 
   function animate(){
 
