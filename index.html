@@ -477,7 +477,7 @@
     animation: navPulse 3s ease-in-out infinite;
 }
 
-@keyframes navPulse{
+@keyframes navPulse{      
   0%,100%{
     box-shadow:
       0 0 10px rgba(0,200,255,.15);
@@ -569,6 +569,15 @@
   transform: translateY(0);
   filter: blur(0);
 }
+
+.paragraph{
+  margin-bottom: 22px; /* 🔥 espacio entre párrafos */
+}
+
+.paragraph:last-child{
+  margin-bottom: 0;
+}
+
 
 .keyword{
   color:#fff;
@@ -2230,6 +2239,8 @@ function showSubarea(direction){
   const dir = direction === "next" ? 1 : -1;
   const offset = 180 * dir;
 
+  title.innerText = sub.name;
+
   /* ===== PREPARAR NUEVO CONTENIDO ===== */
 
   const newImg = document.createElement("div");
@@ -2259,8 +2270,32 @@ function showSubarea(direction){
 
     /* ===== CAMBIO TEXTO ===== */
 
-    title.innerText = sub.name;
-    desc.innerHTML = sub.desc;
+    let paragraphs = sub.desc.split(/\n\s*\n/);
+
+let html = paragraphs.map(p => {
+
+  let line = p;
+
+  if(sub.keywords){
+    sub.keywords.forEach(word => {
+      const regex = new RegExp(`(${word})`, "gi");
+      line = line.replace(regex, `<span class="keyword">$1</span>`);
+    });
+  }
+
+  return `<div class="line paragraph">${line}</div>`;
+
+}).join("");
+
+desc.innerHTML = html;
+
+const lines = desc.querySelectorAll(".line");
+
+lines.forEach((line, i) => {
+  setTimeout(() => {
+    line.classList.add("show");
+  }, i * 120); // delay progresivo 🔥
+});
 
     /* ===== ENTRADA NUEVA ===== */
 
