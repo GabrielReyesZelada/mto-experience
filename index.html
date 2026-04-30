@@ -53,6 +53,7 @@
     background:rgba(0,0,0,.6);
     color:white;
     text-align:center;
+    pointer-events:auto;
   }
 
   .mto-overlay h1{
@@ -437,6 +438,7 @@
 .panel-media{
   position:relative;
   overflow:hidden;
+  padding: 0 40px;
 }
 
 .panel-nav{
@@ -450,46 +452,69 @@
   cursor:pointer;
   z-index:50;
 
-  opacity:.25;
-  transition:.3s;
+  opacity:.4;
+  transition:.35s cubic-bezier(.22,1,.36,1);
 
   user-select:none;
+
+  width:70px;
+  height:70px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(10px);
+
+  /* 🔥 glow base sutil */
+  box-shadow:
+    0 0 0 rgba(0,200,255,0),
+    inset 0 0 10px rgba(255,255,255,.05);
+
+    animation: navPulse 3s ease-in-out infinite;
 }
 
-.panel-nav-left{ left:25px; }
-.panel-nav-right{ right:25px; }
+@keyframes navPulse{
+  0%,100%{
+    box-shadow:
+      0 0 10px rgba(0,200,255,.15);
+  }
+  50%{
+    box-shadow:
+      0 0 25px rgba(0,200,255,.35);
+  }
+}
+
+.panel-nav-left{ 
+  left: 25px;
+}
+
+.panel-nav-right{ 
+  right: 25px;
+  margin-right: 5px; /* micro ajuste fino opcional */
+}
 
 .panel-nav:hover{
   opacity:1;
-  transform:translateY(-50%) scale(1.2);
-  text-shadow:0 0 20px rgba(0,200,255,.8);
+
+  transform:translateY(-50%) scale(1.25);
+
+  color:#00c8ff;
+
+  box-shadow:
+    0 0 20px rgba(0,200,255,.6),
+    0 0 40px rgba(0,200,255,.4),
+    inset 0 0 15px rgba(255,255,255,.2);
+
+  text-shadow:
+    0 0 12px rgba(0,200,255,1),
+    0 0 24px rgba(0,200,255,.8);
 }
 
-/* 🔥 hint flotante */
-.panel-nav::after{
-  content:attr(data-label);
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  white-space:nowrap;
 
-  font-size:14px;
-  opacity:0;
-  transition:.3s;
-}
-
-.panel-nav-left::after{
-  right:-10px;
-  transform:translateY(-50%) translateX(-100%);
-}
-
-.panel-nav-right::after{
-  left:-10px;
-}
-
-.panel-nav:hover::after{
-  opacity:.7;
-}
 
 /* imagen */
 .panel-img{
@@ -502,8 +527,8 @@
   opacity:0;
 
   transition:
-    opacity .6s ease,
-    transform 1.8s cubic-bezier(.22,1,.36,1);
+    transform .7s cubic-bezier(.22,1,.36,1),
+    opacity .5s ease;
 }
 
 /* video */
@@ -720,7 +745,7 @@
 
   /* 🔥 FIX CAPAS (CLAVE DEL BUG) */
   .mto-front{
-    z-index:2;
+    z-index:5;
   }
 
   .mto-back{
@@ -1435,6 +1460,8 @@
 
   <!-- IZQUIERDA: IMAGEN / VIDEO -->
   <div class="panel-media">
+    <div class="panel-nav panel-nav-left" onclick="prevSub()" data-label="Anterior">❮</div>
+    <div class="panel-nav panel-nav-right" onclick="nextSub()" data-label="Siguiente">❯</div>
     <div class="panel-img"></div>
 
     <!-- 🔥 soporte video -->
@@ -1551,8 +1578,14 @@ Nuestro foco está en la fluidez: facilitar el camino para que cada área pueda 
   ];
 
   let currentAreaIndex = 0;
+  let currentSubIndex = 0;
 
   function updateAreaFromRotation(){
+
+     // 🔥 BLOQUEO TOTAL si el panel está abierto
+  if(document.getElementById("panel").classList.contains("active")){
+    return;
+  }
 
     const total = areas.length;
 
@@ -1629,7 +1662,7 @@ setTimeout(() => {
       list.innerHTML = "";
 
 
-area.subareas.forEach(sub => {
+area.subareas.forEach((sub, i) => {
 
   const div = document.createElement("div");
   div.className = "area-list-item";
@@ -1637,76 +1670,23 @@ area.subareas.forEach(sub => {
 
   div.innerHTML = `<span class="item-text">${sub.name}</span>`;
 
+  // Hover → cambia esfera
   div.addEventListener("mouseenter", () => activateSphere(div));
   div.addEventListener("touchstart", () => activateSphere(div));
 
+  // Click → abre panel
   div.addEventListener("click", () => {
 
-  const panel = document.getElementById("panel");
-  const panelImg = document.querySelector(".panel-img");
-  const panelVideo = document.getElementById("panelVideo");
+    currentSubIndex = i;
 
-  document.getElementById("pTitle").innerText = sub.name;
-  const descEl = document.getElementById("pDesc");
+    showSubarea("next");
 
-// 🔥 limpiar
-descEl.innerHTML = "";
-
-// 🔥 palabras clave por subárea
-const keywords = sub.keywords || [];
-// dividir por saltos de línea
-const lines = sub.desc.split("\n");
-
-lines.forEach((line, i) => {
-
-  const div = document.createElement("div");
-  div.className = "line";
-  let processedLine = line;
-
-keywords.forEach(word => {
-
-  const regex = new RegExp(`(${word})`, "gi");
-
-  processedLine = processedLine.replace(
-    regex,
-    `<span class="keyword">$1</span>`
-  );
-});
-
-div.innerHTML = processedLine;
-
-  descEl.appendChild(div);
-
-  // animación progresiva
-  setTimeout(()=>{
-    div.classList.add("show");
-  }, i * 180); // 🔥 velocidad narrativa
-});
-
-  // 🔥 reset
-  panelImg.style.opacity = 0;
-  panelVideo.style.opacity = 0;
-  panelVideo.pause();
-  panelVideo.src = "";
-
-  // 🎬 decidir si es video o imagen
-  if(sub.video){
-
-    panelVideo.src = sub.video;
-    panelVideo.play();
-    panelVideo.style.opacity = 1;
-
-  } else {
-
-    panelImg.style.backgroundImage = `url('${sub.img}')`;
-    panelImg.style.opacity = 1;
-
-  }
-
-  panel.classList.add("active");
-});
+    document.getElementById("panel").classList.add("active");
+    
+  });
 
   list.appendChild(div);
+
 });
 
 
@@ -2209,7 +2189,99 @@ const scale = 1.06 + breath;
 
     }, 500);
   }
+function nextSub(){
 
+  const subs = areas[currentAreaIndex].subareas;
+
+  if(!subs || subs.length === 0) return;
+
+  currentSubIndex = (currentSubIndex + 1) % subs.length;
+
+  showSubarea("next");
+
+  velocity += 0.8; // next
+velocity -= 0.8; // prev
+}
+
+function prevSub(){
+
+  const subs = areas[currentAreaIndex].subareas;
+
+  if(!subs || subs.length === 0) return;
+
+  currentSubIndex =
+    (currentSubIndex - 1 + subs.length) % subs.length;
+
+  showSubarea("prev");
+
+  velocity += 0.8; // next
+velocity -= 0.8; // prev
+}
+
+function showSubarea(direction){
+
+  const sub = areas[currentAreaIndex].subareas[currentSubIndex];
+
+  const panelImg = document.querySelector(".panel-img");
+  const panelVideo = document.getElementById("panelVideo");
+  const title = document.getElementById("pTitle");
+  const desc = document.getElementById("pDesc");
+
+  const dir = direction === "next" ? 1 : -1;
+  const offset = 180 * dir;
+
+  /* ===== PREPARAR NUEVO CONTENIDO ===== */
+
+  const newImg = document.createElement("div");
+  newImg.className = "panel-img";
+  newImg.style.backgroundImage = `url('${sub.img}')`;
+  newImg.style.transform = `translateX(${offset}px) scale(1.1)`;
+  newImg.style.opacity = 0;
+
+  const mediaWrap = document.querySelector(".panel-media");
+  mediaWrap.appendChild(newImg);
+
+  /* ===== SALIDA ACTUAL ===== */
+
+  panelImg.style.transform = `translateX(${-offset}px) scale(0.95)`;
+  panelImg.style.opacity = 0;
+
+  panelVideo.style.transform = `translateX(${-offset}px) scale(0.95)`;
+  panelVideo.style.opacity = 0;
+
+  title.style.transform = `translateX(${offset}px)`;
+  desc.style.transform = `translateX(${offset}px)`;
+
+  title.style.opacity = 0;
+  desc.style.opacity = 0;
+
+  setTimeout(()=>{
+
+    /* ===== CAMBIO TEXTO ===== */
+
+    title.innerText = sub.name;
+    desc.innerHTML = sub.desc;
+
+    /* ===== ENTRADA NUEVA ===== */
+
+    newImg.style.transform = "translateX(0) scale(1)";
+    newImg.style.opacity = 1;
+
+    title.style.transform = "translateX(0)";
+    desc.style.transform = "translateX(0)";
+
+    title.style.opacity = 1;
+    desc.style.opacity = 1;
+
+    /* ===== LIMPIEZA ===== */
+
+    setTimeout(()=>{
+      panelImg.remove();
+      newImg.classList.add("panel-img");
+    }, 500);
+
+  }, 120);
+}
 
   </script>
     
