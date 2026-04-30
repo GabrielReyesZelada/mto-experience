@@ -445,6 +445,10 @@
   position:absolute;
   top:50%;
   transform:translateY(-50%);
+
+  width:60px;
+  height:60px;
+  font-size:32px;
   
   font-size:42px;
   color:white;
@@ -514,7 +518,18 @@
     0 0 24px rgba(0,200,255,.8);
 }
 
+/* ===== PERFORMANCE MOBILE ===== */
 
+.bubble,
+.panel-nav,
+.sub-index{
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+.bubble::before{
+  display:none;
+}
 
 /* imagen */
 .panel-img{
@@ -1265,6 +1280,34 @@
   /* ===== MOBILE BASE ===== */
   @media (max-width: 900px){
 
+    /* ===== FIX LAYOUT MOBILE REAL ===== */
+
+.area-layout{
+  display:flex !important;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:20px;
+}
+
+.area-sphere{
+  position:relative !important;
+  right:auto !important;
+  top:auto !important;
+  transform:none !important;
+}
+
+.area-list{
+  align-items:center !important;
+  text-align:center !important;
+  right:auto !important;
+}
+
+.area-list-item{
+  width:100% !important;
+  text-align:center;
+}
+
     /* layout pasa a vertical */
     .area-layout{
       display:flex;
@@ -1307,6 +1350,23 @@
       width:100%;
       font-size:1.1rem;
     }
+
+    /* ===== PANEL MOBILE ===== */
+
+#panel{
+  display:flex !important;
+  flex-direction:column;
+}
+
+.panel-media{
+  height:40vh;
+}
+
+.panel-content{
+  height:60vh;
+  overflow:auto;
+  padding:30px;
+}
 
   }
 
@@ -1456,6 +1516,25 @@
   }
 }
 
+body,html{
+  margin:0;
+  height:100dvh;
+  overflow:hidden;
+
+  @media (max-width: 900px){
+  body,html{
+    overflow:auto;
+  }
+}
+}
+
+/* 🔥 MOBILE FIX */
+@media (max-width: 900px){
+  body,html{
+    overflow:auto;
+  }
+}
+
   </style>
   </head>
 
@@ -1591,6 +1670,8 @@
   </div>
 
   <script>
+
+  const isMobile = window.innerWidth <= 900;
 
   const areas = [
     {
@@ -1786,7 +1867,10 @@ area.subareas.forEach((sub, i) => {
 
   // Hover → cambia esfera
   div.addEventListener("mouseenter", () => activateSphere(div));
-  div.addEventListener("touchstart", () => activateSphere(div));
+  div.addEventListener("touchstart", (e) => {
+  e.stopPropagation(); // 🔥 evita conflictos con scroll
+  activateSphere(div);
+}, { passive: true });
 
   // Click → abre panel
   div.addEventListener("click", () => {
@@ -2063,6 +2147,21 @@ if(current === 0){
 
   const gearWrap = document.getElementById("gearWrap");
 
+  // ===== MOBILE SWIPE GEAR =====
+let touchStartX = 0;
+
+gearWrap.addEventListener("touchstart", e => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+
+gearWrap.addEventListener("touchmove", e => {
+  const deltaX = e.touches[0].clientX - touchStartX;
+
+  velocity += deltaX * 0.02;
+
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+
   gearWrap.addEventListener("mouseenter", () => {
     isHoveringGear = true;
   });
@@ -2070,6 +2169,16 @@ if(current === 0){
   gearWrap.addEventListener("mouseleave", () => {
     isHoveringGear = false;
   });
+
+  gearWrap.addEventListener("touchstart", () => {
+  isHoveringGear = true;
+});
+
+gearWrap.addEventListener("touchend", () => {
+  isHoveringGear = false;
+});
+
+
 
   function animate(){
 
