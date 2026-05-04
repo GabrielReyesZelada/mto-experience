@@ -477,6 +477,44 @@
     animation: navPulse 3s ease-in-out infinite;
 }
 
+.panel-scroll{
+  margin-top:20px;
+
+  overflow-y:auto;
+  flex:1;
+
+  padding-right:10px;
+  padding-bottom:clamp(60px, 10vh, 120px);
+  padding-top:clamp(60px, 6vh, 80px); /* 🔥 aire arriba */
+
+  /* 🔥 fade arriba + abajo */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 10%,
+    black 85%,
+    transparent 100%
+  );
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 10%,
+    black 85%,
+    transparent 100%
+  );
+}
+
+/* scroll fino */
+.panel-scroll::-webkit-scrollbar{
+  width:6px;
+}
+
+.panel-scroll::-webkit-scrollbar-thumb{
+  background:rgba(0,200,255,.4);
+  border-radius:10px;
+}
+
 @keyframes navPulse{      
   0%,100%{
     box-shadow:
@@ -644,6 +682,14 @@
   transform: scale(1);
 }
 
+.panel-content h1{
+  margin-top:1;
+  line-height:1.1;
+  min-height: calc(1.1em * 2);
+  display:flex;
+  align-items:flex-end;
+}
+
   .panel-img{
     flex:1;
     background-size:cover;
@@ -651,10 +697,31 @@
 
   .panel-content{
     flex:1;
-    padding:60px;
+    padding:80px 60px 40px 60px;
     color:white;
     position:relative;
-  }
+    transform: translateY(-10px);
+
+    height:100vh;
+    max-height:100vh;
+
+    box-sizing: border-box; /* 🔥 ESTA LÍNEA ARREGLA TODO */
+
+    overflow:hidden;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start; /* asegura que todo parte arriba */
+}
+
+.panel-content::-webkit-scrollbar{
+  width:6px;
+}
+
+.panel-content::-webkit-scrollbar-thumb{
+  background:rgba(0,200,255,.4);
+  border-radius:10px;
+}
 
   .close{
     position:absolute;
@@ -1360,6 +1427,14 @@
   letter-spacing:.3px;
 }
 
+.panel-content p{
+  margin-top:0;
+}
+
+#pDesc{
+  white-space: normal; /* 🔥 evita respetar espacios raros */
+}
+
 /* 🔥 separación de párrafos */
 .panel-content p br{
   content:"";
@@ -1586,8 +1661,10 @@
   <div id="subIndex" class="sub-index"></div>
   
   <h1 id="pTitle"></h1>
-  <p id="pDesc" style="opacity:.7; margin-top:15px;"></p>
-  </div>
+
+<div class="panel-scroll">
+  <p id="pDesc"></p>
+</div>
   </div>
 
   <script>
@@ -1655,7 +1732,7 @@
           name:"Postproducción de Audio",
           desc:`En Postproducción de Audio el contenido completa su dimensión sensorial. Aquí el sonido se convierte en una señal y una emoción que acompaña la imagen, expandiendo la percepción y dando profundidad a cada historia.
                 Trabajamos el audio como un lenguaje vivo: cada capa se equilibra, se limpia y se articula para construir una experiencia clara, envolvente y coherente. Desde la voz hasta los ambientes, todo converge para sostener la narrativa y potenciar su impacto.
-                
+
                 El sonido no solo acompaña al video, convive con él. Juntos construyen momentos que trascienden la pantalla y se fijan en la memoria, dando continuidad a la experiencia y reforzando su significado.
                 Nuestro rol es integrar esa dimensión dentro del flujo de la operación, asegurando precisión, calidad y consistencia en cada entrega. Porque cuando el audio está en su lugar, la experiencia se completa y permanece.`,
           keywords:["Postproducción de Audio","acompaña la imagen, expandiendo la percepción","fijan en la memoria","reforzando su significado."],
@@ -1694,19 +1771,20 @@
       image: "https://warnermedia.sharepoint.com/sites/ChileOpsWBD/SiteAssets/FOOTAGE%20SITIOS/Fondo%20sphere%20area.mp4?download=1",
       subareas: [
         { name:"Gestión", 
-          desc:`En Gestión, la operación se entiende como un flujo continuo en movimiento. Cada proceso nace desde las necesidades de las distintas producciones y se articula a través del trabajo de las personas que hacen posible su ejecución.
+          desc:`En Gestión, la operación se entiende como un flujo continuo en movimiento. Cada proceso nace desde las necesidades de las distintas producciones y se articula a través del trabajo de las personas que hacen posible su ejecución. 
                 A partir de estas necesidades, se activa un flujo logístico que conecta y da forma a la realidad de todas las áreas y subáreas que componen Operaciones. Nuestro rol es ordenar, coordinar y sostener ese flujo, asegurando que cada requerimiento encuentre respuesta de manera oportuna y eficiente.
-                
+
                 Desde una mirada global, la operación se presenta como una estructura funcional. Pero al acercarnos, ese sistema revela su verdadera naturaleza: un engranaje en movimiento, impulsado por la expertiz de equipos que integran lo humano y lo técnico en cada decisión.
-                
-                En este contexto, Gestión debe comprender con precisión la estructura completa de Operaciones: conocer el nombre, el rol y la función de cada área, para dirigir cada solicitud con exactitud y asegurar su correcta ejecución dentro del sistema.
-                Gestión no solo coordina: interpreta, conecta y activa, manteniendo la coherencia de un ecosistema dinámico, preciso y en constante evolución.`,
-          keywords:["MOC","coordina","sostener","integra, ordena y activa","ecosistema continuo"],
+
+                En este contexto, Gestión debe comprender con precisión la estructura completa de Operaciones: conocer el nombre, el rol y la función de cada área, para dirigir cada solicitud con exactitud y asegurar su correcta ejecución dentro del sistema.  
+                No sólo coordinamos: interpretamos, conectamos y activamos, manteniendo la coherencia del sistema y dando dirección al flujo que sostiene la operación.`,
+          keywords:["Gestión","activa un flujo logístico","manteniendo la coherencia","sostiene la operación."],
           img:"https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=600&q=80&auto=format&fit=crop"
         },
 
         { name:"Pañol", 
           desc:"Administración de equipamiento.",
+          keywords:["MOC","coordina","sostener","integra, ordena y activa","ecosistema continuo"],
           img:"https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=80&auto=format&fit=crop"
         }
       ]
